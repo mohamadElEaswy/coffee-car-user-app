@@ -80,7 +80,7 @@ class _Home extends State<Home> {
             padding: EdgeInsets.all(contentPadding),
             child: Center(
               child: Text(
-                'I\'m looking for..',
+                'I\'m looking for',
                 style: AppTheme.headerTextStyle,
               ),
             ),
