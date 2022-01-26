@@ -8,7 +8,6 @@ import 'package:mk/src/ui/pages/cart/cart_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 import 'package:mk/src/ui/theme/theme.dart';
 
-
 const double contentPadding = 8.0;
 
 class Home extends StatefulWidget {
@@ -40,95 +39,55 @@ class _Home extends State<Home> {
   }
 
   Widget buildBody({required AppCubit bloc}) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: <Widget>[
-        SliverAppBar(
-          centerTitle: true,
-          floating: true,
-          actions: [
-            IconButton(
-              tooltip: 'profile',
-              onPressed: () {
-                bloc.hello('h');
-                RouteMethods.navigateTo(
-                    context: context, routeName: Profile.route);
-              },
-              icon: const Icon(Icons.person_outline_rounded),
-            ),
-            IconButton(
-              tooltip: 'cart',
-              onPressed: () => RouteMethods.navigateTo(
-                  context: context, routeName: Cart.route),
-              icon: const Icon(Icons.shopping_basket_outlined),
-            ),
-          ],
-          title: Image.asset(
-            AppAssets.appLogo,
-            fit: BoxFit.fitHeight,
-            height: 25.0,
-          ),
-        ),
-        const SliverToBoxAdapter(
-          child: SizedBox(
-            height: 270.0,
-            child: Placeholder(),
-          ),
-        ),
-        const SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.all(contentPadding),
-            child: Center(
-              child: Text(
-                'I\'m looking for',
-                style: AppTheme.headerTextStyle,
-              ),
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: 100.0,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return const SizedBox(
-                  width: 100.0,
-                  child: Card(
-                    child: Text('data'),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        const SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.all(contentPadding),
-            child: Center(
-              child: Text(
-                'Featured Products',
-                style: AppTheme.headerTextStyle,
-              ),
-            ),
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => Padding(
-              padding: const EdgeInsets.all(contentPadding),
-              child: Center(
-                child: SizedBox(
-                  height: 20.0,
-                  child: Text('$index'),
-                ),
-              ),
-            ),
-            childCount: 10,
-          ),
-        ),
-      ],
+    return SafeArea(
+      child: Stack(
+        children: [
+          buildMap(),
+          customHeader(),
+          customDraggable(context: context),
+        ],
+      ),
     );
   }
 }
+
+Widget buildMap() => Container(
+      height: 600,
+      color: Colors.cyan[100],
+      child: const Center(
+        child: Text('Google maps here'),
+      ),
+    );
+
+Widget customHeader() => Container(
+      height: 50,
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
+      ),
+      child: Row(
+        children: const [
+          Padding(
+            padding: EdgeInsets.all(4),
+            child: CircleAvatar(backgroundColor: Colors.cyan),
+          ),
+        ],
+      ),
+    );
+
+Widget customDraggable({required BuildContext context}) => DraggableScrollableSheet(
+      initialChildSize: 0.30,
+      minChildSize: 0.15,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Container(
+          color: Colors.white,
+          child: ListView.builder(
+            controller: scrollController,
+            itemBuilder: (context, index) => Text('$index'),
+            itemCount: 100,
+            padding: const EdgeInsets.all(10),
+          ),
+        );
+      },
+    );
