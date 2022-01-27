@@ -11,3 +11,17 @@ class ErrorAppState extends AppState{
 }
 
 class SuccessAppState extends AppState{}
+
+
+//home maps states
+class LoadingMapsState extends AppState{}
+class SuccessMapsState extends AppState{}
+class ErrorMapsState extends AppState{
+  final String error;
+
+  ErrorMapsState({required this.error});
+}
+
+// change screen state
+
+class ChangeScreenState extends AppState{}
