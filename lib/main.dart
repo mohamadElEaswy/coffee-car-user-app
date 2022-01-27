@@ -12,7 +12,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'provider/locale_provider.dart';
 import 'src/database/local/local_sevices.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalDBServices.init();
@@ -23,7 +22,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  static const String title = 'Stabraq';
+  static const String title = 'coffee car';
 
   @override
   Widget build(BuildContext context) {
