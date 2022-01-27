@@ -6,13 +6,10 @@ class NotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: const SingleChildScrollView(
+    return const SingleChildScrollView(
         child: Center(
           child: Text('Notifications Page'),
         ),
-      ),
-    );
+      );
   }
 }

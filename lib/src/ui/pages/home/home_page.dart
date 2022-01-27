@@ -8,6 +8,7 @@ import 'package:mk/src/core/bloc/states/states.dart';
 // import 'package:mk/src/ui/pages/profile/profile_page.dart';
 // import 'package:mk/src/ui/theme/theme.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mk/src/locations.dart';
 // import 'package:mk/src/locations.dart' as locations;
 
 const double contentPadding = 8.0;
@@ -57,13 +58,20 @@ class _Home extends State<Home> {
           body: bloc.body[bloc.currentIndex],
           // buildBody(bloc: bloc),
           // cubit.body[cubit.currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            items: bloc.items,
-            onTap: (int index) {
-              bloc.changeScreen(index: index);
-            },
-            elevation: 0.0,
-            currentIndex: bloc.currentIndex,
+          bottomNavigationBar: SizedBox(
+            height: 60,
+            child: BottomNavigationBar(
+              // enableFeedback: true,
+              backgroundColor: Colors.grey,
+              selectedItemColor: Colors.cyan,
+              unselectedItemColor: Colors.grey,
+              items: bloc.items,
+              onTap: (int index) {
+                bloc.changeScreen(index: index);
+              },
+              elevation: 0.0,
+              currentIndex: bloc.currentIndex,
+            ),
           ),
         );
       },
@@ -72,23 +80,68 @@ class _Home extends State<Home> {
 }
 
 class HomeBodyPage extends StatelessWidget {
-  const HomeBodyPage({Key? key, required this.bloc}) : super(key: key);
-  final AppCubit bloc;
+  const HomeBodyPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Stack(
-        children: [
-          buildMap(bloc: bloc),
-          customHeader(),
-          customDraggable(context: context),
-        ],
-      ),
+    return BlocConsumer<AppCubit, AppState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        AppCubit bloc = AppCubit.get(context);
+        return SafeArea(
+          child: Stack(
+            children: [
+              buildMap(bloc: bloc),
+              customHeader(),
+              // customDraggable(context: context),
+              Align(
+                alignment: AlignmentDirectional.bottomEnd,
+                child: SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        margin: const EdgeInsets.only(right: 10, left: 10),
+                        child: Container(
+
+                          padding: const EdgeInsets.all(20),
+                          width: 225,
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(bloc.data[index].name),
+                              Container(padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.brown,
+                                ),
+                                child: Row(mainAxisSize: MainAxisSize.min,
+                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                  children: const [
+                                    Icon(Icons.star,size: 15, color: Colors.white,),
+                                    Text('4.0')
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    itemCount: bloc.data.length,
+                    padding: const EdgeInsets.all(10),
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 
   Widget buildMap({required AppCubit bloc}) => Container(
-        height: 600,
+        // height: 600,
         color: Colors.cyan[100],
         child: Center(
           child: GoogleMap(

@@ -6,12 +6,9 @@ class Cart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: const SingleChildScrollView(
-        child: Center(
-          child: Text('Cart Page'),
-        ),
+    return const SingleChildScrollView(
+      child: Center(
+        child: Text('Cart Page'),
       ),
     );
   }

@@ -18,11 +18,12 @@ class AppCubit extends Cubit<AppState>{
   late GoogleMapController mapController;
   final Map<String, Marker> markers = {};
   final LatLng center = const LatLng(30.0444, 31.2357);
-
+  List<locations.Office> data =[];
   Future<void> onMapCreated(GoogleMapController controller) async{
     emit(LoadingMapsState());
     final googleOffices = await locations.getGoogleOffices();
 
+    data = googleOffices.offices;
 
     // setState(() {
       markers.clear();
@@ -45,7 +46,7 @@ class AppCubit extends Cubit<AppState>{
   int currentIndex = 0;
   List<Widget> body = [
     // const Home(title: 'Coffee car',),
-    HomeBodyPage();
+    const HomeBodyPage(),
     const Cart(),
     const LikesPage(),
     const NotificationsPage(),
