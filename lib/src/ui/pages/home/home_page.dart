@@ -9,6 +9,7 @@ import 'package:mk/src/core/bloc/states/states.dart';
 // import 'package:mk/src/ui/theme/theme.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mk/src/locations.dart';
+// import 'package:mk/src/locations.dart';
 // import 'package:mk/src/locations.dart' as locations;
 
 const double contentPadding = 8.0;
@@ -95,42 +96,29 @@ class HomeBodyPage extends StatelessWidget {
               // customDraggable(context: context),
               Align(
                 alignment: AlignmentDirectional.bottomEnd,
-                child: SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        margin: const EdgeInsets.only(right: 10, left: 10),
-                        child: Container(
-
-                          padding: const EdgeInsets.all(20),
-                          width: 225,
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(bloc.data[index].name),
-                              Container(padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.brown,
-                                ),
-                                child: Row(mainAxisSize: MainAxisSize.min,
-                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                  children: const [
-                                    Icon(Icons.star,size: 15, color: Colors.white,),
-                                    Text('4.0')
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    itemCount: bloc.data.length,
-                    padding: const EdgeInsets.all(10),
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextButton(onPressed: (){},
+                          child: const Text('View list', style: TextStyle(color: Colors.black)),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white))),
+                    ),
+                    SizedBox(
+                      height: 175,
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return cardItem(item: bloc.data[index], context: context);
+                        },
+                        itemCount: bloc.data.length,
+                        padding: const EdgeInsets.all(15),
+                      ),
+                    ),
+                  ],
                 ),
               )
             ],
@@ -140,8 +128,71 @@ class HomeBodyPage extends StatelessWidget {
     );
   }
 
+  Widget cardItem({required Office item, required BuildContext context}) =>Card(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0)),
+    margin: const EdgeInsets.only(right: 10, left: 5),
+    child: Container(
+      padding: const EdgeInsets.all(20),
+      width: 225,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(item.name),
+          Container(
+            padding: const EdgeInsets.only(
+                right: 10, left: 10, top: 5, bottom: 5),
+            margin:
+            const EdgeInsets.only(top: 10, bottom: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: const Color(0xfffA9927D),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.star,
+                  size: 15,
+                  color: Colors.white,
+                ),
+                Text('4.0',
+                    style: TextStyle(color: Colors.white, fontSize: 10))
+              ],
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.not_listed_location_outlined,
+                size: 15,
+                // color: Colors.white,
+              ),const SizedBox(width: 10),
+              Text(item.region, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(),),
+              const Spacer(),
+              Icon(Icons.watch_later)
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.watch_later_rounded,
+                size: 15,
+                // color: Colors.white,
+              ),const SizedBox(width: 10),
+              Text('Open 24 hors', maxLines: 1, style: Theme.of(context).textTheme.bodySmall,),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
   Widget buildMap({required AppCubit bloc}) => Container(
-        // height: 600,
         color: Colors.cyan[100],
         child: Center(
           child: GoogleMap(
