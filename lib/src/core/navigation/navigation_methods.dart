@@ -3,6 +3,7 @@ import 'package:mk/src/ui/pages/cart/cart_page.dart';
 import 'package:mk/src/ui/pages/error_page/error_page.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
+import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_with_email_screen.dart';
 
 
 class RouteMethods {
@@ -16,6 +17,8 @@ class RouteMethods {
         return _materialPageRoute(page: const Profile(), fullscreenDialog: true);
       case Cart.route:
         return _materialPageRoute(page: const Cart(), fullscreenDialog: true);
+        case SignInWithEmail.route:
+        return _materialPageRoute(page: const SignInWithEmail(), fullscreenDialog: true);
       default:
         return _materialPageRoute(page: const ErrorPage());
     }
