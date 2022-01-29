@@ -20,7 +20,7 @@ class InternetCheck extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<NetworkStatus>(initialData: NetworkStatus.Offline,
+    return StreamProvider<NetworkStatus>(initialData: NetworkStatus.offline,
         create: (context) =>
             NetworkStatusService().networkStatusController.stream,
         child: const NetworkAwareWidget(

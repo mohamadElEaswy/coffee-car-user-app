@@ -14,7 +14,7 @@ class NetworkAwareWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     NetworkStatus networkStatus = Provider.of<NetworkStatus>(context);
-    if (networkStatus == NetworkStatus.Online) {
+    if (networkStatus == NetworkStatus.online) {
       return onlineChild;
     } else {
       _showToastMessage("Offline");

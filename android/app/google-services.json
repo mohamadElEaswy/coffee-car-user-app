@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "591208902622",
+    "project_id": "coffecar-74b5d",
+    "storage_bucket": "coffecar-74b5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591208902622:android:f2d29c9f68108a7ee7774f",
+        "android_client_info": {
+          "package_name": "com.example.mk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591208902622-9bpkctgn3r8oldi96u8eq6u4vh4goqmi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mk",
+            "certificate_hash": "ae001f2776136961ba1b5d6fcaa70c8523ab05b2"
+          }
+        },
+        {
+          "client_id": "591208902622-gootl41088krj7fbnf21555oab7638k0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6YUawOxi1s46fU16p7CVl-bqcZalgKQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591208902622-gootl41088krj7fbnf21555oab7638k0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
