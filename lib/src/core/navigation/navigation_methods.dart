@@ -19,6 +19,8 @@ class RouteMethods {
         return _materialPageRoute(page: const Cart(), fullscreenDialog: true);
         case SignInWithEmail.route:
         return _materialPageRoute(page: const SignInWithEmail(), fullscreenDialog: true);
+        case InternetCheck.route:
+        return _materialPageRoute(page: const InternetCheck(), fullscreenDialog: true);
       default:
         return _materialPageRoute(page: const ErrorPage());
     }

@@ -40,6 +40,7 @@ dependencies:
   http: ^0.13.4
   json_serializable: ^6.1.4
   google_maps_flutter: ^2.1.1
+  connectivity_plus: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,7 @@ flutter:
 
   assets:
     - assets/images/logos/
+    - assets/icons/
     - assets/locations.json
 
   # To add custom fonts to your application, add a fonts section here,

@@ -6,12 +6,9 @@ import 'package:mk/src/ui/pages/sign_in_with_email/text_form_field.dart';
 
 // import 'package:timetracker/services/auth_provider.dart';
 
-
 class SignInWithEmail extends StatefulWidget {
   const SignInWithEmail({Key? key}) : super(key: key);
-  static const String route ='sign_in_and_register';
-
-
+  static const String route = 'sign_in_and_register';
 
   // static Widget create(BuildContext context) {
   //   // final auth = Provider.of<AuthBase>(context, listen: false);
@@ -84,6 +81,25 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
     //     !model.isLoading;
 
     return [
+      Text(
+        'Login',
+        style: Theme.of(context).textTheme.headline4,
+      ),
+      const SizedBox(height: 8),
+      if (model!.formType == EmailSignInFormType.register)
+        GlobalTextFormField(
+            textInputType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            hintText: 'Mohamed',
+            controller: _emailController,
+            lable: 'user name',
+            errorText: model.emailErrorText,
+            enabled: model.isLoading == false,
+            obscureText: false,
+            focusNode: _emailFocusNode,
+            onEditingComplete: () => _emailEditingComplete(model),
+            onChanged: bloc.updateEmail,
+            iconData: Icons.email_outlined),
       const SizedBox(height: 8),
       GlobalTextFormField(
         textInputType: TextInputType.emailAddress,
@@ -91,7 +107,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
         hintText: 'test@test.com',
         controller: _emailController,
         lable: 'Email',
-        errorText: model!.emailErrorText,
+        errorText: model.emailErrorText,
         enabled: model.isLoading == false,
         obscureText: false,
         focusNode: _emailFocusNode,
@@ -138,15 +154,10 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
               EmailSignInModel? model = snapshot.data;
               return Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: _buildChildren(model!),
-                    ),
-                  ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: _buildChildren(model!),
                 ),
               );
             }),

@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
                   theme: AppTheme.lightTheme,
                   // home: const Home(title: title),
                   onGenerateRoute: RouteMethods.generateRoutes,
-                  initialRoute: Home.route,
+                  initialRoute: InternetCheck.route,
                   locale: provider.locale,
                   supportedLocales: L10n.all,
                   localizationsDelegates: const [

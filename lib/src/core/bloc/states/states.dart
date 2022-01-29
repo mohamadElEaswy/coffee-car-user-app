@@ -25,3 +25,4 @@ class ErrorMapsState extends AppState{
 // change screen state
 
 class ChangeScreenState extends AppState{}
+class ChangeMapPosition extends AppState{}
