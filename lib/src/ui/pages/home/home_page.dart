@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 import '../../../services/remote/internet_connection_status/network_status_service.dart';
 import '../check_internet/network_aware_widget.dart';
 
-
 const double contentPadding = 8.0;
+
 //using this class to check the internet connection and to show the different screens(no internet or the app)
 class InternetCheck extends StatelessWidget {
   const InternetCheck({Key? key}) : super(key: key);
@@ -20,7 +20,8 @@ class InternetCheck extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<NetworkStatus>(initialData: NetworkStatus.offline,
+    return StreamProvider<NetworkStatus>(
+        initialData: NetworkStatus.offline,
         create: (context) =>
             NetworkStatusService().networkStatusController.stream,
         child: const NetworkAwareWidget(
@@ -85,6 +86,8 @@ class HomeBodyPage extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         AppCubit bloc = AppCubit.get(context);
+        //to enable my current location into the home map
+        bloc.myLocation();
         return SafeArea(
           child: Stack(
             children: [
@@ -101,9 +104,10 @@ class HomeBodyPage extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 20),
                       child: TextButton(
                           onPressed: () {
-                            RouteMethods.navigateTo(
-                                context: context,
-                                routeName: SignInWithEmail.route);
+                            bloc.myLocation();
+                            // RouteMethods.navigateTo(
+                            //     context: context,
+                            //     routeName: SignInWithEmail.route);
                           },
                           child: const Text('View list',
                               style: TextStyle(color: Colors.black)),
@@ -117,8 +121,10 @@ class HomeBodyPage extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return cardItem(bloc: bloc,
-                              item: bloc.data[index], context: context);
+                          return cardItem(
+                              bloc: bloc,
+                              item: bloc.data[index],
+                              context: context);
                         },
                         itemCount: bloc.data.length,
                         padding: const EdgeInsets.all(15),
@@ -134,15 +140,18 @@ class HomeBodyPage extends StatelessWidget {
     );
   }
 
-  Widget cardItem({required Office item, required BuildContext context, required AppCubit bloc}) =>
+  Widget cardItem(
+          {required Office item,
+          required BuildContext context,
+          required AppCubit bloc}) =>
       Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         margin: const EdgeInsets.only(right: 10, left: 5),
-        child: InkWell(onTap: () {
-          bloc.changeMapView(latitude: item.lat, longitude: item.lng);
-        },
-
+        child: InkWell(
+          onTap: () {
+            bloc.changeMapView(latitude: item.lat, longitude: item.lng);
+          },
           child: Container(
             padding: const EdgeInsets.all(20),
             width: 225,
@@ -227,6 +236,8 @@ class HomeBodyPage extends StatelessWidget {
             ),
             cameraTargetBounds: CameraTargetBounds.unbounded,
             markers: bloc.markers.values.toSet(),
+            myLocationButtonEnabled: true,
+            myLocationEnabled: true,compassEnabled: true, mapToolbarEnabled: true,
           ),
         ),
       );

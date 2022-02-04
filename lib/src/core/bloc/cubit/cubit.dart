@@ -4,7 +4,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/src/core/assets/assets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:location/location.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mk/src/locations.dart' as locations;
@@ -37,13 +38,14 @@ class AppCubit extends Cubit<AppState> {
     // setState(() {
     markers.clear();
     for (final office in googleOffices.offices) {
-      final marker = Marker(
+      final marker = Marker(visible: true,
         markerId: MarkerId(office.name),
         position: LatLng(office.lat, office.lng),
         infoWindow: InfoWindow(
           title: office.name,
           snippet: office.address,
         ),
+        // icon: BitmapDescriptor,
       );
       markers[office.name] = marker;
     }
@@ -72,12 +74,11 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   List<BottomNavigationBarItem> items = [
-    BottomNavigationBarItem(
-        icon: Image.asset(AppAssets.homeLogo),
-        activeIcon: Image.asset(AppAssets.darkHomeLogo),
-        label: '',
+    const BottomNavigationBarItem(
+        icon: Icon(FontAwesomeIcons.home),
+        label: '_',
         tooltip: 'Home'),
-    const BottomNavigationBarItem(icon: Icon(Icons.category), label: '_'),
+    const BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.objectGroup), label: '_'),
     const BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: '_'),
     const BottomNavigationBarItem(icon: Icon(Icons.favorite), label: '_'),
     const BottomNavigationBarItem(icon: Icon(Icons.settings), label: '_'),
@@ -92,4 +93,14 @@ class AppCubit extends Cubit<AppState> {
   void hello(String h) {
     print(h);
   }
+
+  //this method is to enable my current location into the home map.
+  Location location = Location();
+  late LocationData current;
+  Future<LocationData> myLocation() async {
+    current = await location.getLocation();
+    return current;
+  }
+
+
 }
