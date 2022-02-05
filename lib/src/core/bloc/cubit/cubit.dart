@@ -81,20 +81,17 @@ class AppCubit extends Cubit<AppState> {
         label: '_',
         tooltip: 'Home'),
     const BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.objectGroup), label: '_'),
-    const BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: '_'),
-    const BottomNavigationBarItem(icon: Icon(Icons.favorite), label: '_'),
-    const BottomNavigationBarItem(icon: Icon(Icons.settings), label: '_'),
+    const BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
+    const BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
+    const BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Profile'),
   ];
 
   void changeScreen({required int index}) {
     currentIndex = index;
     emit(ChangeScreenState());
   }
-
   //end bottom navigation bar
-  void hello(String h) {
-    print(h);
-  }
+
 
   //this method is to enable my current location into the home map.
   Location location = Location();

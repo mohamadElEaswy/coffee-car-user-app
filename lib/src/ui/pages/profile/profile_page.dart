@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'sign_in_with_email/sign_in_with_email_screen.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -21,13 +20,24 @@ class Profile extends StatelessWidget {
           settingsMenuItem(
             onTap: () {},
             firstIcon: Icons.person_outline_rounded,
-            lable: 'Account info',
+            lable: 'Change Email',
             lastIcon: FontAwesomeIcons.arrowRight,
           ),
           settingsMenuItem(
             onTap: () {},
             firstIcon: Icons.person_outline_rounded,
-            lable: 'Account info',
+            lable: 'Change password',
+            lastIcon: FontAwesomeIcons.arrowRight,
+          ),
+          settingsMenuItem(
+            onTap: () {},
+            firstIcon: Icons.person_outline_rounded,
+            lable: 'Language',
+            lastIcon: FontAwesomeIcons.arrowRight,
+          ),settingsMenuItem(
+            onTap: () {},
+            firstIcon: Icons.person_outline_rounded,
+            lable: 'Logout',
             lastIcon: FontAwesomeIcons.arrowRight,
           ),
         ],

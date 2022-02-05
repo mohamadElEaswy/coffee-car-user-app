@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mk/src/ui/pages/profile/sign_in_with_email/global_button.dart';
-import 'package:mk/src/ui/pages/profile/sign_in_with_email/sign_in_model.dart';
-import 'package:mk/src/ui/pages/profile/sign_in_with_email/text_form_field.dart';
+import 'package:mk/src/ui/pages/sign_in_with_email/global_button.dart';
+import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_model.dart';
+import 'package:mk/src/ui/pages/sign_in_with_email/text_form_field.dart';
 import 'email_sign_in_bloc.dart';
 
 class SignInWithEmail extends StatefulWidget {
@@ -57,15 +57,15 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
   }
 
   List<Widget> _buildChildren(EmailSignInModel? model) {
-    // final String primaryText = model!.formType == EmailSignInFormType.signIn
-    //     ? 'Sign in'
-    //     : 'Create an account';
-    // final String secondaryText = model.formType == EmailSignInFormType.signIn
-    //     ? 'Need an account? Register'
-    //     : 'Have an account? Sign in';
-    // bool submitEnabled = model.emailValidator.isValid(model.email) &&
-    //     model.emailValidator.isValid(model.password) &&
-    //     !model.isLoading;
+    final String primaryText = model!.formType == EmailSignInFormType.signIn
+        ? 'Sign in'
+        : 'Create an account';
+    final String secondaryText = model.formType == EmailSignInFormType.signIn
+        ? 'Need an account? Register'
+        : 'Have an account? Sign in';
+    bool submitEnabled = model.emailValidator.isValid(model.email) &&
+        model.emailValidator.isValid(model.password) &&
+        !model.isLoading;
 
     return [
       Text(
@@ -73,7 +73,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
         style: Theme.of(context).textTheme.headline4,
       ),
       const SizedBox(height: 8),
-      if (model!.formType == EmailSignInFormType.register)
+      if (model.formType == EmailSignInFormType.register)
         GlobalTextFormField(
             textInputType: TextInputType.text,
             textInputAction: TextInputAction.next,

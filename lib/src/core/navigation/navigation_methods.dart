@@ -4,7 +4,9 @@ import 'package:mk/src/ui/pages/error_page/error_page.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 
-import '../../ui/pages/profile/sign_in_with_email/sign_in_with_email_screen.dart';
+import '../../ui/pages/providers/providers_page.dart';
+import '../../ui/pages/sign_in_with_email/sign_in_with_email_screen.dart';
+
 
 
 class RouteMethods {
@@ -22,6 +24,8 @@ class RouteMethods {
         return _materialPageRoute(page: const SignInWithEmail(), fullscreenDialog: true);
         case InternetCheck.route:
         return _materialPageRoute(page: const InternetCheck(), fullscreenDialog: true);
+        case ProvidersPage.route:
+        return _materialPageRoute(page: const ProvidersPage(), );
       default:
         return _materialPageRoute(page: const ErrorPage());
     }

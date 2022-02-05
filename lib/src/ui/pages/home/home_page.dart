@@ -9,8 +9,10 @@ import 'package:mk/src/locations.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/remote/internet_connection_status/network_status_service.dart';
+import '../../colors/static_colors.dart';
 import '../check_internet/network_aware_widget.dart';
-import '../profile/sign_in_with_email/sign_in_with_email_screen.dart';
+import '../providers/providers_page.dart';
+import '../sign_in_with_email/sign_in_with_email_screen.dart';
 
 const double contentPadding = 8.0;
 
@@ -64,9 +66,10 @@ class _Home extends State<Home> {
             bottomNavigationBar: SizedBox(
               height: 60,
               child: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
                 // enableFeedback: true,
                 // backgroundColor: Colors.grey,
-                selectedItemColor: Colors.cyan,
+                selectedItemColor: GlobalStaticColors.debBlue,
                 unselectedItemColor: Colors.grey,
                 items: bloc.items,
                 onTap: (int index) {
@@ -99,6 +102,8 @@ class HomeBodyPage extends StatelessWidget {
         //to enable my current location into the home map
         bloc.myLocation();
         return SafeArea(
+          top: true,
+          bottom: true,
           child: Stack(
             children: [
               buildMap(bloc: bloc),
@@ -114,10 +119,10 @@ class HomeBodyPage extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 20),
                       child: TextButton(
                           onPressed: () {
-                            bloc.myLocation();
-                            // RouteMethods.navigateTo(
-                            //     context: context,
-                            //     routeName: SignInWithEmail.route);
+                            RouteMethods.navigateTo(
+                              context: context,
+                              routeName: ProvidersPage.route,
+                            );
                           },
                           child: const Text('View list',
                               style: TextStyle(color: Colors.black)),
