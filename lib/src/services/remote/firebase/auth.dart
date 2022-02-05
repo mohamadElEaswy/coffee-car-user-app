@@ -14,20 +14,20 @@ abstract class AuthBase {
 }
 
 class Auth implements AuthBase {
-  final _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
   Stream<User?> authUserState() => _firebaseAuth.authStateChanges();
   @override
   User? get currentUser => _firebaseAuth.currentUser;
   @override
   Future<User?> signInAnonymously() async {
-    final userCredential = await _firebaseAuth.signInAnonymously();
+    final UserCredential userCredential = await _firebaseAuth.signInAnonymously();
     return userCredential.user;
   }
 
   @override
   Future<User?> signInWithGoogle() async {
-    final googleSignIn = GoogleSignIn();
+    final GoogleSignIn googleSignIn = GoogleSignIn();
     final googleUser = await googleSignIn.signIn();
     if (googleUser != null) {
       final googleAuth = await googleUser.authentication;

@@ -10,13 +10,14 @@ class Rate {
   final double userRating;
   final String userText;
 
-  Rate(
-      {required this.rateId,
-      required this.userName,
-      required this.userId,
-      required this.userRating,
-      required this.userText,});
+  Rate({
+    required this.rateId,
+    required this.userName,
+    required this.userId,
+    required this.userRating,
+    required this.userText,
+  });
 
   factory Rate.fromJson(Map<String, dynamic> json) => _$RateFromJson(json);
-  Map<String, dynamic> toJson()=> _$RateToJson(this);
+  Map<String, dynamic> toJson() => _$RateToJson(this);
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/src/core/bloc/cubit/cubit.dart';
@@ -5,11 +6,11 @@ import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
 import 'package:mk/src/locations.dart';
-import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_with_email_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/remote/internet_connection_status/network_status_service.dart';
 import '../check_internet/network_aware_widget.dart';
+import '../profile/sign_in_with_email/sign_in_with_email_screen.dart';
 
 const double contentPadding = 8.0;
 
@@ -50,26 +51,35 @@ class _Home extends State<Home> {
       listener: (context, state) {},
       builder: (context, state) {
         final AppCubit bloc = AppCubit.get(context);
-        return Scaffold(
-          drawer: Column(
-            children: const [Text('ss')],
-          ),
-          body: bloc.body[bloc.currentIndex],
-          // buildBody(bloc: bloc),
-          // cubit.body[cubit.currentIndex],
-          bottomNavigationBar: SizedBox(
-            height: 60,
-            child: BottomNavigationBar(
-              // enableFeedback: true,
-              // backgroundColor: Colors.grey,
-              selectedItemColor: Colors.cyan,
-              unselectedItemColor: Colors.grey,
-              items: bloc.items,
-              onTap: (int index) {
-                bloc.changeScreen(index: index);
-              },
-              elevation: 0.0,
-              currentIndex: bloc.currentIndex,
+        return SafeArea(
+          bottom: true,
+          top: true,
+          child: Scaffold(
+            drawer: Column(
+              children: const [Text('ss')],
+            ),
+            body: bloc.body[bloc.currentIndex],
+            // buildBody(bloc: bloc),
+            // cubit.body[cubit.currentIndex],
+            bottomNavigationBar: SizedBox(
+              height: 60,
+              child: BottomNavigationBar(
+                // enableFeedback: true,
+                // backgroundColor: Colors.grey,
+                selectedItemColor: Colors.cyan,
+                unselectedItemColor: Colors.grey,
+                items: bloc.items,
+                onTap: (int index) {
+                  if (bloc.auth.currentUser != null) {
+                    RouteMethods.navigateTo(
+                        context: context, routeName: SignInWithEmail.route);
+                  } else {
+                    bloc.changeScreen(index: index);
+                  }
+                },
+                elevation: 0.0,
+                currentIndex: bloc.currentIndex,
+              ),
             ),
           ),
         );
@@ -237,7 +247,8 @@ class HomeBodyPage extends StatelessWidget {
             cameraTargetBounds: CameraTargetBounds.unbounded,
             markers: bloc.markers.values.toSet(),
             myLocationButtonEnabled: true,
-            myLocationEnabled: true,compassEnabled: true, mapToolbarEnabled: true,
+            myLocationEnabled: true, compassEnabled: true,
+            mapToolbarEnabled: true,
           ),
         ),
       );

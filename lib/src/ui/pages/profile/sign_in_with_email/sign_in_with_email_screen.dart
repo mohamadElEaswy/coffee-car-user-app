@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mk/src/ui/pages/sign_in_with_email/email_sign_in_bloc.dart';
-import 'package:mk/src/ui/pages/sign_in_with_email/global_button.dart';
-import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_model.dart';
-import 'package:mk/src/ui/pages/sign_in_with_email/text_form_field.dart';
-
-// import 'package:timetracker/services/auth_provider.dart';
+import 'package:mk/src/ui/pages/profile/sign_in_with_email/global_button.dart';
+import 'package:mk/src/ui/pages/profile/sign_in_with_email/sign_in_model.dart';
+import 'package:mk/src/ui/pages/profile/sign_in_with_email/text_form_field.dart';
+import 'email_sign_in_bloc.dart';
 
 class SignInWithEmail extends StatefulWidget {
   const SignInWithEmail({Key? key}) : super(key: key);
   static const String route = 'sign_in_and_register';
-
-  // static Widget create(BuildContext context) {
-  //   // final auth = Provider.of<AuthBase>(context, listen: false);
-  //   return Provider<EmailSignInBloc>(
-  //     create: (_) => EmailSignInBloc(auth: auth),
-  //     child: Consumer<EmailSignInBloc>(
-  //       builder: (_, bloc, __) => SignInWithEmail(bloc: bloc),
-  //     ),
-  //     dispose: (_, bloc) => bloc.dispose(),
-  //   );
-  // }
 
   @override
   State<SignInWithEmail> createState() => _SignInWithEmailState();
