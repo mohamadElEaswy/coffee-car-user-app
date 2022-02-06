@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
-
 import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,10 +35,10 @@ class AppCubit extends Cubit<AppState> {
 
     data = googleOffices.offices;
 
-    // setState(() {
     markers.clear();
     for (final office in googleOffices.offices) {
-      final marker = Marker(visible: true,
+      final marker = Marker(
+        visible: true,
         markerId: MarkerId(office.name),
         position: LatLng(office.lat, office.lng),
         infoWindow: InfoWindow(
@@ -52,8 +50,8 @@ class AppCubit extends Cubit<AppState> {
       markers[office.name] = marker;
     }
     emit(SuccessMapsState());
-    // });
   }
+
 //this method is to change the map view in the home
   Future<void> changeMapView(
       {required double latitude, required double longitude}) async {
@@ -77,13 +75,17 @@ class AppCubit extends Cubit<AppState> {
 
   List<BottomNavigationBarItem> items = [
     const BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.home),
-        label: '_',
-        tooltip: 'Home'),
-    const BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.objectGroup), label: '_'),
-    const BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
-    const BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
-    const BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Profile'),
+        icon: Icon(FontAwesomeIcons.home), label: 'Home', tooltip: 'Home'),
+    const BottomNavigationBarItem(
+        icon: Icon(FontAwesomeIcons.objectGroup),
+        label: 'Providers',
+        tooltip: 'Providers'),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.shopping_cart), label: 'Cart', tooltip: 'Cart'),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.favorite), label: 'Favorites', tooltip: 'Favorites'),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.settings), label: 'Profile', tooltip: 'Profile'),
   ];
 
   void changeScreen({required int index}) {
@@ -91,7 +93,6 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeScreenState());
   }
   //end bottom navigation bar
-
 
   //this method is to enable my current location into the home map.
   Location location = Location();
@@ -102,5 +103,4 @@ class AppCubit extends Cubit<AppState> {
   }
 
   AuthBase auth = Auth();
-
 }

@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'provider/locale_provider.dart';
 import 'src/database/local/local_sevices.dart';
+import 'src/ui/pages/check_internet/internet_states.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AppCubit>(create: (BuildContext context) => AppCubit()),
+        BlocProvider<AppCubit>(create: (BuildContext context) => AppCubit()..myLocation()),
       ],
       child: BlocConsumer<AppCubit, AppState>(
         listener: (context, index) {},
