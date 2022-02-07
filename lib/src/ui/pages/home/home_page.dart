@@ -45,7 +45,7 @@ class _Home extends State<Home> {
                 unselectedItemColor: Colors.grey,
                 items: bloc.items,
                 onTap: (int index) {
-                  if (bloc.auth.currentUser != null) {
+                  if (bloc.auth.currentUser == null) {
                     RouteMethods.navigateTo(
                         context: context, routeName: SignInWithEmail.route);
                   } else {
