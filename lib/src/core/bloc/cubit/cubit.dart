@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,15 +102,15 @@ class AppCubit extends Cubit<AppState> {
     current = await location.getLocation();
     return current;
   }
-
+//my location button in home screen
   Future<void> myLocationButton() async {
-    return await mapController!.animateCamera(
-      CameraUpdate.newCameraPosition(
+    return await mapController!.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-            target: LatLng(current.latitude!, current.longitude!), zoom: 17),
-      ),
-    );
+            target: LatLng(current.latitude!, current.longitude!), zoom: 17)));
   }
 
   AuthBase auth = Auth();
+  // void signIn({required String email,required String password}) async{
+  //   await auth.signInWithEmailAndPassword(email, password);
+  // }
 }

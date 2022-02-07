@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/global_button.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_model.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/text_form_field.dart';
+import '../../widgets/exceptions.dart';
 import 'email_sign_in_bloc.dart';
 
 class SignInWithEmail extends StatefulWidget {
@@ -24,7 +27,9 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
   }
 
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
@@ -36,18 +41,18 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
   }
 
   Future<void> _submit() async {
-    // try {
-    //   await widget.bloc.submit();
-    //   Navigator.of(context).pop();
-    // } on FirebaseAuthException catch (e) {
-    //   // showAlertDialog(context, title: 'sign in failed', content: e.message!, defaultActionString: 'OK');
-    //
-    //   showExceptionDialog(
-    //     context,
-    //     title: 'sign in failed',
-    //     exception: e,
-    //   );
-    // }
+    try {
+      await bloc.submit();
+      Navigator.of(context).pop();
+    } on FirebaseAuthException catch (e) {
+      // showAlertDialog(context, title: 'sign in failed', content: e.message!, defaultActionString: 'OK');
+
+      showExceptionDialog(
+        context,
+        title: 'sign in failed',
+        exception: e,
+      );
+    }
   }
 
   void _toggleFormType() {
@@ -78,12 +83,12 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
             textInputType: TextInputType.text,
             textInputAction: TextInputAction.next,
             hintText: 'Mohamed',
-            controller: _emailController,
+            controller: _nameController,
             lable: 'user name',
             errorText: model.emailErrorText,
             enabled: model.isLoading == false,
             obscureText: false,
-            focusNode: _emailFocusNode,
+            focusNode: _nameFocusNode,
             onEditingComplete: () => _emailEditingComplete(model),
             onChanged: bloc.updateEmail,
             iconData: Icons.email_outlined),
@@ -110,10 +115,13 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
         lable: 'Password',
         errorText: model.passwordErrorText,
         enabled: model.isLoading == false,
-        obscureText: true,
+        obscureText: model.passwordVisibility,
         focusNode: _passwordFocusNode,
         onEditingComplete: model.submitEnabled ? _submit : null,
         onChanged: bloc.updatePassword,
+        iconData: Icons.password,
+        suffix: Icons.password_outlined,
+        suffixPressed: bloc.changePasswordVisibility,
       ),
       const SizedBox(height: 8),
       DefaultButton(

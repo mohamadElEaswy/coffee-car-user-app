@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:mk/src/services/remote/firebase/auth.dart';
 
 import 'sign_in_model.dart';
-
-
 
 class EmailSignInBloc {
   // EmailSignInBloc({});
@@ -11,7 +11,7 @@ class EmailSignInBloc {
 
   Stream<EmailSignInModel> get modelStream => _modelController.stream;
   EmailSignInModel _model = EmailSignInModel();
-
+  AuthBase auth = Auth();
   void dispose() {
     _modelController.close();
   }
@@ -21,10 +21,10 @@ class EmailSignInBloc {
     updateWith(isLoading: true, submitted: true);
     try {
       if (_model.formType == EmailSignInFormType.signIn) {
-        // await auth.signInWithEmailAndPassword(_model.email, _model.password);
+        await auth.signInWithEmailAndPassword(_model.email, _model.password);
       } else {
-        // await auth.createUserWithEmailAndPassword(
-        //     _model.email, _model.password);
+        await auth.createUserWithEmailAndPassword(
+            _model.email, _model.password);
       }
     } catch (e) {
       updateWith(isLoading: false, submitted: false);
@@ -32,10 +32,9 @@ class EmailSignInBloc {
     }
   }
 
-
 // toggle between signing in forms
-  void toggleFormType(){
-    final formType =_model.formType == EmailSignInFormType.signIn
+  void toggleFormType() {
+    final formType = _model.formType == EmailSignInFormType.signIn
         ? EmailSignInFormType.register
         : EmailSignInFormType.signIn;
     updateWith(
@@ -66,6 +65,12 @@ class EmailSignInBloc {
       formType: formType,
     );
     //add updated model to model controller
+    _modelController.add(_model);
+  }
+
+  // bool passwordVisible = false;
+  void changePasswordVisibility() {
+    _model.passwordVisibility = !_model.passwordVisibility;
     _modelController.add(_model);
   }
 }

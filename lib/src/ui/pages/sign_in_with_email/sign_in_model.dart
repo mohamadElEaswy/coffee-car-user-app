@@ -9,11 +9,13 @@ class EmailSignInModel with EmailAndPasswordValidation, ChangeNotifier {
   EmailSignInModel({
     this.email = '',
     this.password = '',
+    this.passwordVisibility = false,
     this.isLoading = false,
     this.submitted = false,
     this.formType = EmailSignInFormType.signIn,
   });
   final String email;
+  bool passwordVisibility;
   final String password;
   final bool isLoading;
   final bool submitted;

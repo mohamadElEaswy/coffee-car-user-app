@@ -15,7 +15,7 @@ class GlobalTextFormField extends StatelessWidget {
     required this.textInputType,
     this.hintText,
     this.suffix,
-    this.iconData,
+    this.iconData,this.suffixPressed
   }) : super(key: key);
   final TextEditingController controller;
   final FocusNode focusNode;
@@ -28,7 +28,8 @@ class GlobalTextFormField extends StatelessWidget {
   final bool obscureText;
   final VoidCallback? onEditingComplete;
   final void Function(String) onChanged;
-  final Widget? suffix;
+  final void Function()? suffixPressed;
+  final IconData? suffix;
   final IconData? iconData;
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,11 @@ class GlobalTextFormField extends StatelessWidget {
         fillColor: Colors.grey[100],
         filled: true,
         icon: iconData!= null ? Icon(iconData) : null,
-        suffix: suffix,
+        // suffix: suffix,
+        suffixIcon: IconButton(
+          onPressed: suffixPressed,
+          icon: Icon(suffix),
+        ),
       ),
       obscureText: obscureText,
       autocorrect: false,

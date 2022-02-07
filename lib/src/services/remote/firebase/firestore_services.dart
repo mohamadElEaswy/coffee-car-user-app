@@ -12,9 +12,9 @@ class FireStoreService {
   }
 
   Future<void> deleteData({required String path}) async {
-    final referance = FirebaseFirestore.instance.doc(path);
+    final reference = FirebaseFirestore.instance.doc(path);
     // print('delete $path');
-    await referance.delete();
+    await reference.delete();
   }
 
 //Global method to get data from Cloud FireStore databases as a live stream
