@@ -20,7 +20,7 @@ class HomeMap extends StatelessWidget {
           ),
           cameraTargetBounds: CameraTargetBounds.unbounded,
           markers: bloc.markers.values.toSet(),
-          myLocationButtonEnabled: true,
+          // myLocationButtonEnabled: true,
           myLocationEnabled: true, compassEnabled: true,
           mapToolbarEnabled: true,
         ),

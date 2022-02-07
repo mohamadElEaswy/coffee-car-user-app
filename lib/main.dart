@@ -6,7 +6,6 @@ import 'package:mk/l10n/l10n.dart';
 import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
-import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

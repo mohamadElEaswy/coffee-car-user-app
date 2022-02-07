@@ -102,5 +102,14 @@ class AppCubit extends Cubit<AppState> {
     return current;
   }
 
+  Future<void> myLocationButton() async {
+    return await mapController!.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(current.latitude!, current.longitude!), zoom: 17),
+      ),
+    );
+  }
+
   AuthBase auth = Auth();
 }

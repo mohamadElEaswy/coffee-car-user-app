@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
@@ -7,10 +8,10 @@ import '../../colors/static_colors.dart';
 import '../providers/providers_page.dart';
 import '../sign_in_with_email/sign_in_with_email_screen.dart';
 import 'home_card.dart';
+import 'home_header.dart';
 import 'home_map.dart';
 
 const double contentPadding = 8.0;
-
 
 class Home extends StatefulWidget {
   const Home({Key? key, required this.title}) : super(key: key);
@@ -22,7 +23,6 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
@@ -41,7 +41,7 @@ class _Home extends State<Home> {
               height: 60,
               child: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
-                selectedItemColor: GlobalStaticColors.debBlue,
+                selectedItemColor: GlobalStaticColors.deebBlue,
                 unselectedItemColor: Colors.grey,
                 items: bloc.items,
                 onTap: (int index) {
@@ -67,6 +67,7 @@ class HomeBodyPage extends StatelessWidget {
   const HomeBodyPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -79,7 +80,7 @@ class HomeBodyPage extends StatelessWidget {
           child: Stack(
             children: [
               HomeMap(bloc: bloc),
-              customHeader(),
+              HomeHeader(width: width),
               // customDraggable(context: context),
               Align(
                 alignment: AlignmentDirectional.bottomEnd,
@@ -87,20 +88,31 @@ class HomeBodyPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextButton(
-                          onPressed: () {
-                            RouteMethods.navigateTo(
-                              context: context,
-                              routeName: ProvidersPage.route,
-                            );
-                          },
-                          child: const Text('View list',
-                              style: TextStyle(color: Colors.black)),
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.white))),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: TextButton(
+                              onPressed: () {
+                                RouteMethods.navigateTo(
+                                  context: context,
+                                  routeName: ProvidersPage.route,
+                                );
+                              },
+                              child: const Text('View list',
+                                  style: TextStyle(color: Colors.black)),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.white)))),
+                        const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: FloatingActionButton(
+                              onPressed: bloc.myLocationButton,
+                              child:
+                                  const Icon(FontAwesomeIcons.locationArrow)),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 175,
@@ -127,23 +139,6 @@ class HomeBodyPage extends StatelessWidget {
       },
     );
   }
-
-  Widget customHeader() => Container(
-        height: 50,
-        margin: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
-        ),
-        child: Row(
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(4),
-              child: CircleAvatar(backgroundColor: Colors.cyan),
-            ),
-          ],
-        ),
-      );
 
   // Widget customDraggable({required BuildContext context}) =>
   //     DraggableScrollableSheet(
