@@ -6,6 +6,7 @@ import 'package:mk/l10n/l10n.dart';
 import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
+import 'package:mk/src/services/remote/firebase/auth.dart';
 import 'package:mk/src/ui/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,9 +19,7 @@ void main() async {
   await Firebase.initializeApp();
   Firebase.app();
   await LocalDBServices.init();
-  runApp(
-    const MyApp(),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,15 +30,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AppCubit>(create: (BuildContext context) => AppCubit()..myLocation()),
+        BlocProvider<AppCubit>(
+            create: (BuildContext context) => AppCubit()..myLocation()),
       ],
       child: BlocConsumer<AppCubit, AppState>(
         listener: (context, index) {},
         builder: (context, index) {
-          return ChangeNotifierProvider<LocaleProvider>(
-              create: (context) => LocaleProvider(),
-              builder: (context, child) {
-                final provider = Provider.of<LocaleProvider>(context);
+          return MultiProvider(
+              // create: (context) => LocaleProvider(),<LocaleProvider>
+              providers: [
+                ChangeNotifierProvider<LocaleProvider>(
+                    create: (context) => LocaleProvider()),
+                Provider<AuthBase>(create: (context) => Auth()),
+              ],
+              builder: (BuildContext context, child) {
+                final LocaleProvider provider =
+                    Provider.of<LocaleProvider>(context);
                 return MaterialApp(
                   title: title,
                   theme: AppTheme.lightTheme,

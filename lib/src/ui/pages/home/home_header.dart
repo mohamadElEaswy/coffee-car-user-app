@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../colors/static_colors.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({Key? key, required this.width}) : super(key: key);
+  const HomeHeader({Key? key, required this.width }) : super(key: key);
   final double width;
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,8 @@ class HomeHeader extends StatelessWidget {
               color: Colors.white,
             ),
             child: InkWell(
-              onTap: () {},
+              onTap: Scaffold.of(context).openDrawer,
+              // scaffoldKey.currentState!.openDrawer
               // overlayColor: MaterialStateProperty.all(Colors.white),
               child: const Icon(
                 Icons.segment,

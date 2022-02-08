@@ -5,6 +5,7 @@ import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 
 import '../../ui/pages/check_internet/internet_states.dart';
+import '../../ui/pages/profile/account_info.dart';
 import '../../ui/pages/providers/providers_page.dart';
 import '../../ui/pages/sign_in_with_email/sign_in_with_email_screen.dart';
 
@@ -27,6 +28,8 @@ class RouteMethods {
         return _materialPageRoute(page: const InternetCheck(), fullscreenDialog: true);
         case ProvidersPage.route:
         return _materialPageRoute(page: const ProvidersPage(), );
+        case AccountInfo.route:
+        return _materialPageRoute(page: const AccountInfo(), );
       default:
         return _materialPageRoute(page: const ErrorPage());
     }

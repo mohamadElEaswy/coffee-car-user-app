@@ -23,6 +23,7 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
@@ -33,6 +34,7 @@ class _Home extends State<Home> {
           bottom: true,
           top: true,
           child: Scaffold(
+            key: scaffoldKey,
             drawer: Column(
               children: const [Text('ss')],
             ),
