@@ -4,22 +4,27 @@ import 'package:mk/src/ui/colors/static_colors.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
+    drawerTheme: const DrawerThemeData(
+        // backgroundColor: Colors.white,
+        elevation: 0.0,
+
+    ),
     primarySwatch: GlobalStaticColors.primaryColor,
     appBarTheme: const AppBarTheme(
-      color: GlobalStaticColors.appBarColor,elevation: 0.0,
+        color: GlobalStaticColors.appBarColor,
+        elevation: 0.0,
 
-      // actionsIconTheme: IconThemeData(
-      //   color: Colors.black,
-      // ),
-      iconTheme: IconThemeData(
-        color: Colors.black,
-        // color: GlobalStaticColors.logoColor,
-      ),
+        // actionsIconTheme: IconThemeData(
+        //   color: Colors.black,
+        // ),
+        iconTheme: IconThemeData(
+          color: Colors.black,
+          // color: GlobalStaticColors.logoColor,
+        ),
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.white,
           statusBarIconBrightness: Brightness.dark,
-        )
-    ),
+        )),
   );
 
   static ThemeData darkTheme = ThemeData(

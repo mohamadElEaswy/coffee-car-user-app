@@ -102,11 +102,19 @@ class AppCubit extends Cubit<AppState> {
     current = await location.getLocation();
     return current;
   }
-//my location button in home screen
+
+  //my location button in home screen
+  //firstly check if location services permission is granted(true, or false) and ask the permission if it is not granted
   Future<void> myLocationButton() async {
-    return await mapController!.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(current.latitude!, current.longitude!), zoom: 17)));
+    if(await location.serviceEnabled()){
+      return await mapController!
+          .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(current.latitude!, current.longitude!),
+        zoom: 17,
+      )));
+    }else{
+      location.requestService();
+    }
   }
 
   AuthBase auth = Auth();

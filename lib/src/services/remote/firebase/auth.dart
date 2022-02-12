@@ -11,6 +11,7 @@ abstract class AuthBase {
   Future<User?> signInWithEmailAndPassword(String email, String password);
   Future<User?> createUserWithEmailAndPassword(String email, String password);
   Future<void> signOut();
+  Future<void> phoneAuth({required String phoneNumber});
 }
 
 class Auth implements AuthBase {
@@ -98,5 +99,29 @@ class Auth implements AuthBase {
     // final facebookLogin = FacebookLogin();
     // await facebookLogin.logOut();
     await _firebaseAuth.signOut();
+  }
+
+
+  late String verificationId;
+
+  @override
+  Future<void> phoneAuth({required String phoneNumber})async{
+    return await _firebaseAuth.verifyPhoneNumber(phoneNumber: '+2$phoneNumber',
+        verificationCompleted: (PhoneAuthCredential credential){},
+        verificationFailed: (FirebaseAuthException e){},
+        codeSent: (String verificationId, int? resendToken){},
+        codeAutoRetrievalTimeout: (String verificationId){},
+        timeout: const Duration(seconds: 14),
+
+    );
+  }
+
+  Future<ConfirmationResult> signInWithPhone({required String phoneNumber})async {
+    return await _firebaseAuth.signInWithPhoneNumber('+2$phoneNumber');
+  }
+
+  Future<void> verificationCompleted({required PhoneAuthCredential credential}) async{
+    print(credential);
+    // await signIn(credintial);
   }
 }

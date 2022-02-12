@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
                 return MaterialApp(
                   title: title,
                   theme: AppTheme.lightTheme,
-                  // home: const Home(title: title),
                   onGenerateRoute: RouteMethods.generateRoutes,
                   initialRoute: InternetCheck.route,
                   locale: provider.locale,

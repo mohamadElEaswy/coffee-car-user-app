@@ -34,9 +34,12 @@ class _Home extends State<Home> {
           bottom: true,
           top: true,
           child: Scaffold(
+            drawerScrimColor: Colors.black38,
             key: scaffoldKey,
-            drawer: Column(
-              children: const [Text('ss')],
+            drawer: Drawer(
+              child: Column(
+                children: const [Text('ss')],
+              ),
             ),
             body: bloc.body[bloc.currentIndex],
             bottomNavigationBar: SizedBox(
@@ -47,9 +50,11 @@ class _Home extends State<Home> {
                 unselectedItemColor: Colors.grey,
                 items: bloc.items,
                 onTap: (int index) {
-                  if (bloc.auth.currentUser == null) {
+                  if (bloc.auth.currentUser == null && index > 0) {
                     RouteMethods.navigateTo(
                         context: context, routeName: SignInWithEmail.route);
+                  } else if (index == 0) {
+                    bloc.changeScreen(index: index);
                   } else {
                     bloc.changeScreen(index: index);
                   }
@@ -93,19 +98,19 @@ class HomeBodyPage extends StatelessWidget {
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: TextButton(
-                              onPressed: () {
-                                RouteMethods.navigateTo(
-                                  context: context,
-                                  routeName: ProvidersPage.route,
-                                );
-                              },
-                              child: const Text('View list',
-                                  style: TextStyle(color: Colors.black)),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white)))),
+                            padding: const EdgeInsets.only(left: 20),
+                            child: TextButton(
+                                onPressed: () {
+                                  RouteMethods.navigateTo(
+                                    context: context,
+                                    routeName: ProvidersPage.route,
+                                  );
+                                },
+                                child: const Text('View list',
+                                    style: TextStyle(color: Colors.black)),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.white)))),
                         const Spacer(),
                         Padding(
                           padding: const EdgeInsets.only(right: 20),

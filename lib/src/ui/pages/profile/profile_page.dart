@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
+import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/profile/account_info.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,7 @@ class Profile extends StatelessWidget {
         cancelActionText: 'cancel');
     if (didRequestSignOut == true) {
       _signOut(context);
+      AppCubit.get(context).changeScreen(index: 0);
       // print('ok');
     } else {
       // print('cancel');

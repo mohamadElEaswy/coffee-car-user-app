@@ -44,4 +44,9 @@ class RouteMethods {
     Navigator.of(context).pushNamed(routeName, arguments: args);
     return null;
   }
+  static Future<Object?> navigateAndChange(
+      {required BuildContext context, required String routeName, dynamic args}) async{
+    Navigator.of(context).pushReplacementNamed(routeName, arguments: args);
+    return null;
+  }
 }
