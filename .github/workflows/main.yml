@@ -3,7 +3,8 @@ name: Demo App Android Release
 on:
   push:
     branches: [ master ]
-    jobs:
+
+jobs:
   version:
     name: Create version number
     runs-on: ubuntu-latest
@@ -26,7 +27,7 @@ on:
       with:
         name: gitversion
         path: version.txt
-        build:
+  build:
     name: Build APK and Create release
     needs: [ version ]
     runs-on: ubuntu-latest
