@@ -9,9 +9,11 @@ abstract class AuthBase {
   Future<User?> signInWithGoogle();
   // Future<User?> signInWithFacebook();
   Future<User?> signInWithEmailAndPassword(String email, String password);
-  Future<User?> createUserWithEmailAndPassword(String email, String password);
+  Future<User?> createUserWithEmailAndPassword({required String email, required String password});
+  // Future<User?> createUserWithPhoneAndPassword(String phone, String password);
   Future<void> signOut();
-  Future<void> phoneAuth({required String phoneNumber});
+  Future<void> submitPhoneNumber({required String phoneNumber});
+  Future<void> submitOTP(String otpCode);
 }
 
 class Auth implements AuthBase {
@@ -22,7 +24,8 @@ class Auth implements AuthBase {
   User? get currentUser => _firebaseAuth.currentUser;
   @override
   Future<User?> signInAnonymously() async {
-    final UserCredential userCredential = await _firebaseAuth.signInAnonymously();
+    final UserCredential userCredential =
+        await _firebaseAuth.signInAnonymously();
     return userCredential.user;
   }
 
@@ -79,18 +82,18 @@ class Auth implements AuthBase {
   @override
   Future<User?> signInWithEmailAndPassword(
       String email, String password) async {
-    final UserCredential userCredential = await _firebaseAuth.signInWithCredential(
-        EmailAuthProvider.credential(email: email, password: password));
+    final UserCredential userCredential =
+        await _firebaseAuth.signInWithCredential(
+            EmailAuthProvider.credential(email: email, password: password));
     return userCredential.user;
   }
 
   @override
-  Future<User?> createUserWithEmailAndPassword(
-      String email, String password) async {
-    final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
+  Future<User?> createUserWithEmailAndPassword({required String email, required String password,}) async {
+    final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     return userCredential.user;
   }
+
 
   @override
   Future<void> signOut() async {
@@ -101,27 +104,74 @@ class Auth implements AuthBase {
     await _firebaseAuth.signOut();
   }
 
-
-  late String verificationId;
-
   @override
-  Future<void> phoneAuth({required String phoneNumber})async{
-    return await _firebaseAuth.verifyPhoneNumber(phoneNumber: '+2$phoneNumber',
-        verificationCompleted: (PhoneAuthCredential credential){},
-        verificationFailed: (FirebaseAuthException e){},
-        codeSent: (String verificationId, int? resendToken){},
-        codeAutoRetrievalTimeout: (String verificationId){},
-        timeout: const Duration(seconds: 14),
-
+  Future<void> submitPhoneNumber({required String phoneNumber}) async {
+    return await _firebaseAuth.verifyPhoneNumber(
+      phoneNumber: '+2$phoneNumber',
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+      timeout: const Duration(seconds: 30),
     );
   }
 
-  Future<ConfirmationResult> signInWithPhone({required String phoneNumber})async {
-    return await _firebaseAuth.signInWithPhoneNumber('+2$phoneNumber');
+
+  void verificationCompleted(PhoneAuthCredential credential) async {
+    // await _firebaseAuth.currentUser!.updateDisplayName(credential.userName);
+    // await _firebaseAuth.currentUser!.linkWithCredential(credential);
+    // await _firebaseAuth.currentUser!.updatePhoneNumber(credential);
+
+    // await _firebaseAuth.currentUser!.reload();
+
+    currentUser!.linkWithCredential(credential);
+    // await _firebaseAuth.currentUser!.updateDisplayName(userName);
+    // print('verification completed');
+    // await signIn(credential);
   }
 
-  Future<void> verificationCompleted({required PhoneAuthCredential credential}) async{
-    print(credential);
-    // await signIn(credintial);
+  void verificationFailed(FirebaseAuthException e) async {
+    if (e.code == 'invalid-phone-number') {
+      print('The provided phone number is not valid.');
+    }
+    // print('verification Failed ${e.toString()}');
+    //emit();
+  }
+
+  String verificationId = '';
+  void codeSent(String verificationId, int? resendToken) async {
+    this.verificationId == verificationId;
+
+    //emit();
+  }
+
+  void codeAutoRetrievalTimeout(String verificationId) async {
+    // print(' code auto retrieval timeout');
+  }
+
+  @override
+  Future<void> submitOTP(String otpCode) async {
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId, smsCode: otpCode);
+    // await setUserDetails(userName);
+    // await _firebaseAuth.currentUser!.updatePhoneNumber(credential);
+    await signIn(credential);
+  }
+
+  Future<void> signIn(PhoneAuthCredential credential) async {
+    try {
+      await _firebaseAuth.signInWithCredential(credential);
+      //emit();
+    } catch (e) {
+      // print(e.toString());
+      //emit();
+    }
+  }
+
+
+
+  User getUserdata() {
+    User firebaseUser = _firebaseAuth.currentUser!;
+    return firebaseUser;
   }
 }

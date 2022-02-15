@@ -5,6 +5,7 @@ import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
 import '../../colors/static_colors.dart';
+import '../check_internet/internet_states.dart';
 import '../providers/providers_page.dart';
 import '../sign_in_with_email/sign_in_with_email_screen.dart';
 import 'home_card.dart';
@@ -30,37 +31,42 @@ class _Home extends State<Home> {
       listener: (context, state) {},
       builder: (context, state) {
         final AppCubit bloc = AppCubit.get(context);
-        return SafeArea(
-          bottom: true,
-          top: true,
-          child: Scaffold(
-            drawerScrimColor: Colors.black38,
-            key: scaffoldKey,
-            drawer: Drawer(
-              child: Column(
-                children: const [Text('ss')],
+        return InternetCheck(
+          online: SafeArea(
+            bottom: true,
+            top: true,
+            child: Scaffold(
+              drawerScrimColor: Colors.black38,
+              key: scaffoldKey,
+              drawer: Drawer(
+                child: Column(
+                  children: const [Text('ss')],
+                ),
               ),
-            ),
-            body: bloc.body[bloc.currentIndex],
-            bottomNavigationBar: SizedBox(
-              height: 60,
-              child: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                selectedItemColor: GlobalStaticColors.deebBlue,
-                unselectedItemColor: Colors.grey,
-                items: bloc.items,
-                onTap: (int index) {
-                  if (bloc.auth.currentUser == null && index > 0) {
-                    RouteMethods.navigateTo(
-                        context: context, routeName: SignInWithEmail.route);
-                  } else if (index == 0) {
-                    bloc.changeScreen(index: index);
-                  } else {
-                    bloc.changeScreen(index: index);
-                  }
-                },
-                elevation: 0.0,
-                currentIndex: bloc.currentIndex,
+              body: bloc.body[bloc.currentIndex],
+              bottomNavigationBar: SizedBox(
+                height: 60,
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  selectedItemColor: GlobalStaticColors.deebBlue,
+                  unselectedItemColor: Colors.grey,
+                  items: bloc.items,
+                  onTap: (int index) {
+                    // print();
+
+                    if (bloc.auth.currentUser == null && index > 0) {
+                      RouteMethods.navigateTo(
+                          context: context,
+                          routeName: SignInWithEmailAndPhone.route);
+                    } else if (index == 0) {
+                      bloc.changeScreen(index: index);
+                    } else {
+                      bloc.changeScreen(index: index);
+                    }
+                  },
+                  elevation: 0.0,
+                  currentIndex: bloc.currentIndex,
+                ),
               ),
             ),
           ),

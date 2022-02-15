@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
-import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/profile/account_info.dart';
+import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_with_email_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/bloc/cubit/cubit.dart';
@@ -18,6 +18,7 @@ class Profile extends StatelessWidget {
     try {
       final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signOut();
+
     } catch (e) {
       // print(e.toString());
     }
@@ -31,7 +32,8 @@ class Profile extends StatelessWidget {
         cancelActionText: 'cancel');
     if (didRequestSignOut == true) {
       _signOut(context);
-      AppCubit.get(context).changeScreen(index: 0);
+      RouteMethods.navigateTo(context: context, routeName: SignInWithEmailAndPhone.route);
+      // AppCubit.get(context).changeScreen(index: 0);
       // print('ok');
     } else {
       // print('cancel');

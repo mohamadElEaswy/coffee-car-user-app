@@ -1,4 +1,3 @@
-import 'package:location/location.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mk/src/core/model/product_model/product_model.dart';
 import 'package:mk/src/core/model/rate_model/rate_model.dart';

@@ -3,38 +3,44 @@ import 'package:flutter/foundation.dart';
 
 import 'validators.dart';
 
-enum EmailSignInFormType { signIn, register }
+enum SignInFormType { signIn, register }
 
-class EmailSignInModel with EmailAndPasswordValidation, ChangeNotifier {
-  EmailSignInModel({
+class SignInModel with UserInputValidation, ChangeNotifier {
+  SignInModel({
     this.email = '',
+    this.name = '',
+    this.phone = '',
     this.password = '',
     this.passwordVisibility = false,
     this.isLoading = false,
     this.submitted = false,
-    this.formType = EmailSignInFormType.signIn,
+    this.formType = SignInFormType.signIn,
   });
   final String email;
+  final String name;
+  final String phone;
   bool passwordVisibility;
   final String password;
   final bool isLoading;
   final bool submitted;
-  final EmailSignInFormType formType;
+  final SignInFormType formType;
   String get primaryText {
-    return formType == EmailSignInFormType.signIn
+    return formType == SignInFormType.signIn
         ? 'Sign in'
         : 'Create an account';
   }
 
   String get secondaryText {
-    return formType == EmailSignInFormType.signIn
+    return formType == SignInFormType.signIn
         ? 'Need an account? Register'
         : 'Have an account? Sign in';
   }
 
   bool get submitEnabled {
-    return emailValidator.isValid(email) &&
-        emailValidator.isValid(password) &&
+    return
+      // phoneValidator.isValid(phone) &&
+        passwordValidator.isValid(password) &&
+        emailValidator.isValid(email) &&
         !isLoading;
   }
 
@@ -43,20 +49,29 @@ class EmailSignInModel with EmailAndPasswordValidation, ChangeNotifier {
     return passwordValid ? invalidEmailErrorText : null;
   }
 
+  String? get phoneErrorText {
+    bool phoneValid = submitted && phoneValidator.isValid(phone);
+    return phoneValid ? invalidPhoneErrorText : null;
+  }
+
   String? get emailErrorText {
     bool emailValid = submitted && emailValidator.isValid(email);
     return emailValid ? invalidPasswordErrorText : null;
   }
 
-  EmailSignInModel copyWith({
+  SignInModel copyWith({
     String? email,
+    String? name,
+    String? phone,
     String? password,
-    EmailSignInFormType? formType,
+    SignInFormType? formType,
     bool? isLoading,
     bool? submitted,
   }) {
-    return EmailSignInModel(
+    return SignInModel(
       email: email ?? this.email,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
       password: password ?? this.password,
       formType: formType ?? this.formType,
       isLoading: isLoading ?? this.isLoading,
@@ -65,29 +80,33 @@ class EmailSignInModel with EmailAndPasswordValidation, ChangeNotifier {
   }
 }
 
-class EmailSignInChangeModel with EmailAndPasswordValidation, ChangeNotifier {
-  EmailSignInChangeModel(
+class SignInChangeModel with UserInputValidation, ChangeNotifier {
+  SignInChangeModel(
       {this.email = '',
       this.password = '',
+      this.name = '',
+      this.phone = '',
       this.isLoading = false,
       this.submitted = false,
-      this.formType = EmailSignInFormType.signIn,
+      this.formType = SignInFormType.signIn,
       // required this.auth
       });
   // final AuthBase auth;
   String email;
+  String name;
   String password;
+  String phone;
   bool isLoading;
   bool submitted;
-  EmailSignInFormType formType;
+  SignInFormType formType;
   String get primaryText {
-    return formType == EmailSignInFormType.signIn
+    return formType == SignInFormType.signIn
         ? 'Sign in'
         : 'Create an account';
   }
 
   String get secondaryText {
-    return formType == EmailSignInFormType.signIn
+    return formType == SignInFormType.signIn
         ? 'Need an account? Register'
         : 'Have an account? Sign in';
   }
@@ -111,7 +130,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidation, ChangeNotifier {
   Future<void> submit() async {
     updateWith(isLoading: true, submitted: true);
     try {
-      if (formType == EmailSignInFormType.signIn) {
+      if (formType == SignInFormType.signIn) {
         // await auth.signInWithEmailAndPassword(email, password);
       } else {
         // await auth.createUserWithEmailAndPassword(email, password);
@@ -124,12 +143,14 @@ class EmailSignInChangeModel with EmailAndPasswordValidation, ChangeNotifier {
 
 // toggle between signing in forms
   void toggleFormType() {
-    final formType = this.formType == EmailSignInFormType.signIn
-        ? EmailSignInFormType.register
-        : EmailSignInFormType.signIn;
+    final formType = this.formType == SignInFormType.signIn
+        ? SignInFormType.register
+        : SignInFormType.signIn;
     updateWith(
       email: '',
+      name: '',
       password: '',
+      phone: '',
       formType: formType,
       submitted: false,
       isLoading: false,
@@ -138,12 +159,16 @@ class EmailSignInChangeModel with EmailAndPasswordValidation, ChangeNotifier {
 
   void updateWith({
     String? email,
+    String? name,
     String? password,
-    EmailSignInFormType? formType,
+    String? phone,
+    SignInFormType? formType,
     bool? isLoading,
     bool? submitted,
   }) {
     this.email = email ?? this.email;
+    this.phone = phone ?? this.phone;
+    this.name = name ?? this.name;
     this.password = password ?? this.password;
     this.formType = formType ?? this.formType;
     this.isLoading = isLoading ?? this.isLoading;

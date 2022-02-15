@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:mk/src/ui/pages/cart/cart_page.dart';
 import 'package:mk/src/ui/pages/error_page/error_page.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
+import 'package:mk/src/ui/pages/otp_page/otp_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 
-import '../../ui/pages/check_internet/internet_states.dart';
 import '../../ui/pages/profile/account_info.dart';
 import '../../ui/pages/providers/providers_page.dart';
+import '../../ui/pages/sign_in_with_email/email_sign_in_bloc.dart';
 import '../../ui/pages/sign_in_with_email/sign_in_with_email_screen.dart';
 
-
-
 class RouteMethods {
+  // static AuthBase? auth = Auth();
+  // RouteMethods() {
+  //   auth = Auth();
+  // }
+  static SignInBloc signInBloc = SignInBloc();
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     // ignore: unused_local_variable
     final args = settings.arguments;
@@ -19,17 +23,25 @@ class RouteMethods {
       case Home.route:
         return _materialPageRoute(page: const Home(title: 'home'));
       case Profile.route:
-        return _materialPageRoute(page: const Profile(), fullscreenDialog: true);
+        return _materialPageRoute(
+            page: const Profile(), fullscreenDialog: true);
       case Cart.route:
         return _materialPageRoute(page: const Cart(), fullscreenDialog: true);
-        case SignInWithEmail.route:
-        return _materialPageRoute(page: const SignInWithEmail(), fullscreenDialog: true);
-        case InternetCheck.route:
-        return _materialPageRoute(page: const InternetCheck(), fullscreenDialog: true);
-        case ProvidersPage.route:
-        return _materialPageRoute(page: const ProvidersPage(), );
-        case AccountInfo.route:
-        return _materialPageRoute(page: const AccountInfo(), );
+      case SignInWithEmailAndPhone.route:
+        return _materialPageRoute(page: SignInWithEmailAndPhone());
+      // case UserStatus.route:
+      //   return _materialPageRoute(
+      //       page: const UserStatus());
+      case ProvidersPage.route:
+        return _materialPageRoute(page: const ProvidersPage());
+      // case LandingPage.route:
+      // return _materialPageRoute(
+      //   page: const LandingPage(),
+      // );
+      case AccountInfo.route:
+        return _materialPageRoute(page: const AccountInfo());
+      case OTPPage.route:
+        return _materialPageRoute(page: OTPPage(bloc: signInBloc));
       default:
         return _materialPageRoute(page: const ErrorPage());
     }
@@ -40,12 +52,17 @@ class RouteMethods {
       MaterialPageRoute(
           builder: (context) => page, fullscreenDialog: fullscreenDialog);
   static Future<Object?> navigateTo(
-          {required BuildContext context, required String routeName, dynamic args}) async{
+      {required BuildContext context,
+      required String routeName,
+      dynamic args}) async {
     Navigator.of(context).pushNamed(routeName, arguments: args);
     return null;
   }
+
   static Future<Object?> navigateAndChange(
-      {required BuildContext context, required String routeName, dynamic args}) async{
+      {required BuildContext context,
+      required String routeName,
+      dynamic args}) async {
     Navigator.of(context).pushReplacementNamed(routeName, arguments: args);
     return null;
   }

@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -118,6 +116,8 @@ class AppCubit extends Cubit<AppState> {
   }
 
   AuthBase auth = Auth();
+
+  
   // void signIn({required String email,required String password}) async{
   //   await auth.signInWithEmailAndPassword(email, password);
   // }
