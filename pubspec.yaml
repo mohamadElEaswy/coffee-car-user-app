@@ -5,11 +5,10 @@ description: A new Flutter project.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 #publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.0-105.0.dev <3.0.0"
 
 
 dependencies:
@@ -18,7 +17,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.17.0
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.4
   flutter_bloc: ^8.0.1
   bloc: ^8.0.2
   provider: ^6.0.2
@@ -40,7 +39,7 @@ dev_dependencies:
     sdk: flutter
 
 
-  flutter_lints: ^1.0.0
+  flutter_lints: ^1.0.4
   build_runner: ^2.1.7
 
 
