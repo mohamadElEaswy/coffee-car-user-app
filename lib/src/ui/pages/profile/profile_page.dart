@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../core/bloc/cubit/cubit.dart';
 import '../../../services/remote/firebase/auth.dart';
 import '../../widgets/exceptions.dart';
+import '../../widgets/lang_widgets.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -73,6 +74,18 @@ class Profile extends StatelessWidget {
                 lable: 'Language',
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
+              ListTile(subtitle: const Text('change language'),
+                leading: const Icon(
+                  Icons.language,
+                  color: Colors.grey,size: 25,
+                ),
+                title: LanguagePickerWidget(width: MediaQuery.of(context).size.width - 152),
+              ),
+              const ListTile(
+                title: Text('title'),
+                subtitle: Text('subtitle'),
+              ),
+
               settingsMenuItem(
                 onTap: ()=> _confirmSignOut(context),
                 firstIcon: Icons.person_outline_rounded,

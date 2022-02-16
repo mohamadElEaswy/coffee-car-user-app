@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mk/src/core/bloc/cubit/cubit.dart';
+import 'package:mk/src/core/navigation/navigation_methods.dart';
 
 import '../../../locations.dart';
+import '../provider_products_page/provider_products_page.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({
@@ -19,7 +21,8 @@ class HomeCard extends StatelessWidget {
       margin: const EdgeInsets.only(right: 10, left: 5),
       child: InkWell(
         onTap: () {
-          bloc.changeMapView(latitude: item.lat, longitude: item.lng);
+          RouteMethods.navigateTo(
+              context: context, routeName: ProviderProductsPage.route);
         },
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -67,7 +70,10 @@ class HomeCard extends StatelessWidget {
                     style: const TextStyle(),
                   ),
                   const Spacer(),
-                  const Icon(Icons.watch_later)
+                  InkWell(
+                      onTap: () => bloc.changeMapView(
+                          latitude: item.lat, longitude: item.lng),
+                      child: const Icon(Icons.not_listed_location_sharp)),
                 ],
               ),
               Row(

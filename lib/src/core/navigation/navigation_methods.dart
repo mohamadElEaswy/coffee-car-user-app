@@ -4,6 +4,7 @@ import 'package:mk/src/ui/pages/error_page/error_page.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/otp_page/otp_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
+import 'package:mk/src/ui/pages/provider_products_page/provider_products_page.dart';
 
 import '../../ui/pages/profile/account_info.dart';
 import '../../ui/pages/providers/providers_page.dart';
@@ -45,6 +46,8 @@ class RouteMethods {
         return _materialPageRoute(page: const AccountInfo());
       case OTPPage.route:
         return _materialPageRoute(page: OTPPage(phoneNumber: args));
+        case ProviderProductsPage.route:
+        return _materialPageRoute(page: const ProviderProductsPage());
       default:
         return _materialPageRoute(page: const ErrorPage());
     }
