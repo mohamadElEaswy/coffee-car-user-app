@@ -4,13 +4,11 @@ import 'package:mk/src/services/remote/firebase/auth.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 import '../home/home_page.dart';
-import '../sign_in_with_email/email_sign_in_bloc.dart';
 
 class OTPPage extends StatelessWidget {
-  OTPPage({Key? key, required this.bloc}) : super(key: key);
+  OTPPage({Key? key, required this.phoneNumber}) : super(key: key);
   static const String route = '/otp_page';
-  // dynamic phoneNumber;
-  SignInBloc bloc;
+  dynamic phoneNumber;
   late String otpCode;
 
   @override
@@ -35,21 +33,17 @@ class OTPPage extends StatelessWidget {
         },
       );
     }
-
     final auth = Provider.of<AuthBase>(context, listen: false);
     // print(auth.currentUser!.phoneNumber);
     return Scaffold(
-      appBar: AppBar(),
+      // appBar: AppBar(title: const Text('otp'),),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'bloc.model.phone',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Text(phoneNumber,style: Theme.of(context).textTheme.headline4,),
+
             Center(
               child: PinCodeTextField(
                 appContext: context,
@@ -65,7 +59,7 @@ class OTPPage extends StatelessWidget {
                   fieldHeight: 50,
                   fieldWidth: 40,
                   borderWidth: 1,
-                  activeColor: Colors.black,
+                  activeColor:Colors.black,
                   inactiveColor: Colors.black,
                   inactiveFillColor: Colors.white,
                   activeFillColor: Colors.white,
@@ -89,8 +83,8 @@ class OTPPage extends StatelessWidget {
               onPressed: () {
                 showProgressIndicator(context);
                 auth.submitOTP(otpCode);
-                RouteMethods.navigateTo(
-                    context: context, routeName: Home.route);
+                RouteMethods.navigateTo(context: context, routeName: Home.route);
+
               },
               child: const Text(
                 'Verify',

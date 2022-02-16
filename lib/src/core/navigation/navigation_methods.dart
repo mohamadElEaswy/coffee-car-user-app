@@ -15,7 +15,7 @@ class RouteMethods {
   // RouteMethods() {
   //   auth = Auth();
   // }
-  static SignInBloc signInBloc = SignInBloc();
+  final SignInBloc signInBloc = SignInBloc();
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     // ignore: unused_local_variable
     final args = settings.arguments;
@@ -28,20 +28,23 @@ class RouteMethods {
       case Cart.route:
         return _materialPageRoute(page: const Cart(), fullscreenDialog: true);
       case SignInWithEmailAndPhone.route:
-        return _materialPageRoute(page: SignInWithEmailAndPhone());
+        return _materialPageRoute(
+            page: SignInWithEmailAndPhone());
       // case UserStatus.route:
       //   return _materialPageRoute(
       //       page: const UserStatus());
       case ProvidersPage.route:
-        return _materialPageRoute(page: const ProvidersPage());
-      // case LandingPage.route:
-      // return _materialPageRoute(
-      //   page: const LandingPage(),
-      // );
+        return _materialPageRoute(
+          page: const ProvidersPage(),
+        );
+        // case LandingPage.route:
+        // return _materialPageRoute(
+        //   page: const LandingPage(),
+        // );
       case AccountInfo.route:
         return _materialPageRoute(page: const AccountInfo());
       case OTPPage.route:
-        return _materialPageRoute(page: OTPPage(bloc: signInBloc));
+        return _materialPageRoute(page: OTPPage(phoneNumber: args));
       default:
         return _materialPageRoute(page: const ErrorPage());
     }
