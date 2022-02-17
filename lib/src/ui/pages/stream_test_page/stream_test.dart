@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mk/src/core/model/coffe_car_model/coffee_car_model.dart';
 import 'package:provider/provider.dart';
@@ -8,8 +9,8 @@ class StreamTestPage extends StatelessWidget {
   const StreamTestPage({Key? key}) : super(key: key);
   static const String route = '/stream_test_page';
   Future<void> getStreamData(BuildContext context) async {
-    final database = Provider.of<Database>(context, listen: false);
-    database.carsStream();
+    // final database = Provider.of<Database>(context, listen: false);
+    // database.carsStream();
   }
 
   @override
@@ -20,17 +21,23 @@ class StreamTestPage extends StatelessWidget {
     );
   }
 
+
   Widget _buildStreamContent(BuildContext context) {
-    final database = Provider.of<Database>(context, listen: false);
-    return StreamBuilder<CoffeeCar>(
-      stream: database.carsStream(),
+    // final database = Provider.of<Database>(context, listen: false);
+    final  Stream<QuerySnapshot> getData = FirebaseFirestore.instance.collection('cars').snapshots();
+    return StreamBuilder<QuerySnapshot>(
+      stream: getData,
       builder: (context, snapshot) {
         print(snapshot.data);
-        return ListView.builder(itemBuilder: (context, index) {
-          return Center(
-              child: Text(snapshot.data!.carName,
-                  style: const TextStyle(color: Colors.black)));
-        });
+        return ListView(
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+            return ListTile(
+              title: Text(data['address']),
+              subtitle: Text(document.id),
+            );
+          }).toList(),
+        );
       },
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,7 +21,6 @@ class Profile extends StatelessWidget {
     try {
       final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signOut();
-
     } catch (e) {
       // print(e.toString());
     }
@@ -34,13 +34,15 @@ class Profile extends StatelessWidget {
         cancelActionText: 'cancel');
     if (didRequestSignOut == true) {
       _signOut(context);
-      RouteMethods.navigateTo(context: context, routeName: SignInWithEmailAndPhone.route);
+      RouteMethods.navigateTo(
+          context: context, routeName: SignInWithEmailAndPhone.route);
       // AppCubit.get(context).changeScreen(index: 0);
       // print('ok');
     } else {
       // print('cancel');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
@@ -52,19 +54,26 @@ class Profile extends StatelessWidget {
           child: Column(
             children: [
               settingsMenuItem(
-                onTap: ()=>RouteMethods.navigateTo(context: context, routeName: AccountInfo.route),
+                onTap: () => RouteMethods.navigateTo(
+                    context: context, routeName: AccountInfo.route),
                 firstIcon: Icons.person_outline_rounded,
                 lable: 'Account info',
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
               settingsMenuItem(
-                onTap: () {RouteMethods.navigateTo(context: context, routeName: StreamTestPage.route);},
+                onTap: () {
+                  RouteMethods.navigateTo(
+                      context: context, routeName: StreamTestPage.route);
+                },
                 firstIcon: Icons.person_outline_rounded,
                 lable: 'Change Email',
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
               settingsMenuItem(
-                onTap: () {},
+                onTap: () async {
+                      await FirebaseFirestore.instance.collection('cars').get().then((value) {print(value.toString());});
+                  // print(data.toString());
+                },
                 firstIcon: Icons.person_outline_rounded,
                 lable: 'Change password',
                 lastIcon: FontAwesomeIcons.arrowRight,
@@ -75,20 +84,22 @@ class Profile extends StatelessWidget {
                 lable: 'Language',
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
-              ListTile(subtitle: const Text('change language'),
+              ListTile(
+                subtitle: const Text('change language'),
                 leading: const Icon(
                   Icons.language,
-                  color: Colors.grey,size: 25,
+                  color: Colors.grey,
+                  size: 25,
                 ),
-                title: LanguagePickerWidget(width: MediaQuery.of(context).size.width - 152),
+                title: LanguagePickerWidget(
+                    width: MediaQuery.of(context).size.width - 152),
               ),
               const ListTile(
                 title: Text('title'),
                 subtitle: Text('subtitle'),
               ),
-
               settingsMenuItem(
-                onTap: ()=> _confirmSignOut(context),
+                onTap: () => _confirmSignOut(context),
                 firstIcon: Icons.person_outline_rounded,
                 lable: 'Logout',
                 lastIcon: FontAwesomeIcons.arrowRight,
@@ -100,10 +111,11 @@ class Profile extends StatelessWidget {
     );
   }
 
-  Widget settingsMenuItem({required void Function() onTap,
-    required IconData firstIcon,
-    required String lable,
-    required IconData lastIcon}) =>
+  Widget settingsMenuItem(
+          {required void Function() onTap,
+          required IconData firstIcon,
+          required String lable,
+          required IconData lastIcon}) =>
       InkWell(
         onTap: onTap,
         child: SizedBox(
