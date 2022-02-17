@@ -10,6 +10,7 @@ import '../../ui/pages/profile/account_info.dart';
 import '../../ui/pages/providers/providers_page.dart';
 import '../../ui/pages/sign_in_with_email/email_sign_in_bloc.dart';
 import '../../ui/pages/sign_in_with_email/sign_in_with_email_screen.dart';
+import '../../ui/pages/stream_test_page/stream_test.dart';
 
 class RouteMethods {
   // static AuthBase? auth = Auth();
@@ -44,6 +45,8 @@ class RouteMethods {
         // );
       case AccountInfo.route:
         return _materialPageRoute(page: const AccountInfo());
+        case StreamTestPage.route:
+        return _materialPageRoute(page: const StreamTestPage());
       case OTPPage.route:
         return _materialPageRoute(page: OTPPage(phoneNumber: args));
         case ProviderProductsPage.route:

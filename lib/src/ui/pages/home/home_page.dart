@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,6 +32,8 @@ class _Home extends State<Home> {
       listener: (context, state) {},
       builder: (context, state) {
         final AppCubit bloc = AppCubit.get(context);
+        User? currentUser = bloc.auth.currentUser;
+
         return InternetCheck(
           online: SafeArea(
             bottom: true,
@@ -54,7 +57,7 @@ class _Home extends State<Home> {
                   onTap: (int index) {
                     // print();
 
-                    if (bloc.auth.currentUser == null && index > 0) {
+                    if (currentUser == null && index > 0) {
                       RouteMethods.navigateTo(
                           context: context,
                           routeName: SignInWithEmailAndPhone.route);

@@ -1,5 +1,5 @@
 class ApiPath {
-  static String carsByCity(String city, String jobID) => 'cars/$city';
-  static String allCars(String uid) => 'users/$uid/jobs';
+  static String allCars() => 'cars';
+  static String products(String carId) => 'cars/$carId';
 
 }

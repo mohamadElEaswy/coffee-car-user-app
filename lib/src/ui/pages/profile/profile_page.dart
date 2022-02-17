@@ -11,6 +11,7 @@ import '../../../core/bloc/cubit/cubit.dart';
 import '../../../services/remote/firebase/auth.dart';
 import '../../widgets/exceptions.dart';
 import '../../widgets/lang_widgets.dart';
+import '../stream_test_page/stream_test.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -57,7 +58,7 @@ class Profile extends StatelessWidget {
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
               settingsMenuItem(
-                onTap: () {},
+                onTap: () {RouteMethods.navigateTo(context: context, routeName: StreamTestPage.route);},
                 firstIcon: Icons.person_outline_rounded,
                 lable: 'Change Email',
                 lastIcon: FontAwesomeIcons.arrowRight,

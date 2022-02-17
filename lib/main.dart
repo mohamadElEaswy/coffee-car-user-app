@@ -7,6 +7,7 @@ import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
 import 'package:mk/src/services/remote/firebase/auth.dart';
+import 'package:mk/src/services/remote/firebase/database.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_with_email_screen.dart';
 import 'package:mk/src/ui/theme/theme.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
                 ChangeNotifierProvider<LocaleProvider>(
                     create: (context) => LocaleProvider()),
                 Provider<AuthBase>(create: (context) => Auth()),
+                Provider<Database>(create: (context) => FirestoreDatabase()),
               ],
               builder: (BuildContext context, child) {
                 final LocaleProvider provider =

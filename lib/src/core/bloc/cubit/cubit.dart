@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,6 +9,7 @@ import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mk/src/locations.dart' as locations;
 import 'package:mk/src/services/remote/firebase/auth.dart';
+import 'package:mk/src/services/remote/firebase/database.dart';
 import 'package:mk/src/ui/pages/cart/cart_page.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/likes_page/likes_page.dart';
@@ -116,7 +118,12 @@ class AppCubit extends Cubit<AppState> {
   }
 
   AuthBase auth = Auth();
-
+  // User? currentUser;
+  // List cars =[];
+  // Database database = FirestoreDatabase();
+  // void tryDB(){
+  //   print(database.carsStream().toString());
+  // }
   
   // void signIn({required String email,required String password}) async{
   //   await auth.signInWithEmailAndPassword(email, password);
