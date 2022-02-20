@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/remote/firebase/auth.dart';
+import 'avatar.dart';
 
 class AccountInfo extends StatelessWidget {
   const AccountInfo({Key? key}) : super(key: key);
@@ -25,10 +27,10 @@ class AccountInfo extends StatelessWidget {
   Widget _buildUserInfo(User user) {
     return Column(
       children: [
-        // Avatar(
-        //   radius: 50.0,
-        //   photoUrl: user.photoURL,
-        // ),
+        Avatar(
+          radius: 50.0,
+          photoUrl: user.photoURL,
+        ),
         const SizedBox(height: 8.0),
         if (user.displayName != null)
           Text(
@@ -40,7 +42,9 @@ class AccountInfo extends StatelessWidget {
     );
   }
 
-  Widget _buildUserDetails(User user) {print(user.phoneNumber!);print('user.phoneNumber!');
+  Widget _buildUserDetails(User user) {
+    print(user.phoneNumber!);
+    print('user.phoneNumber!');
     TextEditingController nameController =
         TextEditingController(text: user.displayName!);
     TextEditingController phoneController =
@@ -53,8 +57,28 @@ class AccountInfo extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-
+          Text(
+            'Email: ' + user.email!,
+            style: const TextStyle(color: Colors.black, fontSize: 16.0),
+          ),
+          const SizedBox(height: 8),
           Text(user.phoneNumber!, style: const TextStyle(color: Colors.black)),
+          if (!user.emailVerified)
+            const Text(
+              'your email isn\'t verified',
+              style: TextStyle(color: Colors.black, fontSize: 16.0),
+            ),
+          const SizedBox(height: 8),
+          if (!user.emailVerified)
+            ElevatedButton(
+                onPressed: user.sendEmailVerification,
+                child: const Text('verify your email')),
+          const SizedBox(height: 8),
+          if (user.phoneNumber!.isNotEmpty)
+            ElevatedButton(
+                onPressed: () {
+
+                }, child: const Text('add your phone number')),
           // Text('user.phoneNumber!',style: const TextStyle(color: Colors.black)),
           // GlobalTextFormField(
           //   controller: nameController,

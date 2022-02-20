@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:mk/src/core/model/coffe_car_model/coffee_car_model.dart';
 import 'package:provider/provider.dart';
@@ -24,21 +26,30 @@ class StreamTestPage extends StatelessWidget {
 
   Widget _buildStreamContent(BuildContext context) {
     // final database = Provider.of<Database>(context, listen: false);
-    final  Stream<QuerySnapshot> getData = FirebaseFirestore.instance.collection('cars').snapshots();
-    return StreamBuilder<QuerySnapshot>(
-      stream: getData,
-      builder: (context, snapshot) {
-        print(snapshot.data);
-        return ListView(
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-            return ListTile(
-              title: Text(data['address']),
-              subtitle: Text(document.id),
+    // final  Stream<List<CoffeeCar>> getData = FirebaseFirestore.instance.collection('cars').snapshots();
+    // Stream collectionStream = FirebaseFirestore.instance.collection('cars').snapshots();
+    // final DataRepository repository = DataRepository();
+    Stream getFromFirebase(){
+      return FirebaseFirestore.instance.collection('cars').snapshots();
+    }
+    // final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child('users');
+    // print(messagesRef.key.toString());
+    return Expanded(
+      child: StreamBuilder(
+        stream: getFromFirebase(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          // final json = snapshot.value as Map<String, dynamic>;
+          // final message = CoffeeCar.fromJson(json);
+          if (!snapshot.hasData) return const Text('Loading...');
+          return ListView(
+              children: snapshot.data.documents.map((DocumentSnapshot document) {
+            return  ListTile(
+              title:  Text('document'),
+              // subtitle:  Text(document['phone']),
             );
-          }).toList(),
-        );
-      },
+          }).toList());
+        },
+      ),
     );
   }
 }

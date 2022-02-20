@@ -9,6 +9,8 @@ part 'coffee_car_model.g.dart';
 class CoffeeCar{
   CoffeeCar({
     required this.carName,
+    required this.lang,
+    required this.lat,
     required this.providerName,
     required this.carId,
     required this.providerId,
@@ -22,14 +24,17 @@ class CoffeeCar{
   final String carName;
   final String providerName;
   final String address;
-  final int carId;
-  final int providerId;
+  final String carId;
+  final String providerId;
   final bool availability;
+  final String lang;
+  final String lat;
   // final Location location;
-  final List<Product> products;
-  final List<Rate> rate;
+  final bool products;
+  final bool rate;
 
   factory CoffeeCar.fromJson(Map<String, dynamic> json) => _$CoffeeCarFromJson(json);
+
   Map<String, dynamic> toJson() => _$CoffeeCarToJson(this);
 }
 

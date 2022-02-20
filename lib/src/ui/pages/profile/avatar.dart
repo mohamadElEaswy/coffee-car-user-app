@@ -11,13 +11,13 @@ class Avatar extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: Colors.black54,
+          color: Colors.white,
           width: 3.0,
         ),
       ),
       child: CircleAvatar(
         radius: radius,
-        backgroundColor: Colors.black12,
+        backgroundColor: Colors.white,
         backgroundImage: photoUrl != null ? NetworkImage(photoUrl!) : null,
         child: photoUrl == null ? const Icon(Icons.camera_alt) : null,
       ),

@@ -79,9 +79,20 @@ class Profile extends StatelessWidget {
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
               settingsMenuItem(
-                onTap: () {},
+                onTap: () async{
+                  FirebaseFirestore.instance.collection('cars').get().then((value) => {
+                    value.docs.forEach((element) { print(element.data()['carId']);})
+
+                  });
+                  // for (var queryDocumentSnapshot in querySnapshot.docs) {
+                  //   Map<String, dynamic> data = queryDocumentSnapshot.data();
+                  //   var name = data['name'];
+                  //   var phone = data['phone'];
+                  // }
+
+                },
                 firstIcon: Icons.person_outline_rounded,
-                lable: 'Language',
+                lable: 'tests',
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
               ListTile(
