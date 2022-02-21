@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -48,7 +47,7 @@ class Profile extends StatelessWidget {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
-        final AppCubit bloc = AppCubit.get(context);
+        // final AppCubit bloc = AppCubit.get(context);
         return SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -70,8 +69,8 @@ class Profile extends StatelessWidget {
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
               settingsMenuItem(
-                onTap: () async {
-                      await FirebaseFirestore.instance.collection('cars').get().then((value) {print(value.toString());});
+                onTap: () {
+                      // await FirebaseFirestore.instance.collection('cars').get().then((value) {print(value.toString());});
                   // print(data.toString());
                 },
                 firstIcon: Icons.person_outline_rounded,
@@ -79,11 +78,12 @@ class Profile extends StatelessWidget {
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
               settingsMenuItem(
-                onTap: () async{
-                  FirebaseFirestore.instance.collection('cars').get().then((value) => {
-                    value.docs.forEach((element) { print(element.data()['carId']);})
-
-                  });
+                onTap: () {
+                  // FirebaseFirestore.instance.collection('cars').get().then((value) => {
+                  //   value.docs.forEach((element) { print(element.data()['carId']);})
+                  //
+                  //
+                  // });
                   // for (var queryDocumentSnapshot in querySnapshot.docs) {
                   //   Map<String, dynamic> data = queryDocumentSnapshot.data();
                   //   var name = data['name'];

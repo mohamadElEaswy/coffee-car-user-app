@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:mk/src/core/model/coffe_car_model/coffee_car_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/remote/firebase/database.dart';
@@ -25,31 +22,33 @@ class StreamTestPage extends StatelessWidget {
 
 
   Widget _buildStreamContent(BuildContext context) {
-    // final database = Provider.of<Database>(context, listen: false);
+    final database = Provider.of<Database>(context, listen: false);
     // final  Stream<List<CoffeeCar>> getData = FirebaseFirestore.instance.collection('cars').snapshots();
     // Stream collectionStream = FirebaseFirestore.instance.collection('cars').snapshots();
     // final DataRepository repository = DataRepository();
-    Stream getFromFirebase(){
-      return FirebaseFirestore.instance.collection('cars').snapshots();
-    }
+    // Stream getFromFirebase(){
+    //   return FirebaseFirestore.instance.collection('cars').snapshots();
+    // }
     // final DatabaseReference messagesRef = FirebaseDatabase.instance.ref().child('users');
     // print(messagesRef.key.toString());
-    return Expanded(
-      child: StreamBuilder(
-        stream: getFromFirebase(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          // final json = snapshot.value as Map<String, dynamic>;
-          // final message = CoffeeCar.fromJson(json);
-          if (!snapshot.hasData) return const Text('Loading...');
-          return ListView(
-              children: snapshot.data.documents.map((DocumentSnapshot document) {
-            return  ListTile(
-              title:  Text('document'),
-              // subtitle:  Text(document['phone']),
+    CollectionReference cars = FirebaseFirestore.instance.collection('cars');
+    return FutureBuilder(
+      future: database.getCarsList()
+      // Provider.of<Database>(context).getCars()
+      ,
+      builder: (BuildContext  context,  AsyncSnapshot snapshot) {
+        // var data = snapshot.data!.data();
+        return ListView.builder(
+          itemCount: database.carsList.length,
+          itemBuilder: (context, index){
+            return Center(
+              child: ListTile(
+                title: Text(database.carsList[index]),
+                onTap: ()=> database.getCarDetails(database.carsList[index].toString()),
+              ),
             );
-          }).toList());
-        },
-      ),
-    );
+          },
+          );
+      },);
   }
 }

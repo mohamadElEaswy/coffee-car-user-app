@@ -30,7 +30,7 @@ class HomeHeader extends StatelessWidget {
               // overlayColor: MaterialStateProperty.all(Colors.white),
               child: const Icon(
                 Icons.segment,
-                color: GlobalStaticColors.deebBlue,
+                color: GlobalStaticColors.deepBlue,
               ),
             ),
           ),
@@ -52,7 +52,7 @@ class HomeHeader extends StatelessWidget {
                     padding: EdgeInsets.all(4),
                     child: Icon(
                       Icons.search,
-                      color: GlobalStaticColors.deebBlue,
+                      color: GlobalStaticColors.deepBlue,
                     ),
                   ),
                   Text('Search by name'),
@@ -74,7 +74,7 @@ class HomeHeader extends StatelessWidget {
               // overlayColor: MaterialStateProperty.all(Colors.white),
               child: const Icon(
                 Icons.filter_list,
-                color: GlobalStaticColors.deebBlue,
+                color: GlobalStaticColors.deepBlue,
               ),
             ),
           ),

@@ -51,7 +51,7 @@ class _Home extends State<Home> {
                 height: 60,
                 child: BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
-                  selectedItemColor: GlobalStaticColors.deebBlue,
+                  selectedItemColor: GlobalStaticColors.deepBlue,
                   unselectedItemColor: Colors.grey,
                   items: bloc.items,
                   onTap: (int index) {
