@@ -5,17 +5,17 @@ import '../../widgets/plus_button.dart';
 class TitleSection extends StatelessWidget {
   const TitleSection({Key? key}) : super(key: key);
 
-  void onTap(){}
+  void onTap(){print('1');}
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text('Espresso'),
-            SizedBox(height: 10),
-            Text('100 L.E'),
+          children: [
+            Text('Espresso', style: Theme.of(context).textTheme.headline5),
+            const SizedBox(height: 10),
+            Text('100 L.E', style: Theme.of(context).textTheme.subtitle1),
           ],
         ),
         const Spacer(),

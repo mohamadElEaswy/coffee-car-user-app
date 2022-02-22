@@ -7,6 +7,10 @@ class MyGlobalDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Divider(color: GlobalStaticColors.dividerColor, height: 4);
+    return const Divider(
+      color: GlobalStaticColors.buttonBrown,
+      height: 1,
+      thickness: 1,
+    );
   }
 }

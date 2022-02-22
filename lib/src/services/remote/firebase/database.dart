@@ -15,6 +15,7 @@ abstract class Database {
   Future getCars();
   Future getCarsList();
   Future getCarDetails(String documentId);
+  Future<void> testGetCars();
 }
 
 String documentIDCurrentDate() => DateTime.now().toIso8601String();
@@ -70,7 +71,19 @@ class FirestoreDatabase implements Database {
 
   }
 
+  final carsRef = FirebaseFirestore.instance.collection('cars').withConverter<CoffeeCar>(
+    fromFirestore: (snapshot, _) => CoffeeCar.fromJson(snapshot.data()!),
+    toFirestore: (movie, _) => movie.toJson(),
+  );
 
+  @override
+  Future<void> testGetCars()async{
+    List<QueryDocumentSnapshot<CoffeeCar>> cars = await carsRef
+        // .where('genre', isEqualTo: 'Sci-fi')
+        .get()
+        .then((snapshot) => snapshot.docs);
+    cars.forEach((element) {print(element.data().carName);});
+  }
 }
 
 class DataRepository {
@@ -81,6 +94,8 @@ class DataRepository {
   Stream<QuerySnapshot> getStream() {
     return collection.snapshots();
   }
+
+
   // 3
   // Future<DocumentReference> addPet(CoffeeCar coffeeCar) {
   //   return collection.add(coffeeCar.toJson());

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mk/src/ui/pages/product_detail_page/size_section.dart';
 import 'package:mk/src/ui/pages/product_detail_page/sugar_section.dart';
 import 'package:mk/src/ui/pages/product_detail_page/title_sction.dart';
 import 'package:mk/src/ui/pages/product_detail_page/total_section.dart';
 
+import '../../colors/static_colors.dart';
+import '../../constants.dart';
 import '../../widgets/global_button.dart';
 import '../../widgets/global_divider.dart';
 import '../../widgets/plus_button.dart';
@@ -18,18 +21,11 @@ class ProductDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> actions = [
       IconButton(
-          onPressed: actionButtonPress, icon: const Icon(Icons.heart_broken))
+          onPressed: actionButtonPress, icon: const Icon(FontAwesomeIcons.heart))
     ];
 
     return Scaffold(
         backgroundColor: Colors.grey[200],
-        // appBar: AppBar(
-        //   backgroundColor: Colors.grey[200],
-        //   // centerTitle: true,
-        //   // title: const Text('provider details'),
-        //   actions: actions,
-        //   bottom: ,
-        // ),
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -43,6 +39,7 @@ class ProductDetailPage extends StatelessWidget {
                 bottom: PreferredSize(
                   preferredSize: const Size.fromHeight(140),
                   child: Container(
+                    padding: const EdgeInsets.only(bottom: 20),
                     height: 120,
                     color: Colors.grey[200],
                     child: const Center(
@@ -60,7 +57,10 @@ class ProductDetailPage extends StatelessWidget {
             ];
           },
           body: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(
+              left: StaticConstants.globalPadding,
+              right: StaticConstants.globalPadding,
+            ),
             decoration: const BoxDecoration(
               color: Colors.white,
               // border: Border.all(),
@@ -72,6 +72,7 @@ class ProductDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: StaticConstants.globalPadding),
                   const TitleSection(),
                   const SizedBox(height: 30),
                   const SizeSection(),
@@ -85,11 +86,13 @@ class ProductDetailPage extends StatelessWidget {
                   GlobalButton(
                     onPressed: () {},
                     text: 'Add to cart',
+                    color: GlobalStaticColors.deepBlue,
                   ),
                   const SizedBox(height: 30),
                   GlobalButton(
                     onPressed: () {},
                     text: 'order now',
+                    color: GlobalStaticColors.buttonBrown,
                   ),
                 ],
               ),

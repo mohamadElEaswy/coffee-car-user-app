@@ -6,21 +6,22 @@ import '../../colors/static_colors.dart';
 class SizeSection extends StatelessWidget {
   const SizeSection({Key? key}) : super(key: key);
 
-  void onTap(){}
+  void onTap() {}
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Size'),
+        Text('Size', style: Theme.of(context).textTheme.subtitle1),
         const SizedBox(height: 10),
         const MyGlobalDivider(),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizeSelect(onTap: onTap,text: '250'),
-            SizeSelect(onTap: onTap,text: '350'),
-            SizeSelect(onTap: onTap,text: '450'),
+            SizeSelect(onTap: onTap, text: '250'),
+            SizeSelect(onTap: onTap, text: '350'),
+            SizeSelect(onTap: onTap, text: '450'),
           ],
         )
       ],
@@ -29,7 +30,8 @@ class SizeSection extends StatelessWidget {
 }
 
 class SizeSelect extends StatelessWidget {
-  const SizeSelect({Key? key, required this.onTap, required this.text}) : super(key: key);
+  const SizeSelect({Key? key, required this.onTap, required this.text})
+      : super(key: key);
 
   final void Function()? onTap;
   final String text;
