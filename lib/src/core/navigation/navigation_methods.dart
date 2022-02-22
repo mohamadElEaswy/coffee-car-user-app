@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mk/src/ui/pages/cart/cart_page.dart';
 import 'package:mk/src/ui/pages/error_page/error_page.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/otp_page/otp_page.dart';

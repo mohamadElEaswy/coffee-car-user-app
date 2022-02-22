@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mk/src/ui/widgets/global_divider.dart';
 
-import '../../colors/static_colors.dart';
 
 class SizeSection extends StatelessWidget {
   const SizeSection({Key? key}) : super(key: key);

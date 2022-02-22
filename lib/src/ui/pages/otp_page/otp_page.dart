@@ -5,6 +5,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 import '../home/home_page.dart';
 
+// ignore: must_be_immutable
 class OTPPage extends StatelessWidget {
   OTPPage({Key? key, required this.phoneNumber}) : super(key: key);
   static const String route = '/otp_page';

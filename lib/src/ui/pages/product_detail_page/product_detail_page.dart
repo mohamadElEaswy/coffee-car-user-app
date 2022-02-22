@@ -9,7 +9,6 @@ import '../../colors/static_colors.dart';
 import '../../constants.dart';
 import '../../widgets/global_button.dart';
 import '../../widgets/global_divider.dart';
-import '../../widgets/plus_button.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({Key? key}) : super(key: key);
