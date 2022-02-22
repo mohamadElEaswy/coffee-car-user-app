@@ -70,26 +70,13 @@ class Profile extends StatelessWidget {
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
               settingsMenuItem(
-                onTap: () {Provider.of<Database>(context, listen:  false).testGetCars();
-                      // await FirebaseFirestore.instance.collection('cars').get().then((value) {print(value.toString());});
-                  // print(data.toString());
-                },
+                onTap: () {Provider.of<Database>(context, listen:  false).testGetCars();},
                 firstIcon: Icons.person_outline_rounded,
                 lable: 'Change password',
                 lastIcon: FontAwesomeIcons.arrowRight,
               ),
               settingsMenuItem(
                 onTap: () {
-                  // FirebaseFirestore.instance.collection('cars').get().then((value) => {
-                  //   value.docs.forEach((element) { print(element.data()['carId']);})
-                  //
-                  //
-                  // });
-                  // for (var queryDocumentSnapshot in querySnapshot.docs) {
-                  //   Map<String, dynamic> data = queryDocumentSnapshot.data();
-                  //   var name = data['name'];
-                  //   var phone = data['phone'];
-                  // }
 
                 },
                 firstIcon: Icons.person_outline_rounded,
@@ -105,10 +92,6 @@ class Profile extends StatelessWidget {
                 ),
                 title: LanguagePickerWidget(
                     width: MediaQuery.of(context).size.width - 152),
-              ),
-              const ListTile(
-                title: Text('title'),
-                subtitle: Text('subtitle'),
               ),
               settingsMenuItem(
                 onTap: () => _confirmSignOut(context),

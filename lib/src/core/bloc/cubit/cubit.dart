@@ -64,10 +64,9 @@ class AppCubit extends Cubit<AppState> {
 /*manage bottom navigation bar*/
   int currentIndex = 0;
   List<Widget> body = [
-    // const Home(title: 'Coffee car',),
     const HomeBodyPage(),
-    const Cart(),
     const LikesPage(),
+    const Cart(),
     const NotificationsPage(),
     const Profile(),
   ];
@@ -104,13 +103,13 @@ class AppCubit extends Cubit<AppState> {
   //my location button in home screen
   //firstly check if location services permission is granted(true, or false) and ask the permission if it is not granted
   Future<void> myLocationButton() async {
-    if(await location.serviceEnabled()){
+    if (await location.serviceEnabled()) {
       return await mapController!
           .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(current.latitude!, current.longitude!),
         zoom: 17,
       )));
-    }else{
+    } else {
       location.requestService();
     }
   }
@@ -122,7 +121,7 @@ class AppCubit extends Cubit<AppState> {
   // void tryDB(){
   //   print(database.carsStream().toString());
   // }
-  
+
   // void signIn({required String email,required String password}) async{
   //   await auth.signInWithEmailAndPassword(email, password);
   // }

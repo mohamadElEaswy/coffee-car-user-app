@@ -7,6 +7,8 @@ class GlobalStaticColors{
   static const Color deepBlue = Color(0xfff022741);
   static const Color buttonBrown = Color(0xfffA9927D);
   static const Color dividerColor = Color(0xfffFCF9F4);
+  static Color? greyBackground = Colors.grey[200];
+  static Color? whiteBackground = Colors.white;
 
 }
 

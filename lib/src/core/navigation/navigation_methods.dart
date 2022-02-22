@@ -28,31 +28,25 @@ class RouteMethods {
       case Profile.route:
         return _materialPageRoute(
             page: const Profile(), fullscreenDialog: true);
-      case Cart.route:
-        return _materialPageRoute(page: const Cart(), fullscreenDialog: true);
+      // case Cart.route:
+      //   return _materialPageRoute(page: const Cart(), fullscreenDialog: true);
       case SignInWithEmailAndPhone.route:
-        return _materialPageRoute(
-            page: SignInWithEmailAndPhone());
-      // case UserStatus.route:
-      //   return _materialPageRoute(
-      //       page: const UserStatus());
+        return _materialPageRoute(page: SignInWithEmailAndPhone());
+
       case ProvidersPage.route:
         return _materialPageRoute(
           page: const ProvidersPage(),
         );
-        // case LandingPage.route:
-        // return _materialPageRoute(
-        //   page: const LandingPage(),
-        // );
+
       case AccountInfo.route:
         return _materialPageRoute(page: const AccountInfo());
-        case StreamTestPage.route:
+      case StreamTestPage.route:
         return _materialPageRoute(page: const StreamTestPage());
       case OTPPage.route:
         return _materialPageRoute(page: OTPPage(phoneNumber: args));
-        case ProviderProductsPage.route:
+      case ProviderProductsPage.route:
         return _materialPageRoute(page: const ProviderProductsPage());
-        case ProductDetailPage.route:
+      case ProductDetailPage.route:
         return _materialPageRoute(page: const ProductDetailPage());
       default:
         return _materialPageRoute(page: const ErrorPage());
