@@ -11,6 +11,9 @@ class HomeMap extends StatelessWidget {
       color: Colors.cyan[100],
       child: Center(
         child: GoogleMap(
+          myLocationButtonEnabled: false,
+          zoomControlsEnabled: false,
+          zoomGesturesEnabled: false,
           // myLocationButtonEnabled: true,
           onMapCreated: bloc.onMapCreated,
           mapType: MapType.normal,
@@ -21,8 +24,9 @@ class HomeMap extends StatelessWidget {
           cameraTargetBounds: CameraTargetBounds.unbounded,
           markers: bloc.markers.values.toSet(),
           // myLocationButtonEnabled: true,
-          myLocationEnabled: true, compassEnabled: true,
-          mapToolbarEnabled: true,
+          myLocationEnabled: true,
+          compassEnabled: false,
+          mapToolbarEnabled: false,
         ),
       ),
     );
