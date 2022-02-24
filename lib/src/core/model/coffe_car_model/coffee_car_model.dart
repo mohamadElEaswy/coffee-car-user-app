@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:mk/src/locations.dart';
 
 
 part 'coffee_car_model.g.dart';
@@ -8,8 +9,7 @@ part 'coffee_car_model.g.dart';
 class CoffeeCar{
   CoffeeCar({
     required this.carName,
-    required this.lang,
-    required this.lat,
+    required this.coords,
     required this.providerName,
     required this.carId,
     required this.providerId,
@@ -17,7 +17,9 @@ class CoffeeCar{
     required this.address,
     // required this.location,
     required this.products,
-    required this.rate,
+    required this.reviews,
+    // required this.orders,
+    // required this.orders,
   });
 
   final String carName;
@@ -26,11 +28,9 @@ class CoffeeCar{
   final String carId;
   final String providerId;
   final bool availability;
-  final String lang;
-  final String lat;
-  // final Location location;
+  final LatLng coords;
   final bool products;
-  final bool rate;
+  final bool reviews;
 
   factory CoffeeCar.fromJson(Map<String, dynamic> json) => _$CoffeeCarFromJson(json);
 

@@ -24,12 +24,11 @@ void main() async {
   Firebase.app();
   AuthBase auth = Auth();
 
-
-    if (auth.currentUser == null) {
-      initialRoute = SignInWithEmailAndPhone.route;
-    } else {
-      initialRoute = Home.route;
-    }
+  if (auth.currentUser == null) {
+    initialRoute = SignInWithEmailAndPhone.route;
+  } else {
+    initialRoute = Home.route;
+  }
 
   await LocalDBServices.init();
   runApp(const MyApp());
@@ -50,31 +49,32 @@ class MyApp extends StatelessWidget {
         listener: (context, index) {},
         builder: (context, index) {
           return MultiProvider(
-              // create: (context) => LocaleProvider(),<LocaleProvider>
-              providers: [
-                ChangeNotifierProvider<LocaleProvider>(
-                    create: (context) => LocaleProvider()),
-                Provider<AuthBase>(create: (context) => Auth()),
-                Provider<Database>(create: (context) => FirestoreDatabase()),
-              ],
-              builder: (BuildContext context, child) {
-                final LocaleProvider provider =
-                    Provider.of<LocaleProvider>(context);
-                return MaterialApp(
-                  title: title,
-                  theme: AppTheme.lightTheme,
-                  onGenerateRoute: RouteMethods.generateRoutes,
-                  initialRoute: initialRoute,
-                  locale: provider.locale,
-                  supportedLocales: L10n.all,
-                  localizationsDelegates: const [
-                    AppLocalizations.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                  ],
-                );
-              });
+            // create: (context) => LocaleProvider(),<LocaleProvider>
+            providers: [
+              ChangeNotifierProvider<LocaleProvider>(
+                  create: (context) => LocaleProvider()),
+              Provider<AuthBase>(create: (context) => Auth()),
+              Provider<Database>(create: (context) => FirestoreDatabase()),
+            ],
+            builder: (BuildContext context, child) {
+              final LocaleProvider provider =
+                  Provider.of<LocaleProvider>(context);
+              return MaterialApp(
+                title: title,
+                theme: AppTheme.lightTheme,
+                onGenerateRoute: RouteMethods.generateRoutes,
+                initialRoute: initialRoute,
+                locale: provider.locale,
+                supportedLocales: L10n.all,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                ],
+              );
+            },
+          );
         },
       ),
     );

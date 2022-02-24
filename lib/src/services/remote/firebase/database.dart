@@ -1,9 +1,8 @@
 //the services layer after login or register
+// ignore_for_file: avoid_function_literals_in_foreach_calls
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mk/src/core/model/coffe_car_model/coffee_car_model.dart';
-
-
-import 'api_path.dart';
 
 abstract class Database {
   // Query getMessageQuery();
@@ -30,59 +29,64 @@ class FirestoreDatabase implements Database {
 
   @override
   List<CoffeeCar> cars = [];
-  List test =[];
+  List test = [];
   @override
   Future getCars() async {
-    return await _service
-        .collection('cars')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-
-        test = value.docChanges.cast();
-        cars.add(CoffeeCar.fromJson(element.reference.parent.parameters));
-
-
-
-      });
+    return await _service.collection('cars').get().then((value) {
+      value.docs.forEach(
+        (element) {
+          test = value.docChanges.cast();
+          cars.add(
+            CoffeeCar.fromJson(element.reference.parent.parameters),
+          );
+        },
+      );
       print(cars[0].carName);
-    }).catchError((e){print(e.toString());print(test.length);print(test[0].toString());});
-
+    }).catchError((e) {
+      print(e.toString());
+      print(test.length);
+      print(test[0].toString());
+    });
   }
 
   // using this method I can get the list of documents form Firebase 'list of my cars id as String'
   @override
-  List<String> carsList =[];
+  List<String> carsList = [];
   @override
-  Future getCarsList() async{
+  Future getCarsList() async {
     carsList.clear();
     await _service.collection('cars').get().then((value) {
-      value.docs.forEach((element) {carsList.add(element.id);});
+      value.docs.forEach((element) {
+        carsList.add(element.id);
+      });
     });
   }
+
   late CoffeeCar coffeeCar;
   @override
-  Future getCarDetails(String documentId) async{
-    await _service.collection('cars').doc(documentId).get().then((value){
+  Future getCarDetails(String documentId) async {
+    await _service.collection('cars').doc(documentId).get().then((value) {
       print(value.data());
       coffeeCar = CoffeeCar.fromJson(value.data()!);
-
     });
-
   }
 
-  final carsRef = FirebaseFirestore.instance.collection('cars').withConverter<CoffeeCar>(
-    fromFirestore: (snapshot, _) => CoffeeCar.fromJson(snapshot.data()!),
-    toFirestore: (movie, _) => movie.toJson(),
-  );
+  final carsRef = FirebaseFirestore.instance
+      .collection('cars')
+      .withConverter<CoffeeCar>(
+        fromFirestore: (snapshot, _) => CoffeeCar.fromJson(snapshot.data()!),
+        toFirestore: (movie, _) => movie.toJson(),
+      );
 
   @override
-  Future<void> testGetCars()async{
+  Future<void> testGetCars() async {
     List<QueryDocumentSnapshot<CoffeeCar>> cars = await carsRef
         // .where('genre', isEqualTo: 'Sci-fi')
         .get()
         .then((snapshot) => snapshot.docs);
-    cars.forEach((element) {print(element.data().carName);});
+    cars.forEach((element) {
+      print(element.data().carName);
+    });
   }
 }
 
@@ -94,7 +98,6 @@ class DataRepository {
   Stream<QuerySnapshot> getStream() {
     return collection.snapshots();
   }
-
 
   // 3
   // Future<DocumentReference> addPet(CoffeeCar coffeeCar) {

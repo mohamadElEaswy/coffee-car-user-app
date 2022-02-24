@@ -16,7 +16,7 @@ class SignInBloc {
   // final ValueNotifier<bool> isLoading;
   Stream<SignInModel> get modelStream => _modelController.stream;
   SignInModel _model = SignInModel();
-  final AuthBase auth = Auth();
+  AuthBase auth = Auth();
 
   void dispose() {
     _modelController.close();

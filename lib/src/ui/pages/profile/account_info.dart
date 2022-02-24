@@ -42,8 +42,7 @@ class AccountInfo extends StatelessWidget {
   }
 
   Widget _buildUserDetails(User user) {
-    print(user.phoneNumber!);
-    print('user.phoneNumber!');
+
     TextEditingController nameController =
         TextEditingController(text: user.displayName!);
     TextEditingController phoneController =

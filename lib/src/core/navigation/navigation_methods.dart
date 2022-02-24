@@ -17,13 +17,16 @@ class RouteMethods {
   // RouteMethods() {
   //   auth = Auth();
   // }
-  final SignInBloc signInBloc = SignInBloc();
+  SignInBloc signInBloc = SignInBloc();
+
+
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     // ignore: unused_local_variable
     final args = settings.arguments;
     switch (settings.name) {
       case Home.route:
         return _materialPageRoute(page: const Home(title: 'home'));
+
       case Profile.route:
         return _materialPageRoute(
             page: const Profile(), fullscreenDialog: true);
