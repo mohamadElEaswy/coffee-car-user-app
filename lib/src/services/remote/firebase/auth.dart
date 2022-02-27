@@ -1,16 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'database.dart';
 
 abstract class AuthBase {
   User? get currentUser;
   Stream<User?> authUserState();
-  Future<User?> signInAnonymously();
   Future<User?> signInWithGoogle();
-  // Future<User?> signInWithFacebook();
   Future<User?> signInWithEmailAndPassword(String email, String password);
-  Future<User?> createUserWithEmailAndPassword({required String email, required String password});
-  // Future<User?> createUserWithPhoneAndPassword(String phone, String password);
+  Future<User?> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String phoneNumber,
+    required String userName,
+    // required String city,
+    // required String userType,
+  });
   Future<void> signOut();
   Future<void> submitPhoneNumber({required String phoneNumber});
   Future<void> submitOTP(String otpCode);
@@ -18,16 +23,13 @@ abstract class AuthBase {
 
 class Auth implements AuthBase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+
+  Database? firebaseFirestore = FirestoreDatabase();
   @override
   Stream<User?> authUserState() => _firebaseAuth.authStateChanges();
   @override
   User? get currentUser => _firebaseAuth.currentUser;
-  @override
-  Future<User?> signInAnonymously() async {
-    final UserCredential userCredential =
-        await _firebaseAuth.signInAnonymously();
-    return userCredential.user;
-  }
 
   @override
   Future<User?> signInWithGoogle() async {
@@ -37,8 +39,16 @@ class Auth implements AuthBase {
       final googleAuth = await googleUser.authentication;
       if (googleAuth.idToken != null) {
         final userCredential = await _firebaseAuth.signInWithCredential(
-          GoogleAuthProvider.credential(
-              accessToken: googleAuth.accessToken, idToken: googleAuth.idToken),
+            GoogleAuthProvider.credential(
+                accessToken: googleAuth.accessToken,
+                idToken: googleAuth.idToken));
+        firebaseFirestore!.addUser(
+          uid: userCredential.user!.uid,
+          email: userCredential.user!.email!,
+          phoneNumber: userCredential.user!.phoneNumber!,
+          userName: userCredential.user!.phoneNumber!,
+          city: 'city',
+          userType: 'not defined yet',
         );
         return userCredential.user;
       } else {
@@ -55,45 +65,37 @@ class Auth implements AuthBase {
     }
   }
 
-  // @override
-  // Future<User?> signInWithFacebook() async {
-  //   final fb = FacebookLogin();
-  //   final response = await fb.logIn(permissions: [
-  //     FacebookPermission.email,
-  //     FacebookPermission.publicProfile
-  //   ]);
-  //   switch (response.status) {
-  //     case FacebookLoginStatus.success:
-  //       final accessToken = response.accessToken;
-  //       final userCredential = await _firebaseAuth.signInWithCredential(
-  //           FacebookAuthProvider.credential(accessToken!.token));
-  //       return userCredential.user;
-  //     case FacebookLoginStatus.cancel:
-  //       throw FirebaseAuthException(
-  //           code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
-  //     case FacebookLoginStatus.error:
-  //       throw FirebaseAuthException(
-  //           code: 'ERROR_FACEBOOK_LOGIN_FAILED',
-  //           message: response.error!.developerMessage);
-  //     default: throw UnimplementedError();
-  //   }
-  // }
-
   @override
   Future<User?> signInWithEmailAndPassword(
       String email, String password) async {
     final UserCredential userCredential =
         await _firebaseAuth.signInWithCredential(
             EmailAuthProvider.credential(email: email, password: password));
+    firebaseFirestore!.getUser(userCredential.user!.uid);
     return userCredential.user;
   }
 
   @override
-  Future<User?> createUserWithEmailAndPassword({required String email, required String password,}) async {
-    final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<User?> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String phoneNumber,
+    required String userName,
+    // required String city,
+    // required String userType,
+  }) async {
+    final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    firebaseFirestore!.addUser(
+      uid: userCredential.user!.uid,
+      email: email,
+      phoneNumber: phoneNumber,
+      userName: userName,
+      city: 'city',
+      userType: 'not defined yet',
+    );
     return userCredential.user;
   }
-
 
   @override
   Future<void> signOut() async {
@@ -116,26 +118,14 @@ class Auth implements AuthBase {
     );
   }
 
-
   void verificationCompleted(PhoneAuthCredential credential) async {
-    // await _firebaseAuth.currentUser!.updateDisplayName(credential.userName);
-    // await _firebaseAuth.currentUser!.linkWithCredential(credential);
-    // await _firebaseAuth.currentUser!.updatePhoneNumber(credential);
-
-    // await _firebaseAuth.currentUser!.reload();
-
     currentUser!.linkWithCredential(credential);
-    // await _firebaseAuth.currentUser!.updateDisplayName(userName);
-    // print('verification completed');
-    // await signIn(credential);
   }
 
   void verificationFailed(FirebaseAuthException e) async {
     if (e.code == 'invalid-phone-number') {
       print('The provided phone number is not valid.');
     }
-    // print('verification Failed ${e.toString()}');
-    //emit();
   }
 
   String verificationId = '';
@@ -156,6 +146,7 @@ class Auth implements AuthBase {
     // await setUserDetails(userName);
     // await _firebaseAuth.currentUser!.updatePhoneNumber(credential);
     await signIn(credential);
+
   }
 
   Future<void> signIn(PhoneAuthCredential credential) async {
@@ -168,10 +159,8 @@ class Auth implements AuthBase {
     }
   }
 
-
-
-  User getUserdata() {
-    User firebaseUser = _firebaseAuth.currentUser!;
-    return firebaseUser;
-  }
+  // User getUserdata() {
+  //   User firebaseUser = _firebaseAuth.currentUser!;
+  //   return firebaseUser;
+  // }
 }

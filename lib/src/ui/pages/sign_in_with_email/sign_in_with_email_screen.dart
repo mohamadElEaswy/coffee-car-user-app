@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mk/src/core/assets/assets.dart';
+import 'package:mk/src/ui/colors/static_colors.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/global_button.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_model.dart';
@@ -7,7 +9,10 @@ import 'package:mk/src/ui/pages/sign_in_with_email/text_form_field.dart';
 import 'package:provider/provider.dart';
 import '../../../core/navigation/navigation_methods.dart';
 import '../../widgets/exceptions.dart';
+import '../../widgets/global_sized_box.dart';
+import '../../widgets/global_text_button.dart';
 import 'email_sign_in_bloc.dart';
+
 
 class SignInWithEmailAndPhone extends StatefulWidget {
   SignInWithEmailAndPhone({Key? key}) : super(key: key);
@@ -78,20 +83,16 @@ class _SignInWithEmailAndPhoneState extends State<SignInWithEmailAndPhone> {
   }
 
   List<Widget> _buildChildren(SignInModel? model) {
-
-    final String formTitleText = model!.formType == SignInFormType.signIn
-        ? 'Log in'
-        : 'Register';
-
-
+    final String formTitleText =
+        model!.formType == SignInFormType.signIn ? 'Log in' : 'Register';
 
     return [
-      const SizedBox(height: 50),
+      const GlobalSizedBox(height: 50),
       Text(
         formTitleText,
         style: Theme.of(context).textTheme.headline4,
       ),
-      const SizedBox(height: 8),
+      const GlobalSizedBox(),
       if (model.formType == SignInFormType.register)
         GlobalTextFormField(
             textInputType: TextInputType.text,
@@ -106,39 +107,39 @@ class _SignInWithEmailAndPhoneState extends State<SignInWithEmailAndPhone> {
             onEditingComplete: () => _emailEditingComplete(model),
             onChanged: widget.bloc!.updatePhone,
             iconData: Icons.email_outlined),
-      const SizedBox(height: 8),
+      const GlobalSizedBox(height: 8),
       // if (model.formType == SignInFormType.register)
-        GlobalTextFormField(
-          textInputType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
-          hintText: 'test@test.com',
-          controller: _emailController,
-          lable: 'Email',
-          errorText: model.emailErrorText,
-          enabled: model.isLoading == false,
-          obscureText: false,
-          focusNode: _emailFocusNode,
-          onEditingComplete: () => _emailEditingComplete(model),
-          onChanged: widget.bloc!.updateEmail,
-          iconData: Icons.email_outlined,
-        ),
-      const SizedBox(height: 8),
-      if (model.formType == SignInFormType.register)
-        GlobalTextFormField(
-        textInputType: TextInputType.phone,
+      GlobalTextFormField(
+        textInputType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
-        hintText: '01000000000',
-        controller: _phoneController,
-        lable: 'phone number',
-        errorText: model.phoneErrorText,
+        hintText: 'test@test.com',
+        controller: _emailController,
+        lable: 'Email',
+        errorText: model.emailErrorText,
         enabled: model.isLoading == false,
         obscureText: false,
-        focusNode: _phoneFocusNode,
-        onEditingComplete: () => _phoneEditingComplete(model),
-        onChanged: widget.bloc!.updatePhone,
-        iconData: Icons.phone_iphone_outlined,
+        focusNode: _emailFocusNode,
+        onEditingComplete: () => _emailEditingComplete(model),
+        onChanged: widget.bloc!.updateEmail,
+        iconData: Icons.email_outlined,
       ),
-      const SizedBox(height: 8),
+      const GlobalSizedBox(height: 8),
+      if (model.formType == SignInFormType.register)
+        GlobalTextFormField(
+          textInputType: TextInputType.phone,
+          textInputAction: TextInputAction.next,
+          hintText: '01000000000',
+          controller: _phoneController,
+          lable: 'phone number',
+          errorText: model.phoneErrorText,
+          enabled: model.isLoading == false,
+          obscureText: false,
+          focusNode: _phoneFocusNode,
+          onEditingComplete: () => _phoneEditingComplete(model),
+          onChanged: widget.bloc!.updatePhone,
+          iconData: Icons.phone_iphone_outlined,
+        ),
+      const GlobalSizedBox(height: 8),
       GlobalTextFormField(
         textInputType: TextInputType.number,
         textInputAction: TextInputAction.done,
@@ -154,27 +155,31 @@ class _SignInWithEmailAndPhoneState extends State<SignInWithEmailAndPhone> {
         suffix: Icons.password_outlined,
         suffixPressed: widget.bloc!.changePasswordVisibility,
       ),
-      const SizedBox(height: 8),
+      // const GlobalSizedBox(),
       if (model.formType == SignInFormType.signIn)
         TextButton(
             onPressed: () {}, child: const Text('Forget your password.')),
-      const SizedBox(height: 8),
+      const GlobalSizedBox(),
       DefaultButton(
         text: model.primaryText,
         color: Colors.indigo,
         onPressed: model.submitEnabled ? _submit : null,
       ),
       // ElevatedButton(onPressed: () {}, child: const Text('Sign in')),
-      const SizedBox(height: 8),
+      const GlobalSizedBox(),
       TextButton(
           onPressed: !model.isLoading ? _toggleFormType : null,
           child: Text(model.secondaryText)),
-      const SizedBox(height: 8),
-      TextButton(
-          onPressed: ()=> !model.isLoading ? _signInWithGoogle(context) : null,
-          child: const Text('Sign in with Google')),
+      const GlobalSizedBox(),
+
+      GlobalTextButton(
+        text: 'Sign in with google',
+        onPressed: () => !model.isLoading ? _signInWithGoogle(context) : null,
+        imagePath: AppAssets.googleLogo,
+      ),
     ];
   }
+
   Future<void> _signInExceptions(BuildContext context, Exception exception) {
     if (exception is FirebaseAuthException &&
         exception.code == 'ERROR_ABORTED_BY_USER') {}
@@ -185,11 +190,12 @@ class _SignInWithEmailAndPhoneState extends State<SignInWithEmailAndPhone> {
     );
   }
 
-
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
       await widget.bloc!.auth.signInWithGoogle();
-      if(widget.bloc!.auth.currentUser!= null){RouteMethods.navigateTo(context: context, routeName: Home.route);}
+      if (widget.bloc!.auth.currentUser != null) {
+        RouteMethods.navigateTo(context: context, routeName: Home.route);
+      }
     } on Exception catch (e) {
       _signInExceptions(context, e);
     }

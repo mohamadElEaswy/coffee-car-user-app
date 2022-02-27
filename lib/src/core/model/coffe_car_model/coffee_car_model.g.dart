@@ -8,7 +8,8 @@ part of 'coffee_car_model.dart';
 
 CoffeeCar _$CoffeeCarFromJson(Map<String, dynamic> json) => CoffeeCar(
       carName: json['carName'] as String,
-      coords: LatLng.fromJson(json['coords'] as Map<String, dynamic>),
+      lat: (json['lat'] as num).toDouble(),
+      lng: (json['lng'] as num).toDouble(),
       providerName: json['providerName'] as String,
       carId: json['carId'] as String,
       providerId: json['providerId'] as String,
@@ -20,12 +21,23 @@ CoffeeCar _$CoffeeCarFromJson(Map<String, dynamic> json) => CoffeeCar(
 
 Map<String, dynamic> _$CoffeeCarToJson(CoffeeCar instance) => <String, dynamic>{
       'carName': instance.carName,
+      'lat': instance.lat,
+      'lng': instance.lng,
       'providerName': instance.providerName,
       'address': instance.address,
       'carId': instance.carId,
       'providerId': instance.providerId,
       'availability': instance.availability,
-      'coords': instance.coords,
       'products': instance.products,
       'reviews': instance.reviews,
+    };
+
+CarsList _$CarsListFromJson(Map<String, dynamic> json) => CarsList(
+      cars: (json['cars'] as List<dynamic>)
+          .map((e) => CoffeeCar.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$CarsListToJson(CarsList instance) => <String, dynamic>{
+      'cars': instance.cars,
     };

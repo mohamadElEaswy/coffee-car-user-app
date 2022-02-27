@@ -12,7 +12,6 @@ UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) => UserDetails(
       phoneNumber: json['phoneNumber'] as String,
       email: json['email'] as String,
       city: json['city'] as String,
-      coords: LatLng.fromJson(json['coords'] as Map<String, dynamic>),
       userType: json['userType'] as String,
     );
 
@@ -24,5 +23,4 @@ Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
       'email': instance.email,
       'city': instance.city,
       'userType': instance.userType,
-      'coords': instance.coords,
     };

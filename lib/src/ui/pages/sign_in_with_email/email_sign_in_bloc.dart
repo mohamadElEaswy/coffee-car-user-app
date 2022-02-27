@@ -31,8 +31,11 @@ class SignInBloc {
         RouteMethods.navigateTo(context: context, routeName: Home.route);
       } else {
         await auth.createUserWithEmailAndPassword(
-            email: _model.email, password: _model.password);
-
+          email: _model.email,
+          password: _model.password,
+          userName: _model.name,
+          phoneNumber: _model.phone,
+        );
         await auth.submitPhoneNumber(phoneNumber: _model.phone);
         RouteMethods.navigateAndChange(
             context: context, routeName: OTPPage.route, args: _model.phone);

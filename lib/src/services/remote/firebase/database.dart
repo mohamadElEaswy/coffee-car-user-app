@@ -4,6 +4,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mk/src/core/model/coffe_car_model/coffee_car_model.dart';
 
+import '../../../core/model/user_details_model/user_details_model.dart';
+
 abstract class Database {
   // Query getMessageQuery();
   // Stream carsStream();
@@ -15,6 +17,20 @@ abstract class Database {
   Future getCarsList();
   Future getCarDetails(String documentId);
   Future<void> testGetCars();
+
+  //store user data from fire store into model
+  late UserDetails userDetailsModel;
+  //adding user data to fire store DB
+  Future<void> addUser({
+    required String uid,
+    required String userName,
+    required String phoneNumber,
+    required String email,
+    required String city,
+    required String userType,
+  });
+  //get user data from fire store DB
+  Future<void> getUser(String uid);
 }
 
 String documentIDCurrentDate() => DateTime.now().toIso8601String();
@@ -25,14 +41,14 @@ class FirestoreDatabase implements Database {
       );
   // final String uid;
 
-  final FirebaseFirestore _service = FirebaseFirestore.instance;
+  final FirebaseFirestore service = FirebaseFirestore.instance;
 
   @override
   List<CoffeeCar> cars = [];
   List test = [];
   @override
   Future getCars() async {
-    return await _service.collection('cars').get().then((value) {
+    return await service.collection('cars').get().then((value) {
       value.docs.forEach(
         (element) {
           test = value.docChanges.cast();
@@ -55,7 +71,7 @@ class FirestoreDatabase implements Database {
   @override
   Future getCarsList() async {
     carsList.clear();
-    await _service.collection('cars').get().then((value) {
+    await service.collection('cars').get().then((value) {
       value.docs.forEach((element) {
         carsList.add(element.id);
       });
@@ -65,7 +81,7 @@ class FirestoreDatabase implements Database {
   late CoffeeCar coffeeCar;
   @override
   Future getCarDetails(String documentId) async {
-    await _service.collection('cars').doc(documentId).get().then((value) {
+    await service.collection('cars').doc(documentId).get().then((value) {
       print(value.data());
       coffeeCar = CoffeeCar.fromJson(value.data()!);
     });
@@ -87,6 +103,48 @@ class FirestoreDatabase implements Database {
     cars.forEach((element) {
       print(element.data().carName);
     });
+  }
+
+
+
+
+
+
+
+
+  @override
+  late UserDetails userDetailsModel;
+  @override
+  Future<void> getUser(String uid) async {
+    await service.collection('users').doc(uid).get().then(
+        (value) => userDetailsModel = UserDetails.fromJson(value.data()!) );
+    print(userDetailsModel.uId);
+  }
+
+  @override
+  Future<void> addUser({
+    required String uid,
+    required String userName,
+    required String phoneNumber,
+    required String email,
+    required String city,
+    required String userType,
+  }) async {
+    userDetailsModel = UserDetails(
+      uId: uid,
+      userName: userName,
+      phoneNumber: phoneNumber,
+      email: email,
+      city: city,
+      userType: userType,
+    );
+    await service
+        .collection('users')
+        .doc(uid)
+        .set(userDetailsModel.toJson())
+        .then(
+          (value) => getUser,
+        );
   }
 }
 

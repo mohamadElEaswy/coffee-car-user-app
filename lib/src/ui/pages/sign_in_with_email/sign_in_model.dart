@@ -11,7 +11,7 @@ class SignInModel with UserInputValidation, ChangeNotifier {
     this.name = '',
     this.phone = '',
     this.password = '',
-    this.passwordVisibility = false,
+    this.passwordVisibility = true,
     this.isLoading = false,
     this.submitted = false,
     this.formType = SignInFormType.signIn,

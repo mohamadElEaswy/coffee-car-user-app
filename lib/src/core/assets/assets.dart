@@ -14,6 +14,7 @@ class AppAssets{
   static const String documentLogo = 'assets/icons/bold-document.png';
   static const String darkDocumentLogo = 'assets/icons/document.png';
   static const String settingLogo = 'assets/icons/setting-dark.png';
+  static const String googleLogo = 'assets/images/search.png';
 
 
 }
