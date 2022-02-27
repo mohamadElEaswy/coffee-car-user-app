@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mk/src/core/assets/assets.dart';
 import 'package:mk/src/ui/colors/static_colors.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
+import 'package:mk/src/ui/pages/otp_page/otp_page.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/global_button.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_model.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/text_form_field.dart';
@@ -11,6 +12,7 @@ import '../../../core/navigation/navigation_methods.dart';
 import '../../widgets/exceptions.dart';
 import '../../widgets/global_sized_box.dart';
 import '../../widgets/global_text_button.dart';
+import '../otp_page/phone_page.dart';
 import 'email_sign_in_bloc.dart';
 
 
@@ -194,7 +196,7 @@ class _SignInWithEmailAndPhoneState extends State<SignInWithEmailAndPhone> {
     try {
       await widget.bloc!.auth.signInWithGoogle();
       if (widget.bloc!.auth.currentUser != null) {
-        RouteMethods.navigateTo(context: context, routeName: Home.route);
+        RouteMethods.navigateTo(context: context, routeName: PhonePage.route);
       }
     } on Exception catch (e) {
       _signInExceptions(context, e);

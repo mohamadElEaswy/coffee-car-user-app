@@ -31,13 +31,18 @@ void main() async {
   }
 
   await LocalDBServices.init();
-  runApp(const MyApp());
+  runApp( const MyApp(
+      // auth.currentUser
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp(
+      // this.currentUser,
+      {Key? key}) : super(key: key);
   static const String title = 'coffee car';
 
+  // final User? currentUser;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

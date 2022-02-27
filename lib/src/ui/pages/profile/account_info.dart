@@ -42,11 +42,10 @@ class AccountInfo extends StatelessWidget {
   }
 
   Widget _buildUserDetails(User user) {
-
     TextEditingController nameController =
         TextEditingController(text: user.displayName!);
-    TextEditingController phoneController =
-        TextEditingController(text: user.phoneNumber!);
+    // TextEditingController phoneController =
+    //     TextEditingController(text: user.phoneNumber!);
     // nameController.text = user.displayName!;
     FocusNode focusNode = FocusNode();
     FocusNode phoneFocusNode = FocusNode();
@@ -60,7 +59,9 @@ class AccountInfo extends StatelessWidget {
             style: const TextStyle(color: Colors.black, fontSize: 16.0),
           ),
           const SizedBox(height: 8),
-          Text(user.phoneNumber!, style: const TextStyle(color: Colors.black)),
+          if (user.phoneNumber != null)
+            Text(user.phoneNumber!,
+                style: const TextStyle(color: Colors.black)),
           if (!user.emailVerified)
             const Text(
               'your email isn\'t verified',
@@ -72,11 +73,13 @@ class AccountInfo extends StatelessWidget {
                 onPressed: user.sendEmailVerification,
                 child: const Text('verify your email')),
           const SizedBox(height: 8),
-          if (user.phoneNumber!.isNotEmpty)
-            ElevatedButton(
-                onPressed: () {
-
-                }, child: const Text('add your phone number')),
+          if (user.phoneNumber != null)
+            Text(
+              user.phoneNumber!,
+              style: const TextStyle(color: Colors.black, fontSize: 16.0),
+            ),
+          ElevatedButton(
+              onPressed: () {print(user.phoneNumber!,);}, child: const Text('add your phone number')),
           // Text('user.phoneNumber!',style: const TextStyle(color: Colors.black)),
           // GlobalTextFormField(
           //   controller: nameController,

@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-
+//this is shared preferences
 class LocalDBServices {
   //make this class private using the coming methods to use only in one place
   LocalDBServices();
@@ -20,6 +20,7 @@ class LocalDBServices {
       {required String value, required String key}) async {
     return await sharedPreferences!.setString(key, value);
   }
+
 
   //remove all data from local data base
   static removeData() {

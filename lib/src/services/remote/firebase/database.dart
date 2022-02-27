@@ -116,8 +116,11 @@ class FirestoreDatabase implements Database {
   late UserDetails userDetailsModel;
   @override
   Future<void> getUser(String uid) async {
-    await service.collection('users').doc(uid).get().then(
-        (value) => userDetailsModel = UserDetails.fromJson(value.data()!) );
+    if(uid.isNotEmpty) {
+      await service.collection('users').doc(uid).get().then(
+          (value) => userDetailsModel = UserDetails.fromJson(value.data()!));
+      print(userDetailsModel.uId);
+    }
     print(userDetailsModel.uId);
   }
 

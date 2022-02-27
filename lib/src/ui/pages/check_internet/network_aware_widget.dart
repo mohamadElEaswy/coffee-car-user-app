@@ -17,17 +17,17 @@ class NetworkAwareWidget extends StatelessWidget {
     if (networkStatus == NetworkStatus.online) {
       return onlineChild;
     } else {
-      _showToastMessage("Offline");
+      // _showToastMessage("Offline");
       return offlineChild;
     }
   }
 
-  void _showToastMessage(String message){
+  // void _showToastMessage(String message){
     // Fluttertoast.showToast(
     //     msg: message,
     //     toastLength: Toast.LENGTH_LONG,
     //     gravity: ToastGravity.BOTTOM,
     //     timeInSecForIosWeb: 1
     // );
-  }
+  // }
 }

@@ -34,6 +34,7 @@ class OTPPage extends StatelessWidget {
         },
       );
     }
+
     final auth = Provider.of<AuthBase>(context, listen: false);
     // print(auth.currentUser!.phoneNumber);
     return Scaffold(
@@ -41,10 +42,13 @@ class OTPPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(phoneNumber,style: Theme.of(context).textTheme.headline4,),
-
+            Text(
+              phoneNumber,
+              style: Theme.of(context).textTheme.headline4,
+            ),
             Center(
               child: PinCodeTextField(
                 appContext: context,
@@ -60,7 +64,7 @@ class OTPPage extends StatelessWidget {
                   fieldHeight: 50,
                   fieldWidth: 40,
                   borderWidth: 1,
-                  activeColor:Colors.black,
+                  activeColor: Colors.black,
                   inactiveColor: Colors.black,
                   inactiveFillColor: Colors.white,
                   activeFillColor: Colors.white,
@@ -82,9 +86,10 @@ class OTPPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                showProgressIndicator(context);
+                // showProgressIndicator(context);
                 auth.submitOTP(otpCode);
-                RouteMethods.navigateTo(context: context, routeName: Home.route);
+                RouteMethods.navigateAndChange(
+                    context: context, routeName: Home.route);
 
               },
               child: const Text(

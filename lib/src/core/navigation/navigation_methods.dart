@@ -5,10 +5,10 @@ import 'package:mk/src/ui/pages/otp_page/otp_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 import 'package:mk/src/ui/pages/provider_products_page/provider_products_page.dart';
 
+import '../../ui/pages/otp_page/phone_page.dart';
 import '../../ui/pages/product_detail_page/product_detail_page.dart';
 import '../../ui/pages/profile/account_info.dart';
 import '../../ui/pages/providers/providers_page.dart';
-import '../../ui/pages/sign_in_with_email/email_sign_in_bloc.dart';
 import '../../ui/pages/sign_in_with_email/sign_in_with_email_screen.dart';
 import '../../ui/pages/stream_test_page/stream_test.dart';
 
@@ -17,8 +17,7 @@ class RouteMethods {
   // RouteMethods() {
   //   auth = Auth();
   // }
-  SignInBloc signInBloc = SignInBloc();
-
+  // final SignInBloc signInBloc = SignInBloc();
 
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     // ignore: unused_local_variable
@@ -46,6 +45,8 @@ class RouteMethods {
         return _materialPageRoute(page: const StreamTestPage());
       case OTPPage.route:
         return _materialPageRoute(page: OTPPage(phoneNumber: args));
+      case PhonePage.route:
+        return _materialPageRoute(page: PhonePage());
       case ProviderProductsPage.route:
         return _materialPageRoute(page: const ProviderProductsPage());
       case ProductDetailPage.route:

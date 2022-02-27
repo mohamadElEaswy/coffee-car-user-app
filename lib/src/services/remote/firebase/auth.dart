@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import 'database.dart';
 
 abstract class AuthBase {
@@ -24,7 +23,6 @@ abstract class AuthBase {
 class Auth implements AuthBase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-
   Database? firebaseFirestore = FirestoreDatabase();
   @override
   Stream<User?> authUserState() => _firebaseAuth.authStateChanges();
@@ -42,14 +40,16 @@ class Auth implements AuthBase {
             GoogleAuthProvider.credential(
                 accessToken: googleAuth.accessToken,
                 idToken: googleAuth.idToken));
-        firebaseFirestore!.addUser(
-          uid: userCredential.user!.uid,
-          email: userCredential.user!.email!,
-          phoneNumber: userCredential.user!.phoneNumber!,
-          userName: userCredential.user!.phoneNumber!,
-          city: 'city',
-          userType: 'not defined yet',
-        );
+
+        //TODO move to phone Auth screen
+        // firebaseFirestore!.addUser(
+        //   uid: userCredential.user!.uid,
+        //   email: userCredential.user!.email!,
+        //   phoneNumber: userCredential.user!.phoneNumber == null ?  '' : userCredential.user!.phoneNumber!,
+        //   userName: userCredential.user!.displayName!,
+        //   city: 'city',
+        //   userType: 'not defined yet',
+        // );
         return userCredential.user;
       } else {
         throw FirebaseAuthException(
@@ -119,6 +119,7 @@ class Auth implements AuthBase {
   }
 
   void verificationCompleted(PhoneAuthCredential credential) async {
+
     currentUser!.linkWithCredential(credential);
   }
 
@@ -146,7 +147,6 @@ class Auth implements AuthBase {
     // await setUserDetails(userName);
     // await _firebaseAuth.currentUser!.updatePhoneNumber(credential);
     await signIn(credential);
-
   }
 
   Future<void> signIn(PhoneAuthCredential credential) async {

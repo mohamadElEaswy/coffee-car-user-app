@@ -58,9 +58,12 @@ class InternetError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-          child:
-              Text('No internet connection, please connect to the internet')),
+      body: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Center(
+            child:
+                Text('No internet connection, please connect to the internet')),
+      ),
     );
   }
 }

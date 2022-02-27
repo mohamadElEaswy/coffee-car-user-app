@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
 import 'package:mk/src/ui/pages/otp_page/otp_page.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/text_form_field.dart';
-import '../../../services/remote/firebase/auth.dart';
 import '../sign_in_with_email/email_sign_in_bloc.dart';
 import '../sign_in_with_email/global_button.dart';
 
 class PhonePage extends StatelessWidget {
-  const PhonePage({Key? key, required this.bloc}) : super(key: key);
-  final SignInBloc bloc;
+  PhonePage({Key? key
+      // , required this.bloc
+      })
+      : super(key: key);
+  final SignInBloc bloc = SignInBloc();
 
   static const String route = '/phone_page';
 
-  void verifyPress(BuildContext context, AuthBase auth) {
-    RouteMethods.navigateAndChange(context: context, routeName: OTPPage.route);
-    bloc.submit(context);
+  late String number;
+  void verifyPress(BuildContext context) {
+    bloc.auth.submitPhoneNumber(phoneNumber: number);
+    RouteMethods.navigateAndChange(
+        context: context, routeName: OTPPage.route, args: number);
   }
 
   @override
@@ -24,7 +28,7 @@ class PhonePage extends StatelessWidget {
     final FocusNode phoneFocusNode = FocusNode();
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +46,7 @@ class PhonePage extends StatelessWidget {
               enabled: true,
               focusNode: phoneFocusNode,
               onEditingComplete: () {},
-              onChanged: (String phoneNumber) {},
+              onChanged: (String phoneNumber) => number = phoneNumber,
               obscureText: false,
               textInputAction: TextInputAction.done,
               textInputType: TextInputType.phone,
@@ -52,7 +56,7 @@ class PhonePage extends StatelessWidget {
             DefaultButton(
               text: 'verify your number',
               color: Colors.indigo,
-              onPressed: () => verifyPress,
+              onPressed: () => verifyPress(context),
             ),
             // SizedBox(
             //   width: double.infinity,
@@ -61,11 +65,10 @@ class PhonePage extends StatelessWidget {
             //     onPressed: () => verifyPress,
             //   ),
             // ),
-        TextButton(
+            TextButton(
               child: const Text('change your phone number!'),
-              onPressed: (){},
+              onPressed: () {},
             ),
-
           ],
         ),
       ),
