@@ -9,6 +9,7 @@ import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_model.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/text_form_field.dart';
 import 'package:provider/provider.dart';
 import '../../../core/navigation/navigation_methods.dart';
+import '../../../services/remote/firebase/auth.dart';
 import '../../widgets/exceptions.dart';
 import '../../widgets/global_sized_box.dart';
 import '../../widgets/global_text_button.dart';
@@ -193,8 +194,9 @@ class _SignInWithEmailAndPhoneState extends State<SignInWithEmailAndPhone> {
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
+    final auth = Provider.of<AuthBase>(context, listen: false);
     try {
-      await widget.bloc!.auth.signInWithGoogle(context);
+      await auth.signInWithGoogle(context);
       // if (widget.bloc!.auth.currentUser != null) {
       //  RouteMethods.navigateTo(context: context, routeName: PhonePage.route);
       // }
