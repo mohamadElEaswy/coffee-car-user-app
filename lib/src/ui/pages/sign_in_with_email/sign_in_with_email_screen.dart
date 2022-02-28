@@ -194,10 +194,10 @@ class _SignInWithEmailAndPhoneState extends State<SignInWithEmailAndPhone> {
 
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
-      await widget.bloc!.auth.signInWithGoogle();
-      if (widget.bloc!.auth.currentUser != null) {
-        RouteMethods.navigateTo(context: context, routeName: PhonePage.route);
-      }
+      await widget.bloc!.auth.signInWithGoogle(context);
+      // if (widget.bloc!.auth.currentUser != null) {
+      //  RouteMethods.navigateTo(context: context, routeName: PhonePage.route);
+      // }
     } on Exception catch (e) {
       _signInExceptions(context, e);
     }

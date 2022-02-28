@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mk/src/core/model/user_details_model/user_details_model.dart';
+import 'package:mk/src/ui/pages/home/home_page.dart';
+import '../../../core/navigation/navigation_methods.dart';
+import '../../../ui/pages/otp_page/phone_page.dart';
 import 'database.dart';
 
 abstract class AuthBase {
   User? get currentUser;
   Stream<User?> authUserState();
-  Future<User?> signInWithGoogle();
+  Future<User?> signInWithGoogle(context);
   Future<User?> signInWithEmailAndPassword(String email, String password);
   Future<User?> createUserWithEmailAndPassword({
     required String email,
@@ -31,38 +35,41 @@ class Auth implements AuthBase {
   @override
   User? get currentUser => _firebaseAuth.currentUser;
 
+  UserDetails? _userDetailsModel;
+  late bool isNewGoogleUser;
   @override
-  Future<User?> signInWithGoogle() async {
+  Future<User?> signInWithGoogle(context) async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
     final googleUser = await googleSignIn.signIn();
     if (googleUser != null) {
       final googleAuth = await googleUser.authentication;
       if (googleAuth.idToken != null) {
-        final UserCredential userCredential = await _firebaseAuth.signInWithCredential(
-            GoogleAuthProvider.credential(
-                accessToken: googleAuth.accessToken,
-                idToken: googleAuth.idToken));
+        final UserCredential userCredential = await _firebaseAuth
+            .signInWithCredential(GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        ));
 
-        // final UserCredential authResult =
-        // await _firebaseAuth.signInWithCredential(credential);
+        print(userCredential.user!.uid);
 
-
-         bool isNewUser = userCredential.additionalUserInfo!.isNewUser;
+        bool isNewUser = userCredential.additionalUserInfo!.isNewUser;
+        isNewGoogleUser = isNewUser;
         if (isNewUser) {
-          print('new user');
-          firebaseFirestore!.addUser(
-            uid: userCredential.user!.uid,
-            email: userCredential.user!.email!,
-            phoneNumber:
-                // userCredential.user!.phoneNumber == null
-                //     ? ''
-                //     :
-                userCredential.user!.phoneNumber ?? '',
+          _userDetailsModel = UserDetails(
+            uId: userCredential.user!.uid,
             userName: userCredential.user!.displayName!,
+            phoneNumber: '',
+            email: userCredential.user!.email!,
             city: 'city',
-            userType: 'not defined yet',
+            userType: 'userType',
+            joinDate: DateTime.now(),
           );
+          print('new user');
+          RouteMethods.navigateTo(context: context, routeName: PhonePage.route);
+        } else {
+          print('old user');
+          RouteMethods.navigateTo(context: context, routeName: Home.route);
         }
         return userCredential.user;
       } else {
@@ -124,33 +131,41 @@ class Auth implements AuthBase {
   @override
   Future<void> submitPhoneNumber({required String phoneNumber}) async {
     userPhoneNumber = phoneNumber;
-    await _firebaseAuth.verifyPhoneNumber(
-      phoneNumber: '+2$phoneNumber',
-      verificationCompleted: verificationCompleted,
-      verificationFailed: verificationFailed,
-      codeSent: codeSent,
-      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-      timeout: const Duration(seconds: 40),
-    );
+    firebaseFirestore!
+        .addUser(
+          uid: _userDetailsModel!.uId,
+          email: _userDetailsModel!.email,
+          phoneNumber: phoneNumber,
+          userName: _userDetailsModel!.userName,
+          city: _userDetailsModel!.city,
+          userType: _userDetailsModel!.userType,
+        )
+        .then((value) => _firebaseAuth.verifyPhoneNumber(
+              phoneNumber: '+2$phoneNumber',
+              verificationCompleted: verificationCompleted,
+              verificationFailed: verificationFailed,
+              codeSent: codeSent,
+              codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+              timeout: const Duration(seconds: 40),
+            ));
   }
 
   void verificationCompleted(PhoneAuthCredential credential) async {
     print(credential.signInMethod);
-    firebaseFirestore!.addUser(
-      uid: currentUser!.uid,
-      email: currentUser!.email!,
-      phoneNumber:
-          // userCredential.user!.phoneNumber == null
-          //     ? ''
-          //     :
-          currentUser!.phoneNumber ?? userPhoneNumber!,
-      userName: currentUser!.displayName!,
-      city: 'city',
-      userType: 'not defined yet',
-    );
-    firebaseFirestore!.getUser(
-      currentUser!.uid,
-    );
+    // firebaseFirestore!.addUser(
+    //   uid: currentUser!.uid,
+    //   email: currentUser!.email!,
+    //   phoneNumber:
+    //       // userCredential.user!.phoneNumber == null
+    //       //     ? ''
+    //       //     :
+    //       currentUser!.phoneNumber ?? userPhoneNumber!,
+    //   userName: currentUser!.displayName!,
+    //   city: 'city',
+    //   userType: 'not defined yet',
+    // );
+
+    // firebaseFirestore!.getUser(currentUser!.uid);
     currentUser!.linkWithCredential(credential);
   }
 

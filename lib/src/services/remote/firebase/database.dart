@@ -144,7 +144,7 @@ class FirestoreDatabase implements Database {
       phoneNumber: phoneNumber,
       email: email,
       city: city,
-      userType: userType,
+      userType: userType,joinDate: DateTime.now()
     );
     await service
         .collection('users')

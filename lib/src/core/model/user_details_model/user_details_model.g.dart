@@ -13,6 +13,7 @@ UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) => UserDetails(
       email: json['email'] as String,
       city: json['city'] as String,
       userType: json['userType'] as String,
+      joinDate: DateTime.parse(json['joinDate'] as String),
     );
 
 Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
       'email': instance.email,
       'city': instance.city,
       'userType': instance.userType,
+      'joinDate': instance.joinDate.toIso8601String(),
     };

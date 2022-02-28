@@ -11,6 +11,7 @@ class UserDetails {
     required this.email,
     required this.city,
     required this.userType,
+    required this.joinDate
   });
 
   final String uId;
@@ -19,6 +20,7 @@ class UserDetails {
   final String email;
   final String city;
   final String userType;
+  final DateTime joinDate;
 
   factory UserDetails.fromJson(Map<String, dynamic> json) =>
       _$UserDetailsFromJson(json);

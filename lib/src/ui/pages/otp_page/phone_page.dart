@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
 import 'package:mk/src/ui/pages/otp_page/otp_page.dart';
 import 'package:mk/src/ui/pages/sign_in_with_email/text_form_field.dart';
+import 'package:provider/provider.dart';
+import '../../../services/remote/firebase/auth.dart';
 import '../sign_in_with_email/email_sign_in_bloc.dart';
 import '../sign_in_with_email/global_button.dart';
 
@@ -16,14 +18,14 @@ class PhonePage extends StatelessWidget {
 
   late String number;
   void verifyPress(BuildContext context) {
-    bloc.auth.submitPhoneNumber(phoneNumber: number);
+    final auth = Provider.of<AuthBase>(context, listen: false);
+    auth.submitPhoneNumber(phoneNumber: number);
     RouteMethods.navigateAndChange(
         context: context, routeName: OTPPage.route, args: number);
   }
 
   @override
   Widget build(BuildContext context) {
-    // final auth = Provider.of<AuthBase>(context, listen: false);
     final TextEditingController phoneController = TextEditingController();
     final FocusNode phoneFocusNode = FocusNode();
     return Scaffold(
