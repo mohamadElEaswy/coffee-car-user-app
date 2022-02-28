@@ -35,7 +35,12 @@ class OTPPage extends StatelessWidget {
       );
     }
 
-    final auth = Provider.of<AuthBase>(context, listen: false);
+    void onVerified() {
+      final auth = Provider.of<AuthBase>(context, listen: false);
+      auth.submitOTP(otpCode);
+      RouteMethods.navigateAndChange(context: context, routeName: Home.route);
+    }
+
     // print(auth.currentUser!.phoneNumber);
     return Scaffold(
       // appBar: AppBar(title: const Text('otp'),),
@@ -72,26 +77,16 @@ class OTPPage extends StatelessWidget {
                   selectedFillColor: Colors.white,
                 ),
                 animationDuration: const Duration(milliseconds: 300),
-                // backgroundColor: Colors.white,
                 enableActiveFill: true,
                 onCompleted: (submittedCode) {
                   otpCode = submittedCode;
-
-                  print("Completed");
+                  onVerified;
                 },
-                onChanged: (value) {
-                  print(value);
-                },
+                onChanged: (value) {},
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                // showProgressIndicator(context);
-                auth.submitOTP(otpCode);
-                RouteMethods.navigateAndChange(
-                    context: context, routeName: Home.route);
-
-              },
+              onPressed: onVerified,
               child: const Text(
                 'Verify',
                 style: TextStyle(color: Colors.white, fontSize: 16),
