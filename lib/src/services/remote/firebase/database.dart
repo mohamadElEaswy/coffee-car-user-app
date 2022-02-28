@@ -112,6 +112,7 @@ class FirestoreDatabase implements Database {
 
 
 
+
   @override
   late UserDetails userDetailsModel;
   @override
@@ -120,8 +121,12 @@ class FirestoreDatabase implements Database {
       await service.collection('users').doc(uid).get().then(
           (value) => userDetailsModel = UserDetails.fromJson(value.data()!));
       print(userDetailsModel.uId);
+      print(userDetailsModel.phoneNumber);
+      print(userDetailsModel.email);
+      print(userDetailsModel.city);
+      print(userDetailsModel.userType);
     }
-    print(userDetailsModel.uId);
+
   }
 
   @override

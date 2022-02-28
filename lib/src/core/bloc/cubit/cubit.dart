@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
+import 'package:mk/src/core/assets/assets.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mk/src/locations.dart' as locations;
@@ -36,15 +37,19 @@ class AppCubit extends Cubit<AppState> {
 
     markers.clear();
     for (final office in googleOffices.offices) {
+      final icon = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(size: Size(30, 30), devicePixelRatio: 2.5),
+        AppAssets.carIcon,
+      );
       final marker = Marker(
         visible: true,
         markerId: MarkerId(office.name),
         position: LatLng(office.lat, office.lng),
-        infoWindow: InfoWindow(
-          title: office.name,
-          snippet: office.address,
+        infoWindow: const InfoWindow(
+          title: 'car name',
+          snippet: 'car address',
         ),
-        // icon: BitmapDescriptor,
+        icon: icon,
       );
       markers[office.name] = marker;
     }

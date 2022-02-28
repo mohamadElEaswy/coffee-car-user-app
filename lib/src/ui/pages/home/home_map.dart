@@ -13,7 +13,7 @@ class HomeMap extends StatelessWidget {
         child: GoogleMap(
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
-          zoomGesturesEnabled: false,
+          zoomGesturesEnabled: true,
           // myLocationButtonEnabled: true,
           onMapCreated: bloc.onMapCreated,
           mapType: MapType.normal,

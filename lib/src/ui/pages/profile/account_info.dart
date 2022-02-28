@@ -19,7 +19,7 @@ class AccountInfo extends StatelessWidget {
           child: _buildUserInfo(auth.currentUser!),
         ),
       ),
-      body: _buildUserDetails(auth.currentUser!),
+      body: _buildUserDetails(auth.currentUser!, auth),
     );
   }
 
@@ -41,7 +41,7 @@ class AccountInfo extends StatelessWidget {
     );
   }
 
-  Widget _buildUserDetails(User user) {
+  Widget _buildUserDetails(User user,AuthBase auth) {
     TextEditingController nameController =
         TextEditingController(text: user.displayName!);
     // TextEditingController phoneController =
@@ -76,6 +76,10 @@ class AccountInfo extends StatelessWidget {
           if (user.phoneNumber != null)
             Text(
               user.phoneNumber!,
+              style: const TextStyle(color: Colors.black, fontSize: 16.0),
+            ),
+          Text(
+              auth.firebaseFirestore!.userDetailsModel.phoneNumber,
               style: const TextStyle(color: Colors.black, fontSize: 16.0),
             ),
           ElevatedButton(

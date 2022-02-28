@@ -48,7 +48,7 @@ class Profile extends StatelessWidget {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
-        // final AppCubit bloc = AppCubit.get(context);
+        final AppCubit bloc = AppCubit.get(context);
         return SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -78,6 +78,7 @@ class Profile extends StatelessWidget {
               settingsMenuItem(
                 onTap: () {
 
+                  bloc.auth.firebaseFirestore!.getUser(bloc.auth.currentUser!.uid);
                 },
                 firstIcon: Icons.person_outline_rounded,
                 lable: 'tests',
