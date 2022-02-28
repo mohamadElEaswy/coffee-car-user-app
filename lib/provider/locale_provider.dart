@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:mk/l10n/l10n.dart';
 import 'package:mk/src/database/local/local_db.dart';
-import 'package:mk/src/database/local/local_sevices.dart';
+import 'package:mk/src/database/local/local_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';

@@ -7,16 +7,19 @@ import '../../../services/remote/firebase/auth.dart';
 import '../sign_in_with_email/email_sign_in_bloc.dart';
 import '../sign_in_with_email/global_button.dart';
 
-class PhonePage extends StatelessWidget {
-  PhonePage({Key? key
-      // , required this.bloc
-      })
-      : super(key: key);
-  final SignInBloc bloc = SignInBloc();
-
+class PhonePage extends StatefulWidget {
+  const PhonePage({Key? key}) : super(key: key);
   static const String route = '/phone_page';
 
+  @override
+  State<PhonePage> createState() => _PhonePageState();
+}
+
+class _PhonePageState extends State<PhonePage> {
+  final SignInBloc bloc = SignInBloc();
+
   late String number;
+
   void verifyPress(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
     auth.submitPhoneNumber(phoneNumber: number);
@@ -60,13 +63,6 @@ class PhonePage extends StatelessWidget {
               color: Colors.indigo,
               onPressed: () => verifyPress(context),
             ),
-            // SizedBox(
-            //   width: double.infinity,
-            //   child: TextButton(
-            //     child: const Text('verify your number'),
-            //     onPressed: () => verifyPress,
-            //   ),
-            // ),
             TextButton(
               child: const Text('change your phone number!'),
               onPressed: () {},

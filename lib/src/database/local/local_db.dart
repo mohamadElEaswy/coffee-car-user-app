@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:mk/src/database/local/local_sevices.dart';
+import 'package:mk/src/database/local/local_services.dart';
 
 abstract class LocalDB {
   String? getLocalLang();

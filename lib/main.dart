@@ -14,7 +14,7 @@ import 'package:mk/src/ui/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'provider/locale_provider.dart';
-import 'src/database/local/local_sevices.dart';
+import 'src/database/local/local_services.dart';
 
 late String initialRoute;
 void main() async {
@@ -31,18 +31,13 @@ void main() async {
   }
 
   await LocalDBServices.init();
-  runApp( const MyApp(
-      // auth.currentUser
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp(
-      // this.currentUser,
-      {Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
   static const String title = 'coffee car';
 
-  // final User? currentUser;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
