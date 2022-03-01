@@ -78,7 +78,7 @@ class Profile extends StatelessWidget {
               settingsMenuItem(
                 onTap: () {
 
-                  bloc.auth.firebaseFirestore!.getUser(bloc.auth.currentUser!.uid);
+                  // bloc.auth.firebaseFirestore!.getUser(bloc.auth.currentUser!.uid);
                 },
                 firstIcon: Icons.person_outline_rounded,
                 lable: 'tests',

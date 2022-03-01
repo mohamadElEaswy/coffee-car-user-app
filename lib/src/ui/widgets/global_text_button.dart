@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../core/assets/assets.dart';
 import '../colors/static_colors.dart';
 
 class GlobalTextButton extends StatelessWidget {

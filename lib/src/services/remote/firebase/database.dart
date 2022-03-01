@@ -17,6 +17,7 @@ abstract class Database {
   Future getCarsList();
   Future getCarDetails(String documentId);
   Future<void> testGetCars();
+  late bool isLoading;
 
   //store user data from fire store into model
   late UserDetails userDetailsModel;
@@ -116,8 +117,11 @@ class FirestoreDatabase implements Database {
   @override
   late UserDetails userDetailsModel;
   @override
-  Future<void> getUser(String uid) async {
-    if(uid.isNotEmpty) {
+  bool isLoading = false;
+  @override
+  Future<void> getUser(String? uid) async {
+    isLoading = true;
+    if(uid != null) {
       await service.collection('users').doc(uid).get().then(
           (value) => userDetailsModel = UserDetails.fromJson(value.data()!));
       print(userDetailsModel.uId);
@@ -126,6 +130,7 @@ class FirestoreDatabase implements Database {
       print(userDetailsModel.city);
       print(userDetailsModel.userType);
     }
+    isLoading = false;
 
   }
 

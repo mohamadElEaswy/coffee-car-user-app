@@ -46,7 +46,7 @@ class RouteMethods {
       case OTPPage.route:
         return _materialPageRoute(page: OTPPage(phoneNumber: args));
       case PhonePage.route:
-        return _materialPageRoute(page: PhonePage());
+        return _materialPageRoute(page: const PhonePage());
       case ProviderProductsPage.route:
         return _materialPageRoute(page: const ProviderProductsPage());
       case ProductDetailPage.route:

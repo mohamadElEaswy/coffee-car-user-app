@@ -19,7 +19,7 @@ abstract class AuthBase {
     // required String city,
     // required String userType,
   });
-  Database? firebaseFirestore;
+  // Database? firebaseFirestore;
   Future<void> signOut();
   Future<void> submitPhoneNumber({required String phoneNumber});
   Future<void> submitOTP(String otpCode);
@@ -28,7 +28,7 @@ abstract class AuthBase {
 class Auth implements AuthBase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  @override
+  // @override
   Database? firebaseFirestore = FirestoreDatabase();
   @override
   Stream<User?> authUserState() => _firebaseAuth.authStateChanges();

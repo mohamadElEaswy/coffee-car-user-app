@@ -31,13 +31,14 @@ void main() async {
   }
 
   await LocalDBServices.init();
-  runApp(const MyApp());
+  runApp(MyApp(uId: auth.currentUser!.uid));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, this.uId}) : super(key: key);
   static const String title = 'coffee car';
 
+  final String? uId;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -54,7 +55,8 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider<LocaleProvider>(
                   create: (context) => LocaleProvider()),
               Provider<AuthBase>(create: (context) => Auth()),
-              Provider<Database>(create: (context) => FirestoreDatabase()),
+              Provider<Database>(
+                  create: (context) => FirestoreDatabase()..getUser(uId!)),
             ],
             builder: (BuildContext context, child) {
               final LocaleProvider provider =

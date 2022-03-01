@@ -16,7 +16,7 @@ class UserDetails {
 
   final String uId;
   final String userName;
-  final String phoneNumber;
+  final String? phoneNumber;
   final String email;
   final String city;
   final String userType;

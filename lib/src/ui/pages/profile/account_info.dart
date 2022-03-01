@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../services/remote/firebase/auth.dart';
+import '../../../services/remote/firebase/database.dart';
 import 'avatar.dart';
 
 class AccountInfo extends StatelessWidget {
@@ -10,30 +9,40 @@ class AccountInfo extends StatelessWidget {
   static const String route = 'account_info';
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthBase>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Account'),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(130.0),
-          child: _buildUserInfo(auth.currentUser!),
-        ),
-      ),
-      body: _buildUserDetails(auth.currentUser!, auth),
+    final AuthBase auth = Provider.of<AuthBase>(context, listen: false);
+    String? profileUrl = auth.currentUser!.photoURL;
+    // final Database database = Provider.of<FirestoreDatabase>(context);
+    // User user = User.;
+    return Consumer<Database>(
+      builder: (context, database, child) {
+        return !database.isLoading ? Scaffold(
+          appBar: AppBar(
+            title: const Text('Account'),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(130.0),
+              child: _buildUserInfo(database, profileUrl),
+            ),
+          ),
+          body: _buildUserDetails(database),
+        ) : const Center(
+          child: CircularProgressIndicator(),
+        );
+
+      }
     );
   }
 
-  Widget _buildUserInfo(User user) {
+  Widget _buildUserInfo(Database database ,String? profileUrl) {
     return Column(
       children: [
-        Avatar(
+         Avatar(
           radius: 50.0,
-          photoUrl: user.photoURL,
+          photoUrl: profileUrl,
         ),
         const SizedBox(height: 8.0),
-        if (user.displayName != null)
+
           Text(
-            user.displayName!,
+            database.userDetailsModel.userName,
             style: const TextStyle(color: Colors.black, fontSize: 16.0),
           ),
         const SizedBox(height: 8.0),
@@ -41,49 +50,47 @@ class AccountInfo extends StatelessWidget {
     );
   }
 
-  Widget _buildUserDetails(User user,AuthBase auth) {
-    TextEditingController nameController =
-        TextEditingController(text: user.displayName!);
+  Widget _buildUserDetails(Database database) {
+    // TextEditingController nameController =
+    //     TextEditingController(text: user.displayName!);
     // TextEditingController phoneController =
     //     TextEditingController(text: user.phoneNumber!);
     // nameController.text = user.displayName!;
-    FocusNode focusNode = FocusNode();
-    FocusNode phoneFocusNode = FocusNode();
+    // FocusNode focusNode = FocusNode();
+    // FocusNode phoneFocusNode = FocusNode();
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(20),
-      child: Column(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Email: ' + user.email!,
+            'Email: ' + database.userDetailsModel.email,
             style: const TextStyle(color: Colors.black, fontSize: 16.0),
           ),
           const SizedBox(height: 8),
-          if (user.phoneNumber != null)
-            Text(user.phoneNumber!,
-                style: const TextStyle(color: Colors.black)),
-          if (!user.emailVerified)
-            const Text(
-              'your email isn\'t verified',
-              style: TextStyle(color: Colors.black, fontSize: 16.0),
-            ),
+          // if (user.phoneNumber != null)
+          //   Text(database.userDetailsModel.phoneNumber!,
+          //       style: const TextStyle(color: Colors.black)),
+          // if (!user.emailVerified)
+          //   const Text(
+          //     'your email isn\'t verified',
+          //     style: TextStyle(color: Colors.black, fontSize: 16.0),
+          //   ),
           const SizedBox(height: 8),
-          if (!user.emailVerified)
-            ElevatedButton(
-                onPressed: user.sendEmailVerification,
-                child: const Text('verify your email')),
-          const SizedBox(height: 8),
-          if (user.phoneNumber != null)
+          // if (!user.emailVerified)
+          //   ElevatedButton(
+          //       onPressed: user.sendEmailVerification,
+          //       child: const Text('verify your email')),
+          // const SizedBox(height: 8),
+
+          // if (phone.isNotEmpty)
             Text(
-              user.phoneNumber!,
+              'Phone: ' + database.userDetailsModel.phoneNumber!,
               style: const TextStyle(color: Colors.black, fontSize: 16.0),
             ),
-          Text(
-              auth.firebaseFirestore!.userDetailsModel.phoneNumber,
-              style: const TextStyle(color: Colors.black, fontSize: 16.0),
-            ),
-          ElevatedButton(
-              onPressed: () {print(user.phoneNumber!,);}, child: const Text('add your phone number')),
+
+          // ElevatedButton(
+          //     onPressed: () {}, child: const Text('add your phone number')),
           // Text('user.phoneNumber!',style: const TextStyle(color: Colors.black)),
           // GlobalTextFormField(
           //   controller: nameController,
