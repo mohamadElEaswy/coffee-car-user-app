@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
+import 'package:provider/provider.dart';
+import '../../../services/remote/firebase/database.dart';
 import '../../colors/static_colors.dart';
 import '../check_internet/internet_states.dart';
 import '../providers/providers_page.dart';
@@ -19,7 +21,6 @@ class Home extends StatefulWidget {
   const Home({Key? key, required this.title}) : super(key: key);
   final String title;
   static const String route = '/home';
-
   @override
   State<Home> createState() => _Home();
 }
@@ -28,12 +29,14 @@ class _Home extends State<Home> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
         final AppCubit bloc = AppCubit.get(context);
-        User? currentUser = bloc.auth.currentUser;
-
+        final User? currentUser = bloc.auth.currentUser;
+        // final Database database = Provider.of<FirestoreDatabase>(context, listen: false);
+        // database.getUser(currentUser!.uid);
         return InternetCheck(
           online: SafeArea(
             bottom: true,

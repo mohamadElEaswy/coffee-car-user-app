@@ -4,7 +4,9 @@ import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/otp_page/otp_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 import 'package:mk/src/ui/pages/provider_products_page/provider_products_page.dart';
+import 'package:provider/provider.dart';
 
+import '../../services/remote/firebase/database.dart';
 import '../../ui/pages/otp_page/phone_page.dart';
 import '../../ui/pages/product_detail_page/product_detail_page.dart';
 import '../../ui/pages/profile/account_info.dart';
@@ -24,7 +26,9 @@ class RouteMethods {
     final args = settings.arguments;
     switch (settings.name) {
       case Home.route:
-        return _materialPageRoute(page: const Home(title: 'home'));
+        return _materialPageRoute(
+            page: Home(
+                title: 'home'));
 
       case Profile.route:
         return _materialPageRoute(

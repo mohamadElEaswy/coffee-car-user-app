@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,16 +32,18 @@ void main() async {
   }
 
   await LocalDBServices.init();
-  runApp(MyApp(uId: auth.currentUser!.uid));
+  runApp(MyApp(currentUser: auth.currentUser));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, this.uId}) : super(key: key);
+  const MyApp({Key? key, this.currentUser}) : super(key: key);
   static const String title = 'coffee car';
 
-  final String? uId;
+  final User? currentUser;
   @override
   Widget build(BuildContext context) {
+    // final Database database = Provider.of<FirestoreDatabase>(context);
+    // database.getUser(currentUser!.uid);
     return MultiBlocProvider(
       providers: [
         BlocProvider<AppCubit>(
@@ -55,8 +58,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider<LocaleProvider>(
                   create: (context) => LocaleProvider()),
               Provider<AuthBase>(create: (context) => Auth()),
-              Provider<Database>(
-                  create: (context) => FirestoreDatabase()..getUser(uId!)),
+              Provider<Database>(create: (context) => FirestoreDatabase()),
             ],
             builder: (BuildContext context, child) {
               final LocaleProvider provider =

@@ -14,36 +14,33 @@ class OTPPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void showProgressIndicator(BuildContext context) {
-      AlertDialog alertDialog = const AlertDialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        content: Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-          ),
-        ),
-      );
-
-      showDialog(
-        barrierColor: Colors.white.withOpacity(0),
-        barrierDismissible: false,
-        context: context,
-        builder: (context) {
-          return alertDialog;
-        },
-      );
-    }
+    // void showProgressIndicator(BuildContext context) {
+    //   AlertDialog alertDialog = const AlertDialog(
+    //     backgroundColor: Colors.transparent,
+    //     elevation: 0,
+    //     content: Center(
+    //       child: CircularProgressIndicator(
+    //         valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+    //       ),
+    //     ),
+    //   );
+    //
+    //   showDialog(
+    //     barrierColor: Colors.white.withOpacity(0),
+    //     barrierDismissible: false,
+    //     context: context,
+    //     builder: (context) {
+    //       return alertDialog;
+    //     },
+    //   );
+    // }
 
     void onVerified() {
       final auth = Provider.of<AuthBase>(context, listen: false);
       auth.submitOTP(otpCode);
       RouteMethods.navigateAndChange(context: context, routeName: Home.route);
     }
-
-    // print(auth.currentUser!.phoneNumber);
     return Scaffold(
-      // appBar: AppBar(title: const Text('otp'),),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -51,9 +48,13 @@ class OTPPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              phoneNumber,
-              style: Theme.of(context).textTheme.headline4,
+              'phone number:' + phoneNumber,
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.black
+              ),
             ),
+            const SizedBox(height: 20),
             Center(
               child: PinCodeTextField(
                 appContext: context,
