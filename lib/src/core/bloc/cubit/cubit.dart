@@ -15,10 +15,13 @@ import 'package:mk/src/ui/pages/likes_page/likes_page.dart';
 import 'package:mk/src/ui/pages/notifications/notifications_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 
+import '../../../locations.dart';
+import '../../../services/remote/firebase/database.dart';
+
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(InitialAppState());
   static AppCubit get(context) => BlocProvider.of(context);
-
+  Database database = FirestoreDatabase();
 //get home map data methods
   //this var to create controller to change the view with the map in the home
   GoogleMapController? mapController;
@@ -26,32 +29,41 @@ class AppCubit extends Cubit<AppState> {
   final Map<String, Marker> markers = {};
   LatLng center = const LatLng(30.0444, 31.2357);
 
-  List<locations.Office> data = [];
+  List<Cars> data = [];
+
   Future<void> onMapCreated(GoogleMapController controller) async {
     emit(LoadingMapsState());
-    final googleOffices = await locations.getGoogleOffices();
+    data.clear();
+    await database.getLocationsList().then(
+      (List<Cars> value) {
+        print(value.length);
+        data.addAll(value);
+        print(data.length);
+      },
+    );
+    // final carsList = await locations.getGoogleOffices();
 
     mapController = controller;
 
-    data = googleOffices.offices;
+    // data = googleOffices.offices;
 
     markers.clear();
-    for (final office in googleOffices.offices) {
+    for (final car in data) {
       final icon = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(size: Size(30, 30), devicePixelRatio: 2.5),
         AppAssets.carIcon,
       );
       final marker = Marker(
         visible: true,
-        markerId: MarkerId(office.name),
-        position: LatLng(office.lat, office.lng),
+        markerId: MarkerId(car.name),
+        position: LatLng(car.lat, car.lng),
         infoWindow: const InfoWindow(
           title: 'car name',
           snippet: 'car address',
         ),
         icon: icon,
       );
-      markers[office.name] = marker;
+      markers[car.name] = marker;
     }
     emit(SuccessMapsState());
   }

@@ -5,8 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
-import 'package:provider/provider.dart';
-import '../../../services/remote/firebase/database.dart';
 import '../../colors/static_colors.dart';
 import '../check_internet/internet_states.dart';
 import '../providers/providers_page.dart';
@@ -141,7 +139,8 @@ class HomeBodyPage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return HomeCard(
                             bloc: bloc,
-                            item: bloc.data[index],
+                            index: index,
+                            // item: bloc.data[index].,
                             context: context,
                           );
                         },

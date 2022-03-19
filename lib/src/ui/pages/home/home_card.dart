@@ -8,12 +8,12 @@ import '../provider_products_page/provider_products_page.dart';
 class HomeCard extends StatelessWidget {
   const HomeCard({
     Key? key,
-    required this.item,
+    required this.index,
     required BuildContext context,
     required this.bloc,
   }) : super(key: key);
   final AppCubit bloc;
-  final Office item;
+  final int index;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -30,7 +30,7 @@ class HomeCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(item.name),
+              Text('title'),
               Container(
                 padding: const EdgeInsets.only(
                     right: 10, left: 10, top: 5, bottom: 5),
@@ -64,15 +64,18 @@ class HomeCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    item.region,
+                    'item.region',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(),
                   ),
                   const Spacer(),
                   InkWell(
-                      onTap: () => bloc.changeMapView(
-                          latitude: item.lat, longitude: item.lng),
+                      onTap: () =>
+                      {
+                            // bloc.changeMapView(
+                            //     latitude: item.lat, longitude: item.lng);
+                          },
                       child: const Icon(Icons.not_listed_location_sharp)),
                 ],
               ),

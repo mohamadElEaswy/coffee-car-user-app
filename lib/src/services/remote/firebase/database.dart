@@ -3,8 +3,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mk/src/core/model/coffe_car_model/coffee_car_model.dart';
+import 'package:mk/src/locations.dart';
+import 'package:mk/src/services/remote/firebase/api_path.dart';
 
 import '../../../core/model/user_details_model/user_details_model.dart';
+import 'firestore_services.dart';
 
 abstract class Database {
   // Query getMessageQuery();
@@ -32,6 +35,7 @@ abstract class Database {
   });
   //get user data from fire store DB
   Future<void> getUser(String uid);
+  Future<List<Cars>> getLocationsList();
 }
 
 String documentIDCurrentDate() => DateTime.now().toIso8601String();
@@ -43,6 +47,7 @@ class FirestoreDatabase implements Database {
   // final String uid;
 
   final FirebaseFirestore service = FirebaseFirestore.instance;
+  final FireStoreService _service = FireStoreService.instance;
 
   @override
   List<CoffeeCar> cars = [];
@@ -106,14 +111,6 @@ class FirestoreDatabase implements Database {
     });
   }
 
-
-
-
-
-
-
-
-
   @override
   late UserDetails userDetailsModel;
   @override
@@ -121,7 +118,7 @@ class FirestoreDatabase implements Database {
   @override
   Future<void> getUser(String? uid) async {
     isLoading = true;
-    if(uid != null) {
+    if (uid != null) {
       await service.collection('users').doc(uid).get().then(
           (value) => userDetailsModel = UserDetails.fromJson(value.data()!));
       print(userDetailsModel.uId);
@@ -131,7 +128,6 @@ class FirestoreDatabase implements Database {
       print(userDetailsModel.userType);
     }
     isLoading = false;
-
   }
 
   @override
@@ -144,13 +140,13 @@ class FirestoreDatabase implements Database {
     required String userType,
   }) async {
     userDetailsModel = UserDetails(
-      uId: uid,
-      userName: userName,
-      phoneNumber: phoneNumber,
-      email: email,
-      city: city,
-      userType: userType,joinDate: DateTime.now()
-    );
+        uId: uid,
+        userName: userName,
+        phoneNumber: phoneNumber,
+        email: email,
+        city: city,
+        userType: userType,
+        joinDate: DateTime.now());
     await service
         .collection('users')
         .doc(uid)
@@ -159,27 +155,29 @@ class FirestoreDatabase implements Database {
           (value) => getUser,
         );
   }
-}
 
-class DataRepository {
-  // 1
-  final CollectionReference collection =
-      FirebaseFirestore.instance.collection('pets');
-  // 2
-  Stream<QuerySnapshot> getStream() {
-    return collection.snapshots();
+  @override
+  Future<List<Cars>> getLocationsList() async {
+    List<Cars> locations = [];
+    await service.collection('locations').get().then(
+      (value) {
+        value.docs.forEach(
+          (element) {
+            locations.add(Cars.fromJson(element.data()));
+
+
+          },
+        );
+      },
+    );
+
+    // QuerySnapshot<Map<String, dynamic>> data = await _service.getData(
+    //     documentPath: 'locations/');
+    // data.docs.forEach(
+    //   (element) {
+    //     locations.add(Cars.fromJson(element.data()));
+    //   },
+    // );
+    return locations;
   }
-
-  // 3
-  // Future<DocumentReference> addPet(CoffeeCar coffeeCar) {
-  //   return collection.add(coffeeCar.toJson());
-  // }
-  // 4
-  // void updatePet(CoffeeCar coffeeCar) async {
-  //   await collection.doc(coffeeCar.referenceId).update(coffeeCar.toJson());
-  // }
-  // 5
-  // void deletePet(CoffeeCar coffeeCar) async {
-  //   await collection.doc(coffeeCar.referenceId).delete();
-  // }
 }
