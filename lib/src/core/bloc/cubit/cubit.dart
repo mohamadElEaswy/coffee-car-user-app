@@ -7,16 +7,16 @@ import 'package:location/location.dart';
 import 'package:mk/src/core/assets/assets.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mk/src/locations.dart' as locations;
 import 'package:mk/src/services/remote/firebase/auth.dart';
 import 'package:mk/src/ui/pages/cart/cart_page.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/likes_page/likes_page.dart';
 import 'package:mk/src/ui/pages/notifications/notifications_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
-
 import '../../../locations.dart';
 import '../../../services/remote/firebase/database.dart';
+import '../../model/category_model/category_model.dart';
+import '../../model/product_model/product_model.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(InitialAppState());
@@ -36,9 +36,7 @@ class AppCubit extends Cubit<AppState> {
     data.clear();
     await database.getLocationsList().then(
       (List<Cars> value) {
-        print(value.length);
         data.addAll(value);
-        print(data.length);
       },
     );
     // final carsList = await locations.getGoogleOffices();
@@ -80,6 +78,7 @@ class AppCubit extends Cubit<AppState> {
 
 /*manage bottom navigation bar*/
   int currentIndex = 0;
+
   List<Widget> body = [
     const HomeBodyPage(),
     const LikesPage(),
@@ -131,7 +130,86 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
+
+
   AuthBase auth = Auth();
+
+  //using this String I path the provider id to present his products
+  String? providerId;
+
+  List<Product> allProductsList = [];
+  Future<List<Product>> getAllProductsList() async {
+    emit(ProductsLoadingState());
+    print(providerId);
+    List<Product> products = [];
+    allProductsList.clear();
+    List<Product> data = await database.getProductsList(uId: providerId!);
+      products.addAll(data);
+      // = data;
+      // allProductsList = data;
+      // print(data.length);
+      // print(allProductsList.length);
+      emit(ProductsSuccessState());
+
+    // await database.getProductsList(uId: providerId!).then(
+    //   (List<Product> value) {
+    //     if(value.isNotEmpty){
+    //       allProductsList = value;
+    //       products = value;
+    //
+    //       print(value.length);
+    //       print(products.length);
+    //       // products = value;
+    //     }
+    //   },
+    // ).catchError(
+    //   (e) {
+    //
+    //   },
+    // );
+    return products;
+  }
+
+  // Future<List<Product>> getProductByCategory({required String category}) async {
+  //   List<Product> products = [];
+  //   products.clear();
+  //   allProductsList.forEach(
+  //     (Product product) {
+  //       if (product.category == category) {
+  //         products.add(product);
+  //         print(product.name);
+  //       }
+  //     },
+  //   );
+  //   return products;
+  // }
+
+  Future getSingleProduct(String productId) async {
+    await database
+        .getSingleProduct(uId: auth.currentUser!.uid, productId: productId)
+        .then((value) => print(value));
+  }
+
+  List<String> categoriesNameList = [];
+  // List<Category> categoriesList = [];
+  Future getCategories() async {
+    emit(CategoryLoadingState());
+    // categoriesList.clear();
+    categoriesNameList.clear();
+    await database.getCategories(uId: auth.currentUser!.uid).then(
+      (List<Category> value) {
+        // categoriesList.addAll(value);
+        categoriesNameList.addAll(value.map((e) => e.name));
+        print(categoriesNameList);
+        emit(CategorySuccessState());
+      },
+    ).catchError(
+      (e) {
+        print('categories error state' + e.toString());
+        emit(CategoryErrorState(error: e.toString()));
+      },
+    );
+  }
   // User? currentUser;
   // List cars =[];
   // Database database = FirestoreDatabase();

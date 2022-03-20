@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/core/navigation/navigation_methods.dart';
+import 'package:mk/src/ui/widgets/loading_widget.dart';
+import '../../../locations.dart';
 import '../../colors/static_colors.dart';
 import '../check_internet/internet_states.dart';
 import '../providers/providers_page.dart';
@@ -27,7 +29,6 @@ class _Home extends State<Home> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -108,45 +109,52 @@ class HomeBodyPage extends StatelessWidget {
                     Row(
                       children: [
                         Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: TextButton(
-                                onPressed: () {
-                                  RouteMethods.navigateTo(
-                                    context: context,
-                                    routeName: ProvidersPage.route,
-                                  );
-                                },
-                                child: const Text('View list',
-                                    style: TextStyle(color: Colors.black)),
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Colors.white)))),
+                          padding: const EdgeInsets.only(left: 20),
+                          child: TextButton(
+                            onPressed: () {
+                              RouteMethods.navigateTo(
+                                context: context,
+                                routeName: ProvidersPage.route,
+                              );
+                            },
+                            child: const Text('View list',
+                                style: TextStyle(color: Colors.black)),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
                         const Spacer(),
                         Padding(
                           padding: const EdgeInsets.only(right: 20),
                           child: FloatingActionButton(
-                              onPressed: bloc.myLocationButton,
-                              child:
-                                  const Icon(FontAwesomeIcons.locationArrow)),
+                            onPressed: bloc.myLocationButton,
+                            child: const Icon(FontAwesomeIcons.locationArrow),
+                          ),
                         ),
                       ],
                     ),
                     SizedBox(
                       height: 175,
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return HomeCard(
-                            bloc: bloc,
-                            index: index,
-                            // item: bloc.data[index].,
-                            context: context,
-                          );
-                        },
-                        itemCount: bloc.data.length,
-                        padding: const EdgeInsets.all(15),
-                      ),
+                      child: FutureBuilder(
+                          future: bloc.database.getLocationsList(),
+                          builder: (BuildContext context,
+                                  AsyncSnapshot<List<Cars>> snapshot) =>
+                              snapshot.data != null
+                                  ? ListView.builder(
+                                      physics: const BouncingScrollPhysics(),
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) => HomeCard(
+                                        car: snapshot.data![index],
+                                        bloc: bloc,
+                                        context: context,
+                                      ),
+                                      itemCount: snapshot.data!.length,
+                                      padding: const EdgeInsets.all(15),
+                                    )
+                                  : const GlobalLoading()),
                     ),
                   ],
                 ),

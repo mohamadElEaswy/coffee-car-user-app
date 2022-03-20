@@ -26,9 +26,7 @@ class RouteMethods {
     final args = settings.arguments;
     switch (settings.name) {
       case Home.route:
-        return _materialPageRoute(
-            page: Home(
-                title: 'home'));
+        return _materialPageRoute(page: const Home(title: 'home'));
 
       case Profile.route:
         return _materialPageRoute(

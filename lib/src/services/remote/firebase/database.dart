@@ -6,6 +6,8 @@ import 'package:mk/src/core/model/coffe_car_model/coffee_car_model.dart';
 import 'package:mk/src/locations.dart';
 import 'package:mk/src/services/remote/firebase/api_path.dart';
 
+import '../../../core/model/category_model/category_model.dart';
+import '../../../core/model/product_model/product_model.dart';
 import '../../../core/model/user_details_model/user_details_model.dart';
 import 'firestore_services.dart';
 
@@ -36,6 +38,9 @@ abstract class Database {
   //get user data from fire store DB
   Future<void> getUser(String uid);
   Future<List<Cars>> getLocationsList();
+  Future<List<Category>> getCategories({required String uId});
+  Future getSingleProduct({required String uId, required String productId});
+  Future<List<Product>> getProductsList({required String uId});
 }
 
 String documentIDCurrentDate() => DateTime.now().toIso8601String();
@@ -164,8 +169,6 @@ class FirestoreDatabase implements Database {
         value.docs.forEach(
           (element) {
             locations.add(Cars.fromJson(element.data()));
-
-
           },
         );
       },
@@ -179,5 +182,79 @@ class FirestoreDatabase implements Database {
     //   },
     // );
     return locations;
+  }
+
+  @override
+  Future<List<Category>> getCategories({required String uId}) async {
+    List<Category> categories = [];
+    await _service
+        .getDataCollection(
+          documentPath: ApiPath.categories(uId),
+          collectionPath: 'categories',
+        )
+        .then(
+          (value) => value.docs.forEach(
+            (element) {
+              categories.add(
+                Category.fromJson(element.data()),
+              );
+            },
+          ),
+        );
+    return categories;
+  }
+
+  @override
+  Future<Product> getSingleProduct(
+      {required String uId, required String productId}) async {
+    late Product product;
+    // late Product product;
+    // await _service
+    //     .getData(documentPath: 'providers/$uId/products/$productId', )
+    //     .then((value) => Product.fromJson(value)).catchError((e){print(e.toString());});
+    await FirebaseFirestore.instance
+        .collection('providers')
+        .doc(uId)
+        .collection('products')
+        .doc(productId)
+        .get()
+        .then(
+      (value) {
+        product = Product.fromJson(value.data()!);
+      },
+    ).catchError((e) => print(e.toString()));
+    return product;
+  }
+
+  @override
+  Future<List<Product>> getProductsList({required String uId}) async {
+    List<Product> products = [];
+    products.clear();
+    // QuerySnapshot<Map<String, dynamic>> snap = await _service.getDataCollection(
+    //     documentPath: ApiPath.products(uId), collectionPath: 'products/');
+    // // print(snap.docs[1].id);
+    // snap.docs.forEach(
+    //   (element) {
+    //     products.add(Product.fromJson(element.data()));
+    //     print(products.length);
+    //   },
+    // );
+    // return products;
+
+    await FirebaseFirestore.instance
+        .collection('providers/')
+        .doc(uId)
+        .collection('products/')
+        .get()
+        .then(
+      (value) {
+        value.docs.forEach(
+          (element) {
+            products.add(Product.fromJson(element.data()));
+          },
+        );
+      },
+    );
+    return products;
   }
 }

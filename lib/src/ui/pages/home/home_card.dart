@@ -8,21 +8,25 @@ import '../provider_products_page/provider_products_page.dart';
 class HomeCard extends StatelessWidget {
   const HomeCard({
     Key? key,
-    required this.index,
+    required this.car,
     required BuildContext context,
     required this.bloc,
   }) : super(key: key);
   final AppCubit bloc;
-  final int index;
+  final Cars car;
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       margin: const EdgeInsets.only(right: 10, left: 5),
       child: InkWell(
-        onTap: () {
+        onTap: () async {
+          bloc.providerId = car.id;
           RouteMethods.navigateTo(
-              context: context, routeName: ProviderProductsPage.route);
+            context: context,
+            routeName: ProviderProductsPage.route,
+            // args: car.id,
+          );
         },
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -30,7 +34,7 @@ class HomeCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('title'),
+              Text(car.name),
               Container(
                 padding: const EdgeInsets.only(
                     right: 10, left: 10, top: 5, bottom: 5),
@@ -64,18 +68,17 @@ class HomeCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    'item.region',
+                    car.address,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(),
                   ),
                   const Spacer(),
                   InkWell(
-                      onTap: () =>
-                      {
-                            // bloc.changeMapView(
-                            //     latitude: item.lat, longitude: item.lng);
-                          },
+                      onTap: () => bloc.changeMapView(
+                            latitude: car.lat,
+                            longitude: car.lng,
+                          ),
                       child: const Icon(Icons.not_listed_location_sharp)),
                 ],
               ),

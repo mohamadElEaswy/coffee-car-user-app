@@ -24,9 +24,8 @@ class ProvidersPage extends StatelessWidget {
             itemCount: bloc.data.length,
             itemBuilder: (BuildContext context, int index) {
               return cardItem(
-                // item: bloc.data[index],
                 context: context,
-                bloc: bloc,
+                car: bloc.data[index],
               );
             },
           ),
@@ -39,7 +38,7 @@ class ProvidersPage extends StatelessWidget {
           {
             // required Office item,
           required BuildContext context,
-          required AppCubit bloc,
+          required Cars car,
           }) =>
       Card(
         shape:
@@ -53,7 +52,7 @@ class ProvidersPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('item.name'),
+                Text(car.name),
                 Container(
                   padding: const EdgeInsets.only(
                       right: 10, left: 10, top: 5, bottom: 5),
@@ -89,7 +88,7 @@ class ProvidersPage extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      'item.region',
+                      car.address,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(),
