@@ -17,6 +17,7 @@ import '../../../locations.dart';
 import '../../../services/remote/firebase/database.dart';
 import '../../model/category_model/category_model.dart';
 import '../../model/product_model/product_model.dart';
+import 'package:async/src/async_memoizer.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(InitialAppState());
@@ -130,26 +131,35 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
-
-
   AuthBase auth = Auth();
 
   //using this String I path the provider id to present his products
   String? providerId;
+  /*the coming method fixing future builder bug (keep firing)*/
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+  late final Future<List<Product>> myFuture = getAllProductsList();
+  Future<List<Product>> fetchAllProducts() async{
+    return await this._memoizer.runOnce(
+      () {
+        return myFuture;
+      },
+    );
+  }
 
   List<Product> allProductsList = [];
   Future<List<Product>> getAllProductsList() async {
     emit(ProductsLoadingState());
+
     print(providerId);
     List<Product> products = [];
     allProductsList.clear();
     List<Product> data = await database.getProductsList(uId: providerId!);
-      products.addAll(data);
-      // = data;
-      // allProductsList = data;
-      // print(data.length);
-      // print(allProductsList.length);
-      emit(ProductsSuccessState());
+    products.addAll(data);
+    // = data;
+    // allProductsList = data;
+    // print(data.length);
+    // print(allProductsList.length);
+    emit(ProductsSuccessState());
 
     // await database.getProductsList(uId: providerId!).then(
     //   (List<Product> value) {
@@ -167,7 +177,7 @@ class AppCubit extends Cubit<AppState> {
     //
     //   },
     // );
-    return products;
+    return data;
   }
 
   // Future<List<Product>> getProductByCategory({required String category}) async {
