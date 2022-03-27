@@ -11,8 +11,9 @@ import '../../widgets/global_button.dart';
 import '../../widgets/global_divider.dart';
 
 class ProductDetailPage extends StatelessWidget {
-  const ProductDetailPage({Key? key}) : super(key: key);
+  const ProductDetailPage({Key? key, required this.product}) : super(key: key);
 
+  final dynamic product;
   static const String route = '/product_detail_page';
   static const Radius topRadius = Radius.circular(40);
   void actionButtonPress() {}
@@ -72,7 +73,7 @@ class ProductDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: StaticConstants.globalPadding),
-                  const TitleSection(),
+                   TitleSection(product),
                   const SizedBox(height: 30),
                   const SizeSection(),
                   const SizedBox(height: 40),

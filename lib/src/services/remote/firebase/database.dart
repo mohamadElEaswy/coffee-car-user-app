@@ -22,10 +22,7 @@ abstract class Database {
   Future getCarsList();
   Future getCarDetails(String documentId);
   Future<void> testGetCars();
-  late bool isLoading;
 
-  //store user data from fire store into model
-  late UserDetails userDetailsModel;
   //adding user data to fire store DB
   Future<void> addUser({
     required String uid,
@@ -36,7 +33,7 @@ abstract class Database {
     required String userType,
   });
   //get user data from fire store DB
-  Future<void> getUser(String uid);
+  Future<UserDetails> getUser(String uid);
   Future<List<Cars>> getLocationsList();
   Future<List<Category>> getCategories({required String uId});
   Future getSingleProduct({required String uId, required String productId});
@@ -116,23 +113,17 @@ class FirestoreDatabase implements Database {
     });
   }
 
-  @override
   late UserDetails userDetailsModel;
   @override
-  bool isLoading = false;
-  @override
-  Future<void> getUser(String? uid) async {
-    isLoading = true;
-    if (uid != null) {
-      await service.collection('users').doc(uid).get().then(
-          (value) => userDetailsModel = UserDetails.fromJson(value.data()!));
-      print(userDetailsModel.uId);
-      print(userDetailsModel.phoneNumber);
-      print(userDetailsModel.email);
-      print(userDetailsModel.city);
-      print(userDetailsModel.userType);
-    }
-    isLoading = false;
+  Future<UserDetails> getUser(String uid) async {
+    print(uid);
+    return await service.collection('users').doc(uid).get().then((value) {
+      print(value.data());
+      print(value.data()!.values);
+      return UserDetails.fromJson(value.data()!);
+    }).catchError((e) {
+      print(e.toString());
+    });
   }
 
   @override

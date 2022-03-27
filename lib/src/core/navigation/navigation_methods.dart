@@ -4,9 +4,6 @@ import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/otp_page/otp_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 import 'package:mk/src/ui/pages/provider_products_page/provider_products_page.dart';
-import 'package:provider/provider.dart';
-
-import '../../services/remote/firebase/database.dart';
 import '../../ui/pages/otp_page/phone_page.dart';
 import '../../ui/pages/product_detail_page/product_detail_page.dart';
 import '../../ui/pages/profile/account_info.dart';
@@ -52,7 +49,10 @@ class RouteMethods {
       case ProviderProductsPage.route:
         return _materialPageRoute(page: const ProviderProductsPage());
       case ProductDetailPage.route:
-        return _materialPageRoute(page: const ProductDetailPage());
+        return _materialPageRoute(
+            page: ProductDetailPage(
+          product: args,
+        ));
       default:
         return _materialPageRoute(page: const ErrorPage());
     }
@@ -62,18 +62,20 @@ class RouteMethods {
           {required Widget page, bool fullscreenDialog = false}) =>
       MaterialPageRoute(
           builder: (context) => page, fullscreenDialog: fullscreenDialog);
-  static Future<Object?> navigateTo(
-      {required BuildContext context,
-      required String routeName,
-      dynamic args}) async {
+  static Future<Object?> navigateTo({
+    required BuildContext context,
+    required String routeName,
+    dynamic args,
+  }) async {
     Navigator.of(context).pushNamed(routeName, arguments: args);
     return null;
   }
 
-  static Future<Object?> navigateAndChange(
-      {required BuildContext context,
-      required String routeName,
-      dynamic args}) async {
+  static Future<Object?> navigateAndChange({
+    required BuildContext context,
+    required String routeName,
+    dynamic args,
+  }) async {
     Navigator.of(context).pushReplacementNamed(routeName, arguments: args);
     return null;
   }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/model/product_model/product_model.dart';
 import '../../widgets/plus_button.dart';
 
 class TitleSection extends StatelessWidget {
-  const TitleSection({Key? key}) : super(key: key);
+  const TitleSection(this.product,{Key? key}) : super(key: key);
 
+  final Product product;
   void onTap(){print('1');}
   @override
   Widget build(BuildContext context) {
@@ -13,9 +15,9 @@ class TitleSection extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Espresso', style: Theme.of(context).textTheme.headline5),
+            Text(product.name, style: Theme.of(context).textTheme.headline5),
             const SizedBox(height: 10),
-            Text('100 L.E', style: Theme.of(context).textTheme.subtitle1),
+            Text(product.price, style: Theme.of(context).textTheme.subtitle1),
           ],
         ),
         const Spacer(),

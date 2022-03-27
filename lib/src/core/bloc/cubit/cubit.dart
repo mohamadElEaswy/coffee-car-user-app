@@ -7,6 +7,7 @@ import 'package:location/location.dart';
 import 'package:mk/src/core/assets/assets.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mk/src/core/model/user_details_model/user_details_model.dart';
 import 'package:mk/src/services/remote/firebase/auth.dart';
 import 'package:mk/src/ui/pages/cart/cart_page.dart';
 import 'package:mk/src/ui/pages/home/home_page.dart';
@@ -18,11 +19,14 @@ import '../../../services/remote/firebase/database.dart';
 import '../../model/category_model/category_model.dart';
 import '../../model/product_model/product_model.dart';
 import 'package:async/src/async_memoizer.dart';
+// import 'dart:math' show cos, sqrt, asin;
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(InitialAppState());
   static AppCubit get(context) => BlocProvider.of(context);
   Database database = FirestoreDatabase();
+
+  // static const String apiKey = 'AIzaSyB5s0q2PCjtitmESmmU8SsSNbbr3FrzbIc';
 //get home map data methods
   //this var to create controller to change the view with the map in the home
   GoogleMapController? mapController;
@@ -47,6 +51,7 @@ class AppCubit extends Cubit<AppState> {
     // data = googleOffices.offices;
 
     markers.clear();
+    // await calculateDistance();
     for (final car in data) {
       final icon = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(size: Size(30, 30), devicePixelRatio: 2.5),
@@ -56,9 +61,9 @@ class AppCubit extends Cubit<AppState> {
         visible: true,
         markerId: MarkerId(car.name),
         position: LatLng(car.lat, car.lng),
-        infoWindow: const InfoWindow(
-          title: 'car name',
-          snippet: 'car address',
+        infoWindow: InfoWindow(
+          title: car.name,
+          snippet: car.address,
         ),
         icon: icon,
       );
@@ -77,6 +82,174 @@ class AppCubit extends Cubit<AppState> {
     );
   }
 
+  //get route between two points
+// Object for PolylinePoints
+//   late PolylinePoints polylinePoints;
+
+// List of coordinates to join
+//   List<LatLng> polylineCoordinates = [];
+
+// Map storing poly lines created by connecting two points
+//   Map<PolylineId, Polyline> polyLines = {};
+  // Create the polylines for showing the route between two places
+  // late String placeDistance;
+  // double coordinateDistance(lat1, lon1, lat2, lon2) {
+  //   var p = 0.017453292519943295;
+  //   var c = cos;
+  //   var a = 0.5 -
+  //       c((lat2 - lat1) * p) / 2 +
+  //       c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+  //   return 12742 * asin(sqrt(a));
+  // }
+  // createPolyLines(
+  //     // double startLatitude,
+  //     // double startLongitude,
+  //     double destinationLatitude,
+  //     double destinationLongitude,
+  //     ) async {
+  //   polylinePoints = PolylinePoints();
+  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+  //     apiKey, // Google Maps API Key
+  //     PointLatLng(current.latitude!, current.longitude!),
+  //     PointLatLng(destinationLatitude, destinationLongitude),
+  //     travelMode: TravelMode.transit,
+  //   );
+  //
+  //   if (result.points.isNotEmpty) {
+  //     result.points.forEach((PointLatLng point) {
+  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //     });
+  //   }
+  //
+  //   PolylineId id = PolylineId('poly');
+  //   Polyline polyline = Polyline(
+  //     polylineId: id,
+  //     color: Colors.red,
+  //     points: polylineCoordinates,
+  //     width: 3,
+  //   );
+  //   polyLines[id] = polyline;
+  // }
+
+
+
+  // Future<bool> calculateDistance() async {
+    // try {
+      // Use the retrieved coordinates of the current position,
+      // instead of the address if the start position is user's
+      // current position, as it results in better accuracy.
+      //
+      //
+      // double destinationLatitude = data[0].lat;
+      // double destinationLongitude = data[0].lng;
+      //
+      // String startCoordinatesString = '(${current.latitude}, ${current.longitude})';
+      // String destinationCoordinatesString =
+      //     '(${data[0].lat}, ${data[0].lng})';
+
+      // Start Location Marker
+      // Marker startMarker = Marker(
+      //   markerId: MarkerId(startCoordinatesString),
+      //   position: LatLng(current.latitude!, current.longitude!),
+      //   infoWindow: InfoWindow(
+      //     title: 'Start $startCoordinatesString',
+      //     snippet: destinationCoordinatesString,
+      //   ),
+      //   icon: BitmapDescriptor.defaultMarker,
+      // );
+
+      // Destination Location Marker
+      // Marker destinationMarker = Marker(
+      //   markerId: MarkerId(destinationCoordinatesString),
+      //   position: LatLng(destinationLatitude, destinationLongitude),
+      //   infoWindow: InfoWindow(
+      //     title: 'Destination $destinationCoordinatesString',
+      //     snippet: '',
+      //   ),
+      //   icon: BitmapDescriptor.defaultMarker,
+      // );
+
+      // Adding the markers to the list
+      // markers.add(startMarker);
+      // markers.add(destinationMarker);
+
+      // print(
+      //   'START COORDINATES: ($startLatitude, $startLongitude)',
+      // );
+      // print(
+      //   'DESTINATION COORDINATES: ($destinationLatitude, $destinationLongitude)',
+      // );
+
+      // Calculating to check that the position relative
+      // to the frame, and pan & zoom the camera accordingly.
+      // double miny = (startLatitude <= destinationLatitude)
+      //     ? startLatitude
+      //     : destinationLatitude;
+      // double minx = (startLongitude <= destinationLongitude)
+      //     ? startLongitude
+      //     : destinationLongitude;
+      // double maxy = (startLatitude <= destinationLatitude)
+      //     ? destinationLatitude
+      //     : startLatitude;
+      // double maxx = (startLongitude <= destinationLongitude)
+      //     ? destinationLongitude
+      //     : startLongitude;
+
+      // double southWestLatitude = miny;
+      // double southWestLongitude = minx;
+      //
+      // double northEastLatitude = maxy;
+      // double northEastLongitude = maxx;
+
+      // Accommodate the two locations within the
+      // camera view of the map
+      // mapController.animateCamera(
+      //   CameraUpdate.newLatLngBounds(
+      //     LatLngBounds(
+      //       northeast: LatLng(northEastLatitude, northEastLongitude),
+      //       southwest: LatLng(southWestLatitude, southWestLongitude),
+      //     ),
+      //     100.0,
+      //   ),
+      // );
+
+      // Calculating the distance between the start and the end positions
+      // with a straight path, without considering any route
+      // double distanceInMeters = await Geolocator.bearingBetween(
+      //   startLatitude,
+      //   startLongitude,
+      //   destinationLatitude,
+      //   destinationLongitude,
+      // );
+
+      // await createPolyLines(destinationLatitude,
+      //     destinationLongitude);
+      //
+      // double totalDistance = 0.0;
+      //
+      // // Calculating the total distance by adding the distance
+      // // between small segments
+      // for (int i = 0; i < polylineCoordinates.length - 1; i++) {
+      //   totalDistance += coordinateDistance(
+      //     polylineCoordinates[i].latitude,
+      //     polylineCoordinates[i].longitude,
+      //     polylineCoordinates[i + 1].latitude,
+      //     polylineCoordinates[i + 1].longitude,
+      //   );
+      // }
+
+      // setState(() {
+  //       placeDistance = totalDistance.toStringAsFixed(2);
+  //       print('DISTANCE: $placeDistance km');
+  //     // });
+  //
+  //     return true;
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   return false;
+  // }
+
 /*manage bottom navigation bar*/
   int currentIndex = 0;
 
@@ -90,7 +263,7 @@ class AppCubit extends Cubit<AppState> {
 
   List<BottomNavigationBarItem> items = [
     const BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.home), label: 'Home', tooltip: 'Home'),
+        icon: Icon(FontAwesomeIcons.house), label: 'Home', tooltip: 'Home'),
     const BottomNavigationBarItem(
         icon: Icon(FontAwesomeIcons.objectGroup),
         label: 'Providers',
@@ -121,11 +294,14 @@ class AppCubit extends Cubit<AppState> {
   //firstly check if location services permission is granted(true, or false) and ask the permission if it is not granted
   Future<void> myLocationButton() async {
     if (await location.serviceEnabled()) {
-      return await mapController!
-          .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(current.latitude!, current.longitude!),
-        zoom: 17,
-      )));
+      return await mapController!.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(current.latitude!, current.longitude!),
+            zoom: 17,
+          ),
+        ),
+      );
     } else {
       location.requestService();
     }
@@ -138,12 +314,17 @@ class AppCubit extends Cubit<AppState> {
   /*the coming method fixing future builder bug (keep firing)*/
   final AsyncMemoizer _memoizer = AsyncMemoizer();
   late final Future<List<Product>> myFuture = getAllProductsList();
-  Future<List<Product>> fetchAllProducts() async{
+  Future<List<Product>> fetchAllProducts() async {
+    // ignore: unnecessary_this
     return await this._memoizer.runOnce(
       () {
         return myFuture;
       },
     );
+  }
+
+  Future<UserDetails> getUserData()async{
+   return await database.getUser(auth.currentUser!.uid);
   }
 
   List<Product> allProductsList = [];
@@ -155,44 +336,10 @@ class AppCubit extends Cubit<AppState> {
     allProductsList.clear();
     List<Product> data = await database.getProductsList(uId: providerId!);
     products.addAll(data);
-    // = data;
-    // allProductsList = data;
-    // print(data.length);
-    // print(allProductsList.length);
     emit(ProductsSuccessState());
 
-    // await database.getProductsList(uId: providerId!).then(
-    //   (List<Product> value) {
-    //     if(value.isNotEmpty){
-    //       allProductsList = value;
-    //       products = value;
-    //
-    //       print(value.length);
-    //       print(products.length);
-    //       // products = value;
-    //     }
-    //   },
-    // ).catchError(
-    //   (e) {
-    //
-    //   },
-    // );
     return data;
   }
-
-  // Future<List<Product>> getProductByCategory({required String category}) async {
-  //   List<Product> products = [];
-  //   products.clear();
-  //   allProductsList.forEach(
-  //     (Product product) {
-  //       if (product.category == category) {
-  //         products.add(product);
-  //         print(product.name);
-  //       }
-  //     },
-  //   );
-  //   return products;
-  // }
 
   Future getSingleProduct(String productId) async {
     await database

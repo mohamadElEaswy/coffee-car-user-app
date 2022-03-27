@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../core/model/product_model/product_model.dart';
 import '../../../core/navigation/navigation_methods.dart';
 import '../product_detail_page/product_detail_page.dart';
 
 class ProductGridItem extends StatelessWidget {
-  const ProductGridItem(this.index, {Key? key}) : super(key: key);
+  const ProductGridItem(this.product, {Key? key}) : super(key: key);
 
-  final int index;
+  final Product product;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => RouteMethods.navigateTo(
-          context: context, routeName: ProductDetailPage.route),
+        context: context,
+        routeName: ProductDetailPage.route,
+        args: product,
+      ),
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
@@ -62,7 +66,8 @@ class ProductGridItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Espresso', style: TextStyle(color: Colors.black)),
+                  Text(product.name,
+                      style: const TextStyle(color: Colors.black)),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.all(4),
@@ -75,7 +80,7 @@ class ProductGridItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('10.00 EGP'),
+                        Text(product.price),
                         const SizedBox(width: 10),
                         Container(
                           decoration: BoxDecoration(

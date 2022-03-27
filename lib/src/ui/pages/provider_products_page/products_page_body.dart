@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/src/core/bloc/cubit/cubit.dart';
-import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/ui/widgets/loading_widget.dart';
 import '../../../core/model/product_model/product_model.dart';
 import 'grid_item.dart';
@@ -18,12 +16,8 @@ class AllProductsPage extends StatefulWidget {
 }
 
 class _AllProductsPageState extends State<AllProductsPage> {
-
   @override
   Widget build(BuildContext context) {
-
-
-
     return FutureBuilder(
       future: widget.bloc.fetchAllProducts(),
       builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
@@ -39,7 +33,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                 physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                  return ProductGridItem(index);
+                  return ProductGridItem(snapshot.data![index]);
                 },
               );
             },

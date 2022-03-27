@@ -11,6 +11,7 @@ class HomeMap extends StatelessWidget {
       color: Colors.cyan[100],
       child: Center(
         child: GoogleMap(
+          // polylines: Set<Polyline>.of(bloc.polyLines.values),
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
           zoomGesturesEnabled: true,
