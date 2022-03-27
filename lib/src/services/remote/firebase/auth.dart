@@ -129,9 +129,9 @@ class Auth implements AuthBase {
 
   String? userPhoneNumber;
   @override
-  Future<void> submitPhoneNumber({required String phoneNumber}) async {
+  Future<void> submitPhoneNumber({required String phoneNumber}) async{
     userPhoneNumber = phoneNumber;
-    firebaseFirestore!
+    await firebaseFirestore!
         .addUser(
           uid: _userDetailsModel!.uId,
           email: _userDetailsModel!.email,
@@ -140,7 +140,7 @@ class Auth implements AuthBase {
           city: _userDetailsModel!.city,
           userType: _userDetailsModel!.userType,
         )
-        .then((value) => _firebaseAuth.verifyPhoneNumber(
+        .then((value) async => await _firebaseAuth.verifyPhoneNumber(
               phoneNumber: '+2$phoneNumber',
               verificationCompleted: verificationCompleted,
               verificationFailed: verificationFailed,

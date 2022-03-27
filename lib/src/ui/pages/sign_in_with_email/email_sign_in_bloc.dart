@@ -29,14 +29,14 @@ class SignInBloc {
       if (_model.formType == SignInFormType.signIn) {
         await auth.signInWithEmailAndPassword(_model.email, _model.password);
         RouteMethods.navigateTo(context: context, routeName: Home.route);
-      } else {
+      } else if(_model.formType == SignInFormType.register) {
         await auth.createUserWithEmailAndPassword(
           email: _model.email,
           password: _model.password,
           userName: _model.name,
           phoneNumber: _model.phone,
         );
-        await auth.submitPhoneNumber(phoneNumber: _model.phone);
+
         RouteMethods.navigateAndChange(
             context: context, routeName: OTPPage.route, args: _model.phone);
       }
