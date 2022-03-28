@@ -16,6 +16,7 @@ import 'package:mk/src/ui/pages/notifications/notifications_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 import '../../../locations.dart';
 import '../../../services/remote/firebase/database.dart';
+import '../../../ui/pages/provider_products_page/products_page_body.dart';
 import '../../model/category_model/category_model.dart';
 import '../../model/product_model/product_model.dart';
 import 'package:async/src/async_memoizer.dart';
@@ -82,200 +83,38 @@ class AppCubit extends Cubit<AppState> {
     );
   }
 
-  //get route between two points
-// Object for PolylinePoints
-//   late PolylinePoints polylinePoints;
-
-// List of coordinates to join
-//   List<LatLng> polylineCoordinates = [];
-
-// Map storing poly lines created by connecting two points
-//   Map<PolylineId, Polyline> polyLines = {};
-  // Create the polylines for showing the route between two places
-  // late String placeDistance;
-  // double coordinateDistance(lat1, lon1, lat2, lon2) {
-  //   var p = 0.017453292519943295;
-  //   var c = cos;
-  //   var a = 0.5 -
-  //       c((lat2 - lat1) * p) / 2 +
-  //       c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-  //   return 12742 * asin(sqrt(a));
-  // }
-  // createPolyLines(
-  //     // double startLatitude,
-  //     // double startLongitude,
-  //     double destinationLatitude,
-  //     double destinationLongitude,
-  //     ) async {
-  //   polylinePoints = PolylinePoints();
-  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-  //     apiKey, // Google Maps API Key
-  //     PointLatLng(current.latitude!, current.longitude!),
-  //     PointLatLng(destinationLatitude, destinationLongitude),
-  //     travelMode: TravelMode.transit,
-  //   );
-  //
-  //   if (result.points.isNotEmpty) {
-  //     result.points.forEach((PointLatLng point) {
-  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-  //     });
-  //   }
-  //
-  //   PolylineId id = PolylineId('poly');
-  //   Polyline polyline = Polyline(
-  //     polylineId: id,
-  //     color: Colors.red,
-  //     points: polylineCoordinates,
-  //     width: 3,
-  //   );
-  //   polyLines[id] = polyline;
-  // }
-
-
-
-  // Future<bool> calculateDistance() async {
-    // try {
-      // Use the retrieved coordinates of the current position,
-      // instead of the address if the start position is user's
-      // current position, as it results in better accuracy.
-      //
-      //
-      // double destinationLatitude = data[0].lat;
-      // double destinationLongitude = data[0].lng;
-      //
-      // String startCoordinatesString = '(${current.latitude}, ${current.longitude})';
-      // String destinationCoordinatesString =
-      //     '(${data[0].lat}, ${data[0].lng})';
-
-      // Start Location Marker
-      // Marker startMarker = Marker(
-      //   markerId: MarkerId(startCoordinatesString),
-      //   position: LatLng(current.latitude!, current.longitude!),
-      //   infoWindow: InfoWindow(
-      //     title: 'Start $startCoordinatesString',
-      //     snippet: destinationCoordinatesString,
-      //   ),
-      //   icon: BitmapDescriptor.defaultMarker,
-      // );
-
-      // Destination Location Marker
-      // Marker destinationMarker = Marker(
-      //   markerId: MarkerId(destinationCoordinatesString),
-      //   position: LatLng(destinationLatitude, destinationLongitude),
-      //   infoWindow: InfoWindow(
-      //     title: 'Destination $destinationCoordinatesString',
-      //     snippet: '',
-      //   ),
-      //   icon: BitmapDescriptor.defaultMarker,
-      // );
-
-      // Adding the markers to the list
-      // markers.add(startMarker);
-      // markers.add(destinationMarker);
-
-      // print(
-      //   'START COORDINATES: ($startLatitude, $startLongitude)',
-      // );
-      // print(
-      //   'DESTINATION COORDINATES: ($destinationLatitude, $destinationLongitude)',
-      // );
-
-      // Calculating to check that the position relative
-      // to the frame, and pan & zoom the camera accordingly.
-      // double miny = (startLatitude <= destinationLatitude)
-      //     ? startLatitude
-      //     : destinationLatitude;
-      // double minx = (startLongitude <= destinationLongitude)
-      //     ? startLongitude
-      //     : destinationLongitude;
-      // double maxy = (startLatitude <= destinationLatitude)
-      //     ? destinationLatitude
-      //     : startLatitude;
-      // double maxx = (startLongitude <= destinationLongitude)
-      //     ? destinationLongitude
-      //     : startLongitude;
-
-      // double southWestLatitude = miny;
-      // double southWestLongitude = minx;
-      //
-      // double northEastLatitude = maxy;
-      // double northEastLongitude = maxx;
-
-      // Accommodate the two locations within the
-      // camera view of the map
-      // mapController.animateCamera(
-      //   CameraUpdate.newLatLngBounds(
-      //     LatLngBounds(
-      //       northeast: LatLng(northEastLatitude, northEastLongitude),
-      //       southwest: LatLng(southWestLatitude, southWestLongitude),
-      //     ),
-      //     100.0,
-      //   ),
-      // );
-
-      // Calculating the distance between the start and the end positions
-      // with a straight path, without considering any route
-      // double distanceInMeters = await Geolocator.bearingBetween(
-      //   startLatitude,
-      //   startLongitude,
-      //   destinationLatitude,
-      //   destinationLongitude,
-      // );
-
-      // await createPolyLines(destinationLatitude,
-      //     destinationLongitude);
-      //
-      // double totalDistance = 0.0;
-      //
-      // // Calculating the total distance by adding the distance
-      // // between small segments
-      // for (int i = 0; i < polylineCoordinates.length - 1; i++) {
-      //   totalDistance += coordinateDistance(
-      //     polylineCoordinates[i].latitude,
-      //     polylineCoordinates[i].longitude,
-      //     polylineCoordinates[i + 1].latitude,
-      //     polylineCoordinates[i + 1].longitude,
-      //   );
-      // }
-
-      // setState(() {
-  //       placeDistance = totalDistance.toStringAsFixed(2);
-  //       print('DISTANCE: $placeDistance km');
-  //     // });
-  //
-  //     return true;
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return false;
-  // }
-
 /*manage bottom navigation bar*/
   int currentIndex = 0;
 
-  List<Widget> body = [
-    const HomeBodyPage(),
-    const LikesPage(),
-    const Cart(),
-    const NotificationsPage(),
-    const Profile(),
+  List<Widget> body = const [
+    HomeBodyPage(),
+    LikesPage(),
+    Cart(),
+    NotificationsPage(),
+    Profile(),
   ];
 
-  List<BottomNavigationBarItem> items = [
-    const BottomNavigationBarItem(
+  List<BottomNavigationBarItem> items = const[
+     BottomNavigationBarItem(
         icon: Icon(FontAwesomeIcons.house), label: 'Home', tooltip: 'Home'),
-    const BottomNavigationBarItem(
+     BottomNavigationBarItem(
         icon: Icon(FontAwesomeIcons.objectGroup),
         label: 'Providers',
         tooltip: 'Providers'),
-    const BottomNavigationBarItem(
+     BottomNavigationBarItem(
         icon: Icon(Icons.shopping_cart), label: 'Cart', tooltip: 'Cart'),
-    const BottomNavigationBarItem(
+     BottomNavigationBarItem(
         icon: Icon(Icons.favorite), label: 'Favorites', tooltip: 'Favorites'),
-    const BottomNavigationBarItem(
+     BottomNavigationBarItem(
         icon: Icon(Icons.settings), label: 'Profile', tooltip: 'Profile'),
   ];
-
+  List<Widget> tabBarViewList = const [
+    AllProductsPage(),
+    // bloc.categoriesNameList.length;
+  ];
+  List<Tab> tabs = const [
+    Tab(text: 'All'),
+  ];
   void changeScreen({required int index}) {
     currentIndex = index;
     emit(ChangeScreenState());
@@ -312,19 +151,30 @@ class AppCubit extends Cubit<AppState> {
   //using this String I path the provider id to present his products
   String? providerId;
   /*the coming method fixing future builder bug (keep firing)*/
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
+  final AsyncMemoizer _memorize = AsyncMemoizer();
   late final Future<List<Product>> myFuture = getAllProductsList();
   Future<List<Product>> fetchAllProducts() async {
     // ignore: unnecessary_this
-    return await this._memoizer.runOnce(
+    return await this._memorize.runOnce(
       () {
         return myFuture;
       },
     );
   }
+  //the coming method to fix loading taps problem
+  final AsyncMemoizer _tapsMemorize = AsyncMemoizer();
+   Future tapsFuture(String uid) => getCategories(uid);
+  Future<List<Product>> fetchAllCategories(String uid) async {
+    // ignore: unnecessary_this
+    return await this._tapsMemorize.runOnce(
+      () {
+        return getCategories(uid);
+      },
+    );
+  }
 
-  Future<UserDetails> getUserData()async{
-   return await database.getUser(auth.currentUser!.uid);
+  Future<UserDetails> getUserData() async {
+    return await database.getUser(auth.currentUser!.uid);
   }
 
   List<Product> allProductsList = [];
@@ -336,9 +186,41 @@ class AppCubit extends Cubit<AppState> {
     allProductsList.clear();
     List<Product> data = await database.getProductsList(uId: providerId!);
     products.addAll(data);
+    allProductsList.addAll(data);
     emit(ProductsSuccessState());
 
     return data;
+  }
+
+  List<Product> productsByCategory({required String categoryName}) {
+    print(categoryName);
+    List<Product> categoryProductsList = [];
+    allProductsList.forEach(
+      (element) {
+        if (element.category == categoryName) {
+          categoryProductsList.add(element);
+          print(categoryProductsList.length);
+          print(element.category);
+          print(element.name);
+        }
+      },
+    );
+    return categoryProductsList;
+  }
+
+  Future addToCart({
+    required String productId,
+    required Product product,
+  }) async {
+    await database.addToCart(
+        uid: providerId!, productId: productId, product: product);
+  }
+  Future addToFavourites({
+    required String productId,
+    required Product product,
+  }) async {
+    await database.addToFavourites(
+        uid: providerId!, productId: productId, product: product);
   }
 
   Future getSingleProduct(String productId) async {
@@ -349,11 +231,11 @@ class AppCubit extends Cubit<AppState> {
 
   List<String> categoriesNameList = [];
   // List<Category> categoriesList = [];
-  Future getCategories() async {
+  Future getCategories(String uid) async {
     emit(CategoryLoadingState());
     // categoriesList.clear();
     categoriesNameList.clear();
-    await database.getCategories(uId: auth.currentUser!.uid).then(
+    await database.getCategories(uId: uid).then(
       (List<Category> value) {
         // categoriesList.addAll(value);
         categoriesNameList.addAll(value.map((e) => e.name));
@@ -377,4 +259,169 @@ class AppCubit extends Cubit<AppState> {
   // void signIn({required String email,required String password}) async{
   //   await auth.signInWithEmailAndPassword(email, password);
   // }
+//get route between two points
+// Object for PolylinePoints
+//   late PolylinePoints polylinePoints;
+
+// List of coordinates to join
+//   List<LatLng> polylineCoordinates = [];
+
+// Map storing poly lines created by connecting two points
+//   Map<PolylineId, Polyline> polyLines = {};
+// Create the polylines for showing the route between two places
+// late String placeDistance;
+// double coordinateDistance(lat1, lon1, lat2, lon2) {
+//   var p = 0.017453292519943295;
+//   var c = cos;
+//   var a = 0.5 -
+//       c((lat2 - lat1) * p) / 2 +
+//       c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+//   return 12742 * asin(sqrt(a));
+// }
+// createPolyLines(
+//     // double startLatitude,
+//     // double startLongitude,
+//     double destinationLatitude,
+//     double destinationLongitude,
+//     ) async {
+//   polylinePoints = PolylinePoints();
+//   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+//     apiKey, // Google Maps API Key
+//     PointLatLng(current.latitude!, current.longitude!),
+//     PointLatLng(destinationLatitude, destinationLongitude),
+//     travelMode: TravelMode.transit,
+//   );
+//
+//   if (result.points.isNotEmpty) {
+//     result.points.forEach((PointLatLng point) {
+//       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+//     });
+//   }
+//
+//   PolylineId id = PolylineId('poly');
+//   Polyline polyline = Polyline(
+//     polylineId: id,
+//     color: Colors.red,
+//     points: polylineCoordinates,
+//     width: 3,
+//   );
+//   polyLines[id] = polyline;
+// }
+
+// Future<bool> calculateDistance() async {
+// try {
+// Use the retrieved coordinates of the current position,
+// instead of the address if the start position is user's
+// current position, as it results in better accuracy.
+//
+//
+// double destinationLatitude = data[0].lat;
+// double destinationLongitude = data[0].lng;
+//
+// String startCoordinatesString = '(${current.latitude}, ${current.longitude})';
+// String destinationCoordinatesString =
+//     '(${data[0].lat}, ${data[0].lng})';
+
+// Start Location Marker
+// Marker startMarker = Marker(
+//   markerId: MarkerId(startCoordinatesString),
+//   position: LatLng(current.latitude!, current.longitude!),
+//   infoWindow: InfoWindow(
+//     title: 'Start $startCoordinatesString',
+//     snippet: destinationCoordinatesString,
+//   ),
+//   icon: BitmapDescriptor.defaultMarker,
+// );
+
+// Destination Location Marker
+// Marker destinationMarker = Marker(
+//   markerId: MarkerId(destinationCoordinatesString),
+//   position: LatLng(destinationLatitude, destinationLongitude),
+//   infoWindow: InfoWindow(
+//     title: 'Destination $destinationCoordinatesString',
+//     snippet: '',
+//   ),
+//   icon: BitmapDescriptor.defaultMarker,
+// );
+
+// Adding the markers to the list
+// markers.add(startMarker);
+// markers.add(destinationMarker);
+
+// print(
+//   'START COORDINATES: ($startLatitude, $startLongitude)',
+// );
+// print(
+//   'DESTINATION COORDINATES: ($destinationLatitude, $destinationLongitude)',
+// );
+
+// Calculating to check that the position relative
+// to the frame, and pan & zoom the camera accordingly.
+// double miny = (startLatitude <= destinationLatitude)
+//     ? startLatitude
+//     : destinationLatitude;
+// double minx = (startLongitude <= destinationLongitude)
+//     ? startLongitude
+//     : destinationLongitude;
+// double maxy = (startLatitude <= destinationLatitude)
+//     ? destinationLatitude
+//     : startLatitude;
+// double maxx = (startLongitude <= destinationLongitude)
+//     ? destinationLongitude
+//     : startLongitude;
+
+// double southWestLatitude = miny;
+// double southWestLongitude = minx;
+//
+// double northEastLatitude = maxy;
+// double northEastLongitude = maxx;
+
+// Accommodate the two locations within the
+// camera view of the map
+// mapController.animateCamera(
+//   CameraUpdate.newLatLngBounds(
+//     LatLngBounds(
+//       northeast: LatLng(northEastLatitude, northEastLongitude),
+//       southwest: LatLng(southWestLatitude, southWestLongitude),
+//     ),
+//     100.0,
+//   ),
+// );
+
+// Calculating the distance between the start and the end positions
+// with a straight path, without considering any route
+// double distanceInMeters = await Geolocator.bearingBetween(
+//   startLatitude,
+//   startLongitude,
+//   destinationLatitude,
+//   destinationLongitude,
+// );
+
+// await createPolyLines(destinationLatitude,
+//     destinationLongitude);
+//
+// double totalDistance = 0.0;
+//
+// // Calculating the total distance by adding the distance
+// // between small segments
+// for (int i = 0; i < polylineCoordinates.length - 1; i++) {
+//   totalDistance += coordinateDistance(
+//     polylineCoordinates[i].latitude,
+//     polylineCoordinates[i].longitude,
+//     polylineCoordinates[i + 1].latitude,
+//     polylineCoordinates[i + 1].longitude,
+//   );
+// }
+
+// setState(() {
+//       placeDistance = totalDistance.toStringAsFixed(2);
+//       print('DISTANCE: $placeDistance km');
+//     // });
+//
+//     return true;
+//   } catch (e) {
+//     print(e);
+//   }
+//   return false;
+// }
 }

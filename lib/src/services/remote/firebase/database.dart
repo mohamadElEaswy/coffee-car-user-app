@@ -23,6 +23,16 @@ abstract class Database {
   Future getCarDetails(String documentId);
   Future<void> testGetCars();
 
+  Future addToFavourites({
+    required String uid,
+    required String productId,
+    required Product product,
+  });
+  Future addToCart({
+    required String uid,
+    required String productId,
+    required Product product,
+  });
   //adding user data to fire store DB
   Future<void> addUser({
     required String uid,
@@ -127,6 +137,34 @@ class FirestoreDatabase implements Database {
   }
 
   @override
+  Future addToFavourites({
+    required String uid,
+    required String productId,
+    required Product product,
+  }) async {
+    return await service
+        .collection('users')
+        .doc(uid)
+        .collection('favourites')
+        .doc(productId)
+        .set(product.toJson());
+  }
+
+  @override
+  Future addToCart({
+    required String uid,
+    required String productId,
+    required Product product,
+  }) async {
+    return await service
+        .collection('users')
+        .doc(uid)
+        .collection('cart')
+        .doc(productId)
+        .set(product.toJson());
+  }
+
+  @override
   Future<void> addUser({
     required String uid,
     required String userName,
@@ -178,11 +216,11 @@ class FirestoreDatabase implements Database {
   @override
   Future<List<Category>> getCategories({required String uId}) async {
     List<Category> categories = [];
-    await _service
-        .getDataCollection(
-          documentPath: ApiPath.categories(uId),
-          collectionPath: 'categories',
-        )
+    await service
+        .collection('providers')
+        .doc(uId)
+        .collection('categories')
+        .get()
         .then(
           (value) => value.docs.forEach(
             (element) {

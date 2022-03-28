@@ -25,7 +25,7 @@ class HomeCard extends StatelessWidget {
           RouteMethods.navigateTo(
             context: context,
             routeName: ProviderProductsPage.route,
-            // args: car.id,
+            args: car.id,
           );
         },
         child: Container(

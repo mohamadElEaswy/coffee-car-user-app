@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mk/src/core/bloc/cubit/cubit.dart';
 
 import '../../../core/model/product_model/product_model.dart';
 import '../../../core/navigation/navigation_methods.dart';
 import '../product_detail_page/product_detail_page.dart';
 
 class ProductGridItem extends StatelessWidget {
-  const ProductGridItem(this.product, {Key? key}) : super(key: key);
+  const ProductGridItem(this.product, this.bloc, {Key? key}) : super(key: key);
 
   final Product product;
+  final AppCubit bloc;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -49,14 +51,16 @@ class ProductGridItem extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.only(right: 16, left: 16),
                       child: const SizedBox(
-                          height: 80,
-                          width: 70,
-                          child: Placeholder(
-                            color: Colors.black38,
-                          )),
+                        height: 80,
+                        width: 70,
+                        child: Placeholder(
+                          color: Colors.black38,
+                        ),
+                      ),
                     ),
                     InkWell(
-                        onTap: () {}, child: const Icon(FontAwesomeIcons.heart))
+                        onTap: () =>bloc.addToFavourites(
+                            productId: product.id, product: product), child: const Icon(FontAwesomeIcons.heart))
                   ],
                 ),
               ),
@@ -89,7 +93,8 @@ class ProductGridItem extends StatelessWidget {
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () => bloc.addToCart(
+                                productId: product.id, product: product),
                             child: const Icon(
                               Icons.add,
                               color: Colors.white,

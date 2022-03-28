@@ -62,8 +62,9 @@ class Profile extends StatelessWidget {
               ),
               settingsMenuItem(
                 onTap: () {
-                  RouteMethods.navigateTo(
-                      context: context, routeName: StreamTestPage.route);
+                  bloc.productsByCategory(categoryName: 'hot drinks');
+                  // RouteMethods.navigateTo(
+                  //     context: context, routeName: StreamTestPage.route);
                 },
                 firstIcon: Icons.person_outline_rounded,
                 lable: 'Change Email',
