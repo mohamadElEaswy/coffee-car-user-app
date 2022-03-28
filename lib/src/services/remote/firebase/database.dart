@@ -4,12 +4,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mk/src/core/model/coffe_car_model/coffee_car_model.dart';
 import 'package:mk/src/locations.dart';
-import 'package:mk/src/services/remote/firebase/api_path.dart';
-
 import '../../../core/model/category_model/category_model.dart';
 import '../../../core/model/product_model/product_model.dart';
 import '../../../core/model/user_details_model/user_details_model.dart';
 import 'firestore_services.dart';
+// import 'firestore_services.dart';
 
 abstract class Database {
   // Query getMessageQuery();
@@ -48,6 +47,7 @@ abstract class Database {
   Future<List<Category>> getCategories({required String uId});
   Future getSingleProduct({required String uId, required String productId});
   Future<List<Product>> getProductsList({required String uId});
+  Future<List<Product>> getFavourites({required String uid});
 }
 
 String documentIDCurrentDate() => DateTime.now().toIso8601String();
@@ -142,12 +142,18 @@ class FirestoreDatabase implements Database {
     required String productId,
     required Product product,
   }) async {
-    return await service
-        .collection('users')
-        .doc(uid)
-        .collection('favourites')
-        .doc(productId)
-        .set(product.toJson());
+    return await _service
+        .setDataPath(
+            path: 'users/$uid/favourites/$productId', data: product.toJson())
+        .then((value) {print('added');})
+        .catchError((e) {
+      e.toString();
+    });
+    // .collection('users')
+    // .doc(uid)
+    // .collection('favourites')
+    // .doc(productId)
+    // .set(product.toJson());
   }
 
   @override
@@ -285,5 +291,29 @@ class FirestoreDatabase implements Database {
       },
     );
     return products;
+  }
+
+  @override
+  Future<List<Product>> getFavourites({required String uid}) async {
+    List<Product> favourites = [];
+    print(favourites.length);
+    print(uid);
+    print(favourites[0].name);
+    favourites.clear();
+    await service
+        .collection('users')
+        .doc(uid)
+        .collection('favourites')
+        .get()
+        .then(
+      (value) {
+        value.docs.forEach(
+          (element) {
+            favourites.add(Product.fromJson(element.data()));
+          },
+        );
+      },
+    ).catchError((e) => print(e.toString()));
+    return favourites;
   }
 }

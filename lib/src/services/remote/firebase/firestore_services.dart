@@ -45,7 +45,7 @@ class FireStoreService {
     required Map<String, dynamic> data,
   }) async {
     final reference = FirebaseFirestore.instance.doc(path);
-    // print('$path : $data');
+    print('$path : $data');
     await reference.set(data);
   }
 

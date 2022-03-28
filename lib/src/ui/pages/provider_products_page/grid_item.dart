@@ -59,8 +59,12 @@ class ProductGridItem extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                        onTap: () =>bloc.addToFavourites(
-                            productId: product.id, product: product), child: const Icon(FontAwesomeIcons.heart))
+                      onTap: () => bloc.addToFavourites(
+                        productId: product.id,
+                        product: product,
+                      ),
+                      child: const Icon(FontAwesomeIcons.heart),
+                    ),
                   ],
                 ),
               ),

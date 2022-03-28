@@ -46,3 +46,12 @@ class CategoryErrorState extends AppState {
   CategoryErrorState({required this.error});
   final String error;
 }
+
+class FavouritesLoadingState extends AppState {}
+
+class FavouritesSuccessState extends AppState {}
+
+class FavouritesErrorState extends AppState {
+  FavouritesErrorState({required this.error});
+  final String error;
+}

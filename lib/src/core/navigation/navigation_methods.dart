@@ -4,6 +4,7 @@ import 'package:mk/src/ui/pages/home/home_page.dart';
 import 'package:mk/src/ui/pages/otp_page/otp_page.dart';
 import 'package:mk/src/ui/pages/profile/profile_page.dart';
 import 'package:mk/src/ui/pages/provider_products_page/provider_products_page.dart';
+import '../../ui/pages/favourites/favourites_page.dart';
 import '../../ui/pages/otp_page/phone_page.dart';
 import '../../ui/pages/product_detail_page/product_detail_page.dart';
 import '../../ui/pages/profile/account_info.dart';
@@ -40,6 +41,8 @@ class RouteMethods {
 
       case AccountInfo.route:
         return _materialPageRoute(page: const AccountInfo());
+      case FavouritesPage.route:
+        return _materialPageRoute(page: const FavouritesPage());
       case StreamTestPage.route:
         return _materialPageRoute(page: const StreamTestPage());
       case OTPPage.route:
@@ -49,10 +52,7 @@ class RouteMethods {
       case ProviderProductsPage.route:
         return _materialPageRoute(page: const ProviderProductsPage());
       case ProductDetailPage.route:
-        return _materialPageRoute(
-            page: ProductDetailPage(
-          product: args,
-        ));
+        return _materialPageRoute(page: ProductDetailPage(product: args));
       default:
         return _materialPageRoute(page: const ErrorPage());
     }
