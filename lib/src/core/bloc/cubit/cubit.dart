@@ -17,6 +17,7 @@ import '../../../locations.dart';
 import '../../../services/remote/firebase/database.dart';
 import '../../../ui/pages/favourites/favourites_page.dart';
 import '../../../ui/pages/provider_products_page/products_page_body.dart';
+import '../../../ui/widgets/global_snack_bar.dart';
 import '../../model/category_model/category_model.dart';
 import '../../model/product_model/product_model.dart';
 import 'package:async/src/async_memoizer.dart';
@@ -182,7 +183,6 @@ class AppCubit extends Cubit<AppState> {
   Future<List<Product>> getAllProductsList() async {
     emit(ProductsLoadingState());
 
-    print(providerId);
     List<Product> products = [];
     allProductsList.clear();
     List<Product> data = await database.getProductsList(uId: providerId!);
@@ -200,9 +200,6 @@ class AppCubit extends Cubit<AppState> {
       (element) {
         if (element.category == categoryName) {
           categoryProductsList.add(element);
-          print(categoryProductsList.length);
-          print(element.category);
-          print(element.name);
         }
       },
     );
@@ -213,20 +210,35 @@ class AppCubit extends Cubit<AppState> {
     required String productId,
     required Product product,
   }) async {
-    await database.addToCart(
-        uid: auth.currentUser!.uid, productId: productId, product: product);
+    emit(AddToCartLoadingState());
+    await database
+        .addToCart(
+            uid: auth.currentUser!.uid, productId: productId, product: product)
+        .then((value) {
+      emit(AddToCartSuccessState());
+    }).catchError((e) {
+      emit(AddToCartErrorState(error: e.toString()));
+    });
   }
 
-  void  addToFavourites({
+  Future addToFavourites({
     required String productId,
     required Product product,
-  })  {
-    print(product);
-     database.addToFavourites(
+    // required BuildContext context,
+  }) async {
+    emit(AddToFavouriteLoadingState());
+    await database
+        .addToFavourites(
       uid: auth.currentUser!.uid,
       productId: productId,
       product: product,
-    );
+    )
+        .then((value) {
+
+      emit(AddToFavouriteSuccessState());
+    }).catchError((e) {
+      emit(AddToFavouriteErrorState(error: e.toString()));
+    });
   }
 
   Future getSingleProduct(String productId) async {
@@ -255,16 +267,38 @@ class AppCubit extends Cubit<AppState> {
       },
     );
   }
-
+  List<Product> allFavouritesList = [];
   Future<List<Product>> getFavourites() async {
     List<Product> favourites = [];
     favourites.clear();
+    allFavouritesList.clear();
     emit(FavouritesLoadingState());
-    await database.getFavourites(uid: auth.currentUser!.uid).then((List<Product> value) {
+    await database
+        .getFavourites(uid: auth.currentUser!.uid)
+        .then((List<Product> value) {
+      allFavouritesList.addAll(value);
+      favourites.addAll(value);
       emit(FavouritesSuccessState());
     }).catchError((e) {
       emit(FavouritesErrorState(error: e.toString()));
     });
     return favourites;
+  }
+  List<Product> cartList = [];
+  Future<List<Product>> getCart() async {
+    List<Product> cart = [];
+    cart.clear();
+    cartList.clear();
+    emit(FavouritesLoadingState());
+    await database
+        .getCart(uid: auth.currentUser!.uid)
+        .then((List<Product> value) {
+      cart.addAll(value);
+      cartList.addAll(value);
+      emit(FavouritesSuccessState());
+    }).catchError((e) {
+      emit(FavouritesErrorState(error: e.toString()));
+    });
+    return cart;
   }
 }

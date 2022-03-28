@@ -21,17 +21,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
       listener: (context, state) {},
       builder: (context, state) {
         AppCubit bloc = AppCubit.get(context);
-        return FutureBuilder(
-          future: bloc.getFavourites(),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
-            return snapshot.hasData && snapshot.data!.isNotEmpty
-                ? ListView.builder(
-                    itemBuilder: (BuildContext context, int index) {
-                      return Text(snapshot.data![index].name);
-                    },
-                  )
-                : const GlobalLoading();
+        return ListView.builder(
+          itemCount: bloc.allFavouritesList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Text(bloc.allFavouritesList[index].name);
           },
         );
       },

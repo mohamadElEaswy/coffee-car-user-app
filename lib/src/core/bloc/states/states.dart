@@ -55,3 +55,20 @@ class FavouritesErrorState extends AppState {
   FavouritesErrorState({required this.error});
   final String error;
 }
+
+class AddToCartLoadingState extends AppState {}
+
+class AddToCartSuccessState extends AppState {}
+
+class AddToCartErrorState extends AppState {
+  AddToCartErrorState({required this.error});
+  final String error;
+}
+class AddToFavouriteLoadingState extends AppState {}
+
+class AddToFavouriteSuccessState extends AppState {}
+
+class AddToFavouriteErrorState extends AppState {
+  AddToFavouriteErrorState({required this.error});
+  final String error;
+}

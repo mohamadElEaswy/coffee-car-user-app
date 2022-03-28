@@ -48,6 +48,7 @@ abstract class Database {
   Future getSingleProduct({required String uId, required String productId});
   Future<List<Product>> getProductsList({required String uId});
   Future<List<Product>> getFavourites({required String uid});
+  Future<List<Product>> getCart({required String uid});
 }
 
 String documentIDCurrentDate() => DateTime.now().toIso8601String();
@@ -145,8 +146,9 @@ class FirestoreDatabase implements Database {
     return await _service
         .setDataPath(
             path: 'users/$uid/favourites/$productId', data: product.toJson())
-        .then((value) {print('added');})
-        .catchError((e) {
+        .then((value) {
+      print('added');
+    }).catchError((e) {
       e.toString();
     });
     // .collection('users')
@@ -296,9 +298,7 @@ class FirestoreDatabase implements Database {
   @override
   Future<List<Product>> getFavourites({required String uid}) async {
     List<Product> favourites = [];
-    print(favourites.length);
-    print(uid);
-    print(favourites[0].name);
+
     favourites.clear();
     await service
         .collection('users')
@@ -312,8 +312,28 @@ class FirestoreDatabase implements Database {
             favourites.add(Product.fromJson(element.data()));
           },
         );
+        print(favourites.length);
+        print(uid);
+        print(favourites[0].name);
       },
     ).catchError((e) => print(e.toString()));
     return favourites;
+  }
+
+  @override
+  Future<List<Product>> getCart({required String uid}) async {
+    List<Product> cart = [];
+
+    cart.clear();
+    await service.collection('users').doc(uid).collection('cart').get().then(
+      (value) {
+        value.docs.forEach(
+          (element) {
+            cart.add(Product.fromJson(element.data()));
+          },
+        );
+      },
+    ).catchError((e) => print(e.toString()));
+    return cart;
   }
 }
