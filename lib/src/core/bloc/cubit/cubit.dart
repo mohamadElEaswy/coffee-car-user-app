@@ -26,6 +26,7 @@ import 'package:async/src/async_memoizer.dart';
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(InitialAppState());
   static AppCubit get(context) => BlocProvider.of(context);
+
   Database database = FirestoreDatabase();
 
   // static const String apiKey = 'AIzaSyB5s0q2PCjtitmESmmU8SsSNbbr3FrzbIc';
@@ -46,6 +47,7 @@ class AppCubit extends Cubit<AppState> {
         data.addAll(value);
       },
     );
+
     // final carsList = await locations.getGoogleOffices();
 
     mapController = controller;
@@ -109,13 +111,16 @@ class AppCubit extends Cubit<AppState> {
     BottomNavigationBarItem(
         icon: Icon(Icons.settings), label: 'Profile', tooltip: 'Profile'),
   ];
+
   List<Widget> tabBarViewList = const [
     AllProductsPage(),
     // bloc.categoriesNameList.length;
   ];
+
   List<Tab> tabs = const [
     Tab(text: 'All'),
   ];
+
   void changeScreen({required int index}) {
     currentIndex = index;
     emit(ChangeScreenState());
@@ -292,18 +297,20 @@ class AppCubit extends Cubit<AppState> {
     List<Product> cart = [];
     cart.clear();
     cartList.clear();
-    emit(FavouritesLoadingState());
+
     if (auth.currentUser != null) {
+      emit(CartLoadingState());
       await database
           .getCart(uid: auth.currentUser!.uid)
           .then((List<Product> value) {
         cart.addAll(value);
         cartList.addAll(value);
-        emit(FavouritesSuccessState());
+        emit(CartSuccessState());
       }).catchError((e) {
-        emit(FavouritesErrorState(error: e.toString()));
+        emit(CartErrorState(error: e.toString()));
       });
     }
     return cart;
   }
+
 }

@@ -56,6 +56,16 @@ class FavouritesErrorState extends AppState {
   final String error;
 }
 
+
+class AddToFavouriteLoadingState extends AppState {}
+
+class AddToFavouriteSuccessState extends AppState {}
+
+class AddToFavouriteErrorState extends AppState {
+  AddToFavouriteErrorState({required this.error});
+  final String error;
+}
+
 class AddToCartLoadingState extends AppState {}
 
 class AddToCartSuccessState extends AppState {}
@@ -64,11 +74,11 @@ class AddToCartErrorState extends AppState {
   AddToCartErrorState({required this.error});
   final String error;
 }
-class AddToFavouriteLoadingState extends AppState {}
+class CartLoadingState extends AppState {}
 
-class AddToFavouriteSuccessState extends AppState {}
+class CartSuccessState extends AppState {}
 
-class AddToFavouriteErrorState extends AppState {
-  AddToFavouriteErrorState({required this.error});
+class CartErrorState extends AppState {
+  CartErrorState({required this.error});
   final String error;
 }

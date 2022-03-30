@@ -45,7 +45,7 @@ class _CartState extends State<Cart> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: bloc.cartList.length,
                   itemBuilder: (context, index) {
-                    return CartCard(items, index);
+                    return CartCard(bloc.cartList, index);
                   },
                 ),
                 const SizedBox(height: 10),

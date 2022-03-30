@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../../core/model/product_model/product_model.dart';
 import '../../widgets/plus_button.dart';
 import 'dismiss_background.dart';
 
 class CartCard extends StatefulWidget {
   const CartCard(this.items, this.index, {Key? key}) : super(key: key);
 
-  final List items;
+  final List<Product> items;
   final int index;
   @override
   State<CartCard> createState() => _CartCardState();
@@ -16,7 +17,7 @@ class _CartCardState extends State<CartCard> {
   Widget build(BuildContext context) {
     final item = widget.items[widget.index];
     return Dismissible(
-      key: Key(item),
+      key: Key(item.id),
       onDismissed: (direction) {
         setState(() {
           widget.items.removeAt(widget.index);
