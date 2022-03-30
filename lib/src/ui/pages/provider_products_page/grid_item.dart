@@ -88,7 +88,7 @@ class ProductGridItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(product.price),
+                        Text(product.price.toString()),
                         const SizedBox(width: 10),
                         Container(
                           decoration: BoxDecoration(

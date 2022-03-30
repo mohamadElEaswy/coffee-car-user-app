@@ -25,7 +25,11 @@ class ErrorMapsState extends AppState {
 
 // change screen state
 
-class ChangeScreenState extends AppState {}
+class ChangeScreenState extends AppState {
+  final int currentScreen;
+
+  ChangeScreenState(this.currentScreen);
+}
 
 class ChangeMapPosition extends AppState {}
 
@@ -56,7 +60,6 @@ class FavouritesErrorState extends AppState {
   final String error;
 }
 
-
 class AddToFavouriteLoadingState extends AppState {}
 
 class AddToFavouriteSuccessState extends AppState {}
@@ -74,11 +77,21 @@ class AddToCartErrorState extends AppState {
   AddToCartErrorState({required this.error});
   final String error;
 }
+
 class CartLoadingState extends AppState {}
 
 class CartSuccessState extends AppState {}
 
 class CartErrorState extends AppState {
   CartErrorState({required this.error});
+  final String error;
+}
+
+class DeleteCartItemSuccessState extends AppState {}
+
+class DeleteCartItemLoadingState extends AppState {}
+
+class DeleteCartItemErrorState extends AppState {
+  DeleteCartItemErrorState({required this.error});
   final String error;
 }

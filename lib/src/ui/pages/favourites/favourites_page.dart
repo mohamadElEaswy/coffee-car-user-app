@@ -29,7 +29,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
               itemCount: bloc.allFavouritesList.length,
               padding: const EdgeInsets.all(20),
               itemBuilder: (BuildContext context, int index) {
-                return CartCard(bloc.allFavouritesList, index);
+                return CartCard(index, bloc);
               },
             ),
           );

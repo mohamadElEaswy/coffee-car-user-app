@@ -17,7 +17,7 @@ class TitleSection extends StatelessWidget {
           children: [
             Text(product.name, style: Theme.of(context).textTheme.headline5),
             const SizedBox(height: 10),
-            Text(product.price, style: Theme.of(context).textTheme.subtitle1),
+            Text(product.price.toString(), style: Theme.of(context).textTheme.subtitle1),
           ],
         ),
         const Spacer(),

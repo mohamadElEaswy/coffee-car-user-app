@@ -36,8 +36,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
                     padding:
                         const EdgeInsets.only(left: 16, right: 16, top: 12),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            orientation == Orientation.portrait ? 2 : 4),
+                      crossAxisCount:
+                          orientation == Orientation.portrait ? 2 : 4,
+                    ),
                     physics: const BouncingScrollPhysics(),
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
@@ -51,6 +52,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
             } else if (snapshot.data!.isEmpty) {
               return const Center(
                   child: Text('sorry, there is no products yet'));
+            } else if (snapshot.hasError) {
+              return const Center(child: Text('unknown error occurred'));
             } else {
               return const Center(child: Text('unknown error occurred'));
             }

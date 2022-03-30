@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/src/core/model/product_model/product_model.dart';
 
 import '../../../core/bloc/cubit/cubit.dart';
 import '../../../core/bloc/states/states.dart';
@@ -20,11 +21,24 @@ class _CartState extends State<Cart> {
   // static const String route = '/cart';
   @override
   Widget build(BuildContext context) {
-    final items = List<String>.generate(20, (i) => 'Item ${i + 1}');
+    final items = List<Product>.generate(
+      10,
+      (i) => Product(
+        price: '$i',
+        description: 'product description $i',
+        category: 'hot drinks',
+        name: 'product name $i',
+        availability: true,
+        id: '$i',
+        time: DateTime.now(),
+      ),
+    );
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
+        if(state is DeleteCartItemSuccessState || state is DeleteCartItemSuccessState){AppCubit.get(context).getTotalPrice();}
       },
-      builder: (context, state) {AppCubit bloc = AppCubit.get(context);
+      builder: (context, state) {
+        AppCubit bloc = AppCubit.get(context);
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Container(
@@ -45,7 +59,7 @@ class _CartState extends State<Cart> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: bloc.cartList.length,
                   itemBuilder: (context, index) {
-                    return CartCard(bloc.cartList, index);
+                    return CartCard(index, bloc);
                   },
                 ),
                 const SizedBox(height: 10),
@@ -80,7 +94,7 @@ class _CartState extends State<Cart> {
                 const SizedBox(height: 20),
                 const MySeparator(color: Colors.grey),
                 const SizedBox(height: 20),
-                const TotalSection(),
+                 TotalSection(bloc.totalPrice),
                 const SizedBox(height: 30),
                 GlobalButton(
                   onPressed: () {},

@@ -81,7 +81,7 @@ class ProductDetailPage extends StatelessWidget {
                   const SizedBox(height: 30),
                   const MyGlobalDivider(),
                   const SizedBox(height: 30),
-                  const TotalSection(),
+                  const TotalSection(10),
                   const SizedBox(height: 30),
                   GlobalButton(
                     onPressed: () {},

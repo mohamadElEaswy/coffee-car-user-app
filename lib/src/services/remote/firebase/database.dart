@@ -46,9 +46,14 @@ abstract class Database {
   Future<List<Cars>> getLocationsList();
   Future<List<Category>> getCategories({required String uId});
   Future getSingleProduct({required String uId, required String productId});
-  Future<List<Product>> getProductsList({required String uId});
+  Future<List<Product>?> getProductsList({required String uId});
   Future<List<Product>> getFavourites({required String uid});
   Future<List<Product>> getCart({required String uid});
+  Future<void> delete({
+    required String uid,
+    required String deletedCategory,
+    required String deletedItemId,
+  });
 }
 
 String documentIDCurrentDate() => DateTime.now().toIso8601String();
@@ -264,8 +269,8 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Future<List<Product>> getProductsList({required String uId}) async {
-    List<Product> products = [];
+  Future<List<Product>?> getProductsList({required String uId}) async {
+    List<Product>? products = [];
     products.clear();
     // QuerySnapshot<Map<String, dynamic>> snap = await _service.getDataCollection(
     //     documentPath: ApiPath.products(uId), collectionPath: 'products/');
@@ -278,21 +283,26 @@ class FirestoreDatabase implements Database {
     // );
     // return products;
 
-    await FirebaseFirestore.instance
-        .collection('providers/')
-        .doc(uId)
-        .collection('products/')
-        .get()
-        .then(
-      (value) {
-        value.docs.forEach(
-          (element) {
-            products.add(Product.fromJson(element.data()));
-          },
-        );
-      },
-    );
-    return products;
+    try {
+      await FirebaseFirestore.instance
+          .collection('providers')
+          .doc(uId)
+          .collection('products')
+          .get()
+          .then(
+        (value) async {
+          value.docs.forEach(
+            (element) {
+              products.add(Product.fromJson(element.data()));
+            },
+          );
+        },
+      );
+      return products;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
   @override
@@ -335,5 +345,19 @@ class FirestoreDatabase implements Database {
       },
     ).catchError((e) => print(e.toString()));
     return cart;
+  }
+
+  @override
+  Future<void> delete({
+    required String uid,
+    required String deletedCategory,
+    required String deletedItemId,
+  }) async {
+    return await service
+        .collection('users')
+        .doc(uid)
+        .collection(deletedCategory)
+        .doc(deletedItemId)
+        .delete();
   }
 }

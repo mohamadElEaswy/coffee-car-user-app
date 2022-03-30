@@ -7,13 +7,11 @@ part of 'category_model.dart';
 // **************************************************************************
 
 Category _$CategoryFromJson(Map<String, dynamic> json) => Category(
-  id: json['id'] as String? ?? '',
-  name: json['name'] as String,
-  // time: DateTime.parse(json['time'] as String),
-);
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String,
+    );
 
 Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
-  'id': instance.id,
-  'name': instance.name,
-  // 'time': instance.time.toIso8601String(),
-};
+      'id': instance.id,
+      'name': instance.name,
+    };

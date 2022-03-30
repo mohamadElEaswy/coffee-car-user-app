@@ -12,8 +12,8 @@ class LatLngData {
     required this.lng,
   });
 
-  factory LatLngData.fromJson(Map<String, dynamic> json) => _$LatLngFromJson(json);
-  Map<String, dynamic> toJson() => _$LatLngToJson(this);
+  factory LatLngData.fromJson(Map<String, dynamic> json) => _$LatLngDataFromJson(json);
+  Map<String, dynamic> toJson() => _$LatLngDataToJson(this);
 
   final double lat;
   final double lng;

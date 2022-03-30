@@ -121,9 +121,15 @@ class AppCubit extends Cubit<AppState> {
     Tab(text: 'All'),
   ];
 
-  void changeScreen({required int index}) {
+  void changeScreen({required int index}) async {
     currentIndex = index;
-    emit(ChangeScreenState());
+    if (index == 2) {
+      await getCart();
+      getTotalPrice();
+    }
+    if (index == 2 && allFavouritesList.isEmpty) getFavourites();
+    emit(ChangeScreenState(index));
+    print(index);
   }
   //end bottom navigation bar
 
@@ -158,7 +164,7 @@ class AppCubit extends Cubit<AppState> {
   String? providerId;
   /*the coming method fixing future builder bug (keep firing)*/
   final AsyncMemoizer _memorize = AsyncMemoizer();
-  late final Future<List<Product>> myFuture = getAllProductsList();
+  late final Future<List<Product>?> myFuture = getAllProductsList();
   Future<List<Product>> fetchAllProducts() async {
     // ignore: unnecessary_this
     return await this._memorize.runOnce(
@@ -185,17 +191,23 @@ class AppCubit extends Cubit<AppState> {
   }
 
   List<Product> allProductsList = [];
-  Future<List<Product>> getAllProductsList() async {
+  Future<List<Product>?> getAllProductsList() async {
     emit(ProductsLoadingState());
 
     List<Product> products = [];
     allProductsList.clear();
-    List<Product> data = await database.getProductsList(uId: providerId!);
-    products.addAll(data);
-    allProductsList.addAll(data);
-    emit(ProductsSuccessState());
+    try {
+      List<Product>? data = await database.getProductsList(uId: providerId!);
 
-    return data;
+      products.addAll(data!);
+      allProductsList.addAll(data);
+      emit(ProductsSuccessState());
+      return data;
+    } catch (e) {
+      print('error occurred' + e.toString());
+      emit(ProductsErrorState(error: e.toString()));
+      return null;
+    }
   }
 
   List<Product> productsByCategory({required String categoryName}) {
@@ -313,4 +325,39 @@ class AppCubit extends Cubit<AppState> {
     return cart;
   }
 
+  Future<void> deleteCartItem({required String deletedItemId}) async {
+    emit(DeleteCartItemLoadingState());
+    await database
+        .delete(
+      uid: auth.currentUser!.uid,
+      deletedCategory: 'cart',
+      deletedItemId: deletedItemId,
+    )
+        .then(
+      (value) {
+        emit(DeleteCartItemSuccessState());
+      },
+    ).catchError((e) {
+      emit(DeleteCartItemErrorState(error: e));
+    });
+  }
+
+  double totalPrice = 0;
+  double getTotalPrice() {
+    totalPrice = 0;
+    final List<double> priceList = List<double>.generate(
+        cartList.length, (index) => double.parse(cartList[index].price),
+    );
+    print(priceList.toString());
+    double sum =
+        priceList.fold(0, (previousValue, element) => totalPrice += element);
+    print(sum);
+    // cartList.map((e) {
+    //   print(e.price.toString());
+    //   totalPrice + e.price;
+    // });
+    // priceList.map((e) => totalPrice == e);
+    print(totalPrice.toString());
+    return totalPrice;
+  }
 }

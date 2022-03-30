@@ -22,6 +22,7 @@ class HomeCard extends StatelessWidget {
       child: InkWell(
         onTap: () async {
           bloc.providerId = car.id;
+
           RouteMethods.navigateTo(
             context: context,
             routeName: ProviderProductsPage.route,

@@ -12,11 +12,13 @@ class Product {
     required this.availability,
     required this.category,
     required this.time,
+    this.quantity,
     // required this.rate,
   });
   final String id;
   final String name;
-  final String price;
+  final dynamic price;
+  int? quantity;
   final String category;
   final String description;
   final bool availability;
