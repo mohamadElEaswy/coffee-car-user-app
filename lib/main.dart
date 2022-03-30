@@ -14,6 +14,7 @@ import 'package:mk/src/ui/pages/sign_in_with_email/sign_in_with_email_screen.dar
 import 'package:mk/src/ui/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'observation.dart';
 import 'provider/locale_provider.dart';
 import 'src/database/local/local_services.dart';
 
@@ -32,6 +33,10 @@ void main() async {
   }
 
   await LocalDBServices.init();
+  BlocOverrides.runZoned(
+        () =>runApp(const MyApp()),
+    blocObserver: MyBlocObserver(),
+  );
   runApp(MyApp(currentUser: auth.currentUser));
 }
 

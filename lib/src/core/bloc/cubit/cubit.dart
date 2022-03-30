@@ -234,7 +234,6 @@ class AppCubit extends Cubit<AppState> {
       product: product,
     )
         .then((value) {
-
       emit(AddToFavouriteSuccessState());
     }).catchError((e) {
       emit(AddToFavouriteErrorState(error: e.toString()));
@@ -267,38 +266,44 @@ class AppCubit extends Cubit<AppState> {
       },
     );
   }
+
   List<Product> allFavouritesList = [];
   Future<List<Product>> getFavourites() async {
     List<Product> favourites = [];
     favourites.clear();
     allFavouritesList.clear();
     emit(FavouritesLoadingState());
-    await database
-        .getFavourites(uid: auth.currentUser!.uid)
-        .then((List<Product> value) {
-      allFavouritesList.addAll(value);
-      favourites.addAll(value);
-      emit(FavouritesSuccessState());
-    }).catchError((e) {
-      emit(FavouritesErrorState(error: e.toString()));
-    });
+    if (auth.currentUser != null) {
+      await database
+          .getFavourites(uid: auth.currentUser!.uid)
+          .then((List<Product> value) {
+        allFavouritesList.addAll(value);
+        favourites.addAll(value);
+        emit(FavouritesSuccessState());
+      }).catchError((e) {
+        emit(FavouritesErrorState(error: e.toString()));
+      });
+    }
     return favourites;
   }
+
   List<Product> cartList = [];
   Future<List<Product>> getCart() async {
     List<Product> cart = [];
     cart.clear();
     cartList.clear();
     emit(FavouritesLoadingState());
-    await database
-        .getCart(uid: auth.currentUser!.uid)
-        .then((List<Product> value) {
-      cart.addAll(value);
-      cartList.addAll(value);
-      emit(FavouritesSuccessState());
-    }).catchError((e) {
-      emit(FavouritesErrorState(error: e.toString()));
-    });
+    if (auth.currentUser != null) {
+      await database
+          .getCart(uid: auth.currentUser!.uid)
+          .then((List<Product> value) {
+        cart.addAll(value);
+        cartList.addAll(value);
+        emit(FavouritesSuccessState());
+      }).catchError((e) {
+        emit(FavouritesErrorState(error: e.toString()));
+      });
+    }
     return cart;
   }
 }

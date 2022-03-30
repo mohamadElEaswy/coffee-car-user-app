@@ -4,7 +4,6 @@ import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/ui/widgets/loading_widget.dart';
 
-import '../../../core/model/product_model/product_model.dart';
 
 class FavouritesPage extends StatefulWidget {
   const FavouritesPage({Key? key}) : super(key: key);
@@ -21,12 +20,16 @@ class _FavouritesPageState extends State<FavouritesPage> {
       listener: (context, state) {},
       builder: (context, state) {
         AppCubit bloc = AppCubit.get(context);
-        return ListView.builder(
-          itemCount: bloc.allFavouritesList.length,
+        if (bloc.allFavouritesList.isNotEmpty) {
+          return ListView.builder(
+          itemCount: bloc.allFavouritesList.length, padding: const EdgeInsets.all(20),
           itemBuilder: (BuildContext context, int index) {
             return Text(bloc.allFavouritesList[index].name);
           },
         );
+        }else if (state is FavouritesLoadingState){
+          return const GlobalLoading();
+        }else{ return const Center(child: Text('Error occurred'));}
       },
     );
   }
