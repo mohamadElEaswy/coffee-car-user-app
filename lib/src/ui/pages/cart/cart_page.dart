@@ -39,7 +39,8 @@ class _CartState extends State<Cart> {
       },
       builder: (context, state) {
         AppCubit bloc = AppCubit.get(context);
-        return SingleChildScrollView(
+        if(bloc.cartList.isNotEmpty) {
+          return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Container(
             padding: const EdgeInsets.all(20),
@@ -111,6 +112,9 @@ class _CartState extends State<Cart> {
             ),
           ),
         );
+        }else{
+          return const Center(child: Text('cart is empty, add products to cart first'));
+        }
       },
     );
   }
