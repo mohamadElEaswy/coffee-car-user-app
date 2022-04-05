@@ -21,8 +21,6 @@ class HomeCard extends StatelessWidget {
       margin: const EdgeInsets.only(right: 10, left: 5),
       child: InkWell(
         onTap: () async {
-          bloc.providerId = car.id;
-
           RouteMethods.navigateTo(
             context: context,
             routeName: ProviderProductsPage.route,

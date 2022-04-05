@@ -10,10 +10,10 @@ class ProviderProductsPage extends StatefulWidget {
 
   const ProviderProductsPage({
     Key? key,
-    // required this.providerId,
+    required this.providerId,
   }) : super(key: key);
 
-  // final String providerId;
+  final dynamic providerId;
   @override
   MyScrollTabListHomePageState createState() {
     return MyScrollTabListHomePageState();
@@ -36,7 +36,7 @@ class MyScrollTabListHomePageState extends State<ProviderProductsPage>
         AppCubit bloc = AppCubit.get(context);
 
         return FutureBuilder(
-          future: bloc.fetchAllCategories(bloc.providerId!),
+          future: bloc.fetchAllCategories(widget.providerId.toString()),
           builder: (BuildContext context, AsyncSnapshot snapshot){
             return Scaffold(
               // backgroundColor: Colors.grey[200],
@@ -103,7 +103,10 @@ class MyScrollTabListHomePageState extends State<ProviderProductsPage>
                   },
                   body: TabBarView(
                     physics: const BouncingScrollPhysics(),
-                    children: bloc.tabBarViewList,
+                    children: [
+                      AllProductsPage(providerId: widget.providerId),
+                  // bloc.categoriesNameList.length;
+                  ],
                   ),
                 ),
               ),

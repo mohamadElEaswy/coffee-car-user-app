@@ -12,7 +12,7 @@ class Product {
     required this.availability,
     required this.category,
     required this.time,
-    this.quantity,
+    this.quantity = 0,
     // required this.rate,
   });
   final String id;

@@ -4,13 +4,14 @@ import 'package:mk/src/core/bloc/cubit/cubit.dart';
 import 'package:mk/src/core/bloc/states/states.dart';
 import 'package:mk/src/ui/widgets/loading_widget.dart';
 import '../../../core/model/product_model/product_model.dart';
+import '../../widgets/global_snack_bar.dart';
 import 'grid_item.dart';
 
 // import 'package:async/async.dart';
 
 class AllProductsPage extends StatefulWidget {
-  const AllProductsPage({Key? key}) : super(key: key);
-
+  const AllProductsPage({Key? key, required this.providerId}) : super(key: key);
+  final dynamic providerId;
   // final AppCubit bloc;
 
   @override
@@ -21,11 +22,19 @@ class _AllProductsPageState extends State<AllProductsPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AddToFavouriteSuccessState) {
+          GlobalSnackBar.snackBar(
+              color: Colors.green,
+              text: 'added to favourites',
+              context: context);
+        }
+
+      },
       builder: (context, state) {
         AppCubit bloc = AppCubit.get(context);
         return FutureBuilder(
-          future: bloc.fetchAllProducts(),
+          future: bloc.fetchAllProducts(widget.providerId.toString()),
           builder:
               (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
             if (snapshot.data != null) {

@@ -112,10 +112,10 @@ class AppCubit extends Cubit<AppState> {
         icon: Icon(Icons.settings), label: 'Profile', tooltip: 'Profile'),
   ];
 
-  List<Widget> tabBarViewList = const [
-    AllProductsPage(),
-    // bloc.categoriesNameList.length;
-  ];
+  // List<Widget> tabBarViewList = const [
+  //   AllProductsPage(),
+  //   // bloc.categoriesNameList.length;
+  // ];
 
   List<Tab> tabs = const [
     Tab(text: 'All'),
@@ -161,15 +161,16 @@ class AppCubit extends Cubit<AppState> {
   AuthBase auth = Auth();
 
   //using this String I path the provider id to present his products
-  String? providerId;
+  // String? providerId;
   /*the coming method fixing future builder bug (keep firing)*/
   final AsyncMemoizer _memorize = AsyncMemoizer();
-  late final Future<List<Product>?> myFuture = getAllProductsList();
-  Future<List<Product>> fetchAllProducts() async {
+  Future<List<Product>?> myFuture(String providerId) =>
+      getAllProductsList(providerId);
+  Future<List<Product>> fetchAllProducts(String providerId) async {
     // ignore: unnecessary_this
     return await this._memorize.runOnce(
       () {
-        return myFuture;
+        return myFuture(providerId);
       },
     );
   }
@@ -191,13 +192,14 @@ class AppCubit extends Cubit<AppState> {
   }
 
   List<Product> allProductsList = [];
-  Future<List<Product>?> getAllProductsList() async {
-    emit(ProductsLoadingState());
+  Future<List<Product>?> getAllProductsList(String providerId) async {
+    print(providerId);
 
+    emit(ProductsLoadingState());
     List<Product> products = [];
     allProductsList.clear();
     try {
-      List<Product>? data = await database.getProductsList(uId: providerId!);
+      List<Product>? data = await database.getProductsList(uId: providerId);
 
       products.addAll(data!);
       allProductsList.addAll(data);
@@ -241,7 +243,7 @@ class AppCubit extends Cubit<AppState> {
   Future addToFavourites({
     required String productId,
     required Product product,
-    // required BuildContext context,
+    required BuildContext context,
   }) async {
     emit(AddToFavouriteLoadingState());
     await database
@@ -251,6 +253,9 @@ class AppCubit extends Cubit<AppState> {
       product: product,
     )
         .then((value) {
+      GlobalSnackBar.snackBar(
+          color: Colors.green, text: 'added to cart', context: context);
+
       emit(AddToFavouriteSuccessState());
     }).catchError((e) {
       emit(AddToFavouriteErrorState(error: e.toString()));
@@ -346,7 +351,8 @@ class AppCubit extends Cubit<AppState> {
   double getTotalPrice() {
     totalPrice = 0;
     final List<double> priceList = List<double>.generate(
-        cartList.length, (index) => double.parse(cartList[index].price),
+      cartList.length,
+      (index) => double.parse(cartList[index].price),
     );
     print(priceList.toString());
     double sum =

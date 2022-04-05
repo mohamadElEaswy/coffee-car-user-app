@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/bloc/cubit/cubit.dart';
 import '../../../core/bloc/states/states.dart';
+import '../../../core/navigation/navigation_methods.dart';
 import '../../../locations.dart';
+import '../provider_products_page/provider_products_page.dart';
 
 class ProvidersPage extends StatelessWidget {
   const ProvidersPage({Key? key}) : super(key: key);
@@ -34,18 +36,21 @@ class ProvidersPage extends StatelessWidget {
     );
   }
 
-  Widget cardItem(
-          {
-            // required Office item,
-          required BuildContext context,
-          required Cars car,
-          }) =>
+  Widget cardItem({
+    // required Office item,
+    required BuildContext context,
+    required Cars car,
+  }) =>
       Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         margin: const EdgeInsets.only(top: 5, bottom: 5),
         child: InkWell(
-          onTap: () {},
+          onTap: () => RouteMethods.navigateTo(
+            context: context,
+            routeName: ProviderProductsPage.route,
+            args: car.id,
+          ),
           child: Container(
             padding: const EdgeInsets.all(20),
             width: 225,

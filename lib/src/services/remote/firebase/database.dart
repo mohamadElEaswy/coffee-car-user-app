@@ -264,7 +264,9 @@ class FirestoreDatabase implements Database {
       (value) {
         product = Product.fromJson(value.data()!);
       },
-    ).catchError((e) => print(e.toString()));
+    ).catchError((e) {
+      print(e.toString());
+    });
     return product;
   }
 
@@ -326,7 +328,9 @@ class FirestoreDatabase implements Database {
         print(uid);
         print(favourites[0].name);
       },
-    ).catchError((e) => print(e.toString()));
+    ).catchError((e) {
+      print(e.toString());
+    });
     return favourites;
   }
 
@@ -343,8 +347,15 @@ class FirestoreDatabase implements Database {
           },
         );
       },
-    ).catchError((e) => print(e.toString()));
+    ).catchError((e) {
+      print(e.toString());
+    });
     return cart;
+  }
+
+  Future makeOrder({required String providerId, required String uid, required Map<String, dynamic> orderData})async{
+    await service.collection('users').doc(uid).collection('orders').doc(providerId).set(orderData);
+    await service.collection('providers').doc(providerId).collection('orders').doc(uid).set(orderData);
   }
 
   @override

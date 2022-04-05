@@ -50,7 +50,7 @@ class RouteMethods {
       case PhonePage.route:
         return _materialPageRoute(page: const PhonePage());
       case ProviderProductsPage.route:
-        return _materialPageRoute(page: const ProviderProductsPage());
+        return _materialPageRoute(page: ProviderProductsPage(providerId: args,));
       case ProductDetailPage.route:
         return _materialPageRoute(page: ProductDetailPage(product: args));
       default:
