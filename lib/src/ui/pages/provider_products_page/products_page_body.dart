@@ -20,6 +20,11 @@ class AllProductsPage extends StatefulWidget {
 
 class _AllProductsPageState extends State<AllProductsPage> {
   @override
+  void initState() {
+    super.initState();
+    AppCubit.get(context).getAllProductsList(widget.providerId.toString());
+  }
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
@@ -33,11 +38,11 @@ class _AllProductsPageState extends State<AllProductsPage> {
       },
       builder: (context, state) {
         AppCubit bloc = AppCubit.get(context);
-        return FutureBuilder(
-          future: bloc.fetchAllProducts(widget.providerId.toString()),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
-            if (snapshot.data != null) {
+        // return FutureBuilder(
+        //   future: bloc.fetchAllProducts(widget.providerId.toString()),
+        //   builder:
+        //       (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+            if (bloc.allProductsList.isNotEmpty) {
               return OrientationBuilder(
                 builder: (context, orientation) {
                   // print(snapshot.);
@@ -49,26 +54,30 @@ class _AllProductsPageState extends State<AllProductsPage> {
                           orientation == Orientation.portrait ? 2 : 4,
                     ),
                     physics: const BouncingScrollPhysics(),
-                    itemCount: snapshot.data!.length,
+                    itemCount: bloc.allProductsList.length,
                     itemBuilder: (context, index) {
-                      return ProductGridItem(snapshot.data![index], bloc);
+                      return ProductGridItem(bloc.allProductsList[index], bloc);
                     },
                   );
                 },
               );
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const GlobalLoading();
-            } else if (snapshot.data!.isEmpty) {
+            }
+            // else if (snapshot.connectionState == ConnectionState.waiting) {
+            //   return const GlobalLoading();
+            // }
+            else if (bloc.allProductsList.isEmpty) {
               return const Center(
                   child: Text('sorry, there is no products yet'));
-            } else if (snapshot.hasError) {
-              return const Center(child: Text('unknown error occurred'));
-            } else {
+            }
+            // else if (snapshot.hasError) {
+            //   return const Center(child: Text('unknown error occurred'));
+            // }
+            else {
               return const Center(child: Text('unknown error occurred'));
             }
           },
         );
-      },
-    );
+    //   },
+    // );
   }
 }

@@ -180,6 +180,7 @@ class AppCubit extends Cubit<AppState> {
   Future tapsFuture(String uid) => getCategories(uid);
   Future<List<Product>> fetchAllCategories(String uid) async {
     // ignore: unnecessary_this
+
     return await this._tapsMemorize.runOnce(
       () {
         return getCategories(uid);

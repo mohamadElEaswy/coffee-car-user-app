@@ -5,23 +5,16 @@ import '../../../core/bloc/cubit/cubit.dart';
 import '../../../core/bloc/states/states.dart';
 import '../../colors/static_colors.dart';
 
-class ProviderProductsPage extends StatefulWidget {
+class ProviderProductsPage extends StatelessWidget {
   static const String route = '/provider_products_page';
 
-  const ProviderProductsPage({
+   ProviderProductsPage({
     Key? key,
     required this.providerId,
   }) : super(key: key);
 
   final dynamic providerId;
-  @override
-  MyScrollTabListHomePageState createState() {
-    return MyScrollTabListHomePageState();
-  }
-}
 
-class MyScrollTabListHomePageState extends State<ProviderProductsPage>
-    with SingleTickerProviderStateMixin {
   static Radius radius = const Radius.circular(40);
 
   List<Widget> actions = [
@@ -36,14 +29,15 @@ class MyScrollTabListHomePageState extends State<ProviderProductsPage>
         AppCubit bloc = AppCubit.get(context);
 
         return FutureBuilder(
-          future: bloc.fetchAllCategories(widget.providerId.toString()),
-          builder: (BuildContext context, AsyncSnapshot snapshot){
+          future: bloc.fetchAllCategories(providerId.toString()),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
             return Scaffold(
               // backgroundColor: Colors.grey[200],
               body: DefaultTabController(
-                length: 1 //TODO add Tabs and fix this issue to create taps and tabs boy dynamically
+                length:
+                    1 //TODO add Tabs and fix this issue to create taps and tabs boy dynamically
                 // +
-                    // bloc.categoriesNameList.length
+                // bloc.categoriesNameList.length
                 ,
                 initialIndex: 0,
                 child: NestedScrollView(
@@ -71,9 +65,9 @@ class MyScrollTabListHomePageState extends State<ProviderProductsPage>
                                   ),
                                   child: const Center(
                                       child: Text(
-                                        '4.2',
-                                        style: TextStyle(color: Colors.white),
-                                      ))),
+                                    '4.2',
+                                    style: TextStyle(color: Colors.white),
+                                  ))),
                               const SizedBox(height: 10),
                               Container(
                                 height: 75,
@@ -90,8 +84,8 @@ class MyScrollTabListHomePageState extends State<ProviderProductsPage>
                                   tabs: bloc.tabs,
                                   labelColor: Colors.black,
                                   physics: const BouncingScrollPhysics(),
-                                  padding:
-                                  const EdgeInsets.only(left: 20, right: 20),
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20),
                                   indicatorColor: Colors.black,
                                 ),
                               ),
@@ -104,9 +98,9 @@ class MyScrollTabListHomePageState extends State<ProviderProductsPage>
                   body: TabBarView(
                     physics: const BouncingScrollPhysics(),
                     children: [
-                      AllProductsPage(providerId: widget.providerId),
-                  // bloc.categoriesNameList.length;
-                  ],
+                      AllProductsPage(providerId: providerId),
+                      // bloc.categoriesNameList.length;
+                    ],
                   ),
                 ),
               ),
